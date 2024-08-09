@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { client } from "../colyseus";
 
 export const Route = createRootRoute({
   component: () => (
@@ -8,5 +7,4 @@ export const Route = createRootRoute({
       <Outlet />
     </>
   ),
-  beforeLoad: () => client.auth.signInAnonymously(),
 });
