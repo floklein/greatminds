@@ -30,11 +30,12 @@
     "typescript": "5.5.4"
   },
   "dependencies": {
+    "@colyseus/auth": "0.15.10",
+    "@colyseus/core": "0.15.48",
     "@colyseus/monitor": "0.15.7",
     "@colyseus/playground": "0.15.12",
-    "@colyseus/tools": "0.15.39",
-    "@colyseus/core": "0.15.48",
     "@colyseus/schema": "2.0.34",
+    "@colyseus/tools": "0.15.39",
     "colyseus": "0.15.17",
     "express": "4.19.2"
   }
