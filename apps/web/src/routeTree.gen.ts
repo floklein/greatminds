@@ -10,46 +10,33 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as RoomIdImport } from "./routes/$roomId";
-import { Route as IndexImport } from "./routes/index";
+import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const RoomIdRoute = RoomIdImport.update({
-  path: "/$roomId",
-  getParentRoute: () => rootRoute,
-} as any);
-
 const IndexRoute = IndexImport.update({
-  path: "/",
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/$roomId": {
-      id: "/$roomId";
-      path: "/$roomId";
-      fullPath: "/$roomId";
-      preLoaderRoute: typeof RoomIdImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute, RoomIdRoute });
+export const routeTree = rootRoute.addChildren({ IndexRoute })
 
 /* prettier-ignore-end */
 
@@ -59,15 +46,11 @@ export const routeTree = rootRoute.addChildren({ IndexRoute, RoomIdRoute });
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/$roomId"
+        "/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/$roomId": {
-      "filePath": "$roomId.tsx"
     }
   }
 }
