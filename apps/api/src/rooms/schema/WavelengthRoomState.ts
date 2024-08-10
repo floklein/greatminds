@@ -12,9 +12,10 @@ export class Player extends Schema {
   @type("number") score: number = 0;
 }
 
+export type RoundStep = "revealing" | "hinting" | "guessing" | "scoring";
+
 export class Round extends Schema {
-  @type("string") step: "revealing" | "hinting" | "guessing" | "scoring" =
-    "revealing";
+  @type("string") step: RoundStep = "revealing";
 
   @type("string") from: string = "";
   @type("string") to: string = "";
@@ -28,8 +29,10 @@ export class Round extends Schema {
   @type({ map: "number" }) guesses = new MapSchema<number>(); // between 0-100
 }
 
-export class MyRoomState extends Schema {
-  @type("string") phase: "lobby" | "rounds" | "scoreboard" = "lobby";
+export type RoomPhase = "lobby" | "rounds" | "scoreboard";
+
+export class WavelengthRoomState extends Schema {
+  @type("string") phase: RoomPhase = "lobby";
 
   @type({ map: Player }) players = new MapSchema<Player>();
 
