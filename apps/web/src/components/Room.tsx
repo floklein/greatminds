@@ -2,6 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useStore } from "../zustand";
 import { useEffect, useState } from "react";
 import { RoomPhase } from "@wavelength/api";
+import { Lobby } from "./Lobby";
+import { Rounds } from "./Rounds";
+import { Scoreboard } from "./Scoreboard";
 
 export function Room() {
   const room = useStore((state) => state.room!);
@@ -15,22 +18,24 @@ export function Room() {
   });
 
   useEffect(() => {
-    room.onMessage("type", (message) => {
-      console.log("type", message);
-    });
-    room.state.listen("phase", (newPhase) => {
-      setPhase(newPhase);
-    });
+    const disposers = [
+      room.state.listen("phase", (newPhase) => {
+        setPhase(newPhase);
+      }),
+    ];
     return () => {
-      room.removeAllListeners();
+      disposers.forEach((dispose) => dispose());
     };
   }, [room]);
 
   return (
-    <>
-      <h2>Room: {room.roomId}</h2>
-      <button onClick={() => leaveRoom()}>Leave</button>
-      <p>Phase: {phase}</p>
-    </>
+    <div>
+      <h2>
+        Room: {room.roomId} <button onClick={() => leaveRoom()}>Leave</button>
+      </h2>
+      {phase === "lobby" && <Lobby />}
+      {phase === "rounds" && <Rounds />}
+      {phase === "scoreboard" && <Scoreboard />}
+    </div>
   );
 }
