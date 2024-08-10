@@ -1,5 +1,5 @@
 import { Room, Client, Deferred } from "@colyseus/core";
-import { MyRoomState } from "./schema/MyRoomState";
+import { WavelengthRoomState } from "./schema/WavelengthRoomState";
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROOM_ID_LENGTH = 5;
@@ -12,14 +12,14 @@ function generateRoomIdSingle() {
   return result;
 }
 
-export class MyRoom extends Room<MyRoomState> {
+export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "my_lobby";
 
   maxClients = 10;
 
   async onCreate(options: any) {
     this.roomId = await this.generateRoomId();
-    this.setState(new MyRoomState());
+    this.setState(new WavelengthRoomState());
     this.onMessage("type", (client, message) => {
       //
       // handle "type" message

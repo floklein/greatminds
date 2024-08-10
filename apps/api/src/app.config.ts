@@ -6,14 +6,14 @@ import { auth } from "@colyseus/auth";
 /**
  * Import your Room files
  */
-import { MyRoom } from "./rooms/MyRoom";
+import { WavelengthRoom } from "./rooms/WavelengthRoom";
 
 export default config({
   initializeGameServer: (gameServer) => {
     /**
      * Define your room handlers:
      */
-    gameServer.define("my_room", MyRoom);
+    gameServer.define("wavelength", WavelengthRoom);
   },
 
   initializeExpress: (app) => {

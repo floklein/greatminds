@@ -3,7 +3,7 @@
   "name": "@wavelength/api",
   "version": "1.0.0",
   "main": "./build/index.js",
-  "exports": "./build/rooms/schema/MyRoomState.js",
+  "exports": "./build/rooms/schema/WavelengthRoomState.js",
   "types": "./build/",
   "engines": {
     "node": ">= 16.13.0"
