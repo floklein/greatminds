@@ -24,16 +24,18 @@ export function Home() {
   });
 
   return (
-    <>
-      <button onClick={() => createRoom()}>New room</button>
-      {rooms?.map((room) => (
-        <div key={room.roomId}>
-          <p>
+    <div>
+      <h2>
+        Rooms <button onClick={() => createRoom()}>New room</button>
+      </h2>
+      <ul>
+        {rooms?.map((room) => (
+          <li key={room.roomId}>
             {room.name} {room.roomId} ({room.clients}/{room.maxClients}){" "}
             <button onClick={() => joinRoom(room.roomId)}>Join</button>
-          </p>
-        </div>
-      ))}
-    </>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

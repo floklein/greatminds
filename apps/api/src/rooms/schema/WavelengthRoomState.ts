@@ -7,9 +7,15 @@ import {
 } from "@colyseus/schema";
 
 export class Player extends Schema {
+  @type("string") sessionId: string = "";
   @type("string") name: string = "";
   @type("boolean") ready: boolean = false;
   @type("number") score: number = 0;
+
+  constructor(sessionId: string) {
+    super();
+    this.sessionId = sessionId;
+  }
 }
 
 export type RoundStep = "revealing" | "hinting" | "guessing" | "scoring";
