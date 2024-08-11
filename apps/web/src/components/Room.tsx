@@ -1,32 +1,33 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "../zustand";
-import { useEffect, useState } from "react";
-import { RoomPhase } from "@wavelength/api";
-import { Lobby } from "./Lobby";
-import { Rounds } from "./Rounds";
-import { Scoreboard } from "./Scoreboard";
+import { Lobby } from "../Room/Lobby";
+import { Rounds } from "../Room/Rounds";
+import { Scoreboard } from "../Room/Scoreboard";
+import { useEffect } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export function Room() {
   const room = useStore((state) => state.room!);
   const setRoom = useStore((state) => state.setRoom);
+  const phase = useStore((state) => state.roomState?.phase);
+  const setRoomState = useStore((state) => state.setRoomState);
 
-  const [phase, setPhase] = useState<RoomPhase>("lobby");
+  const [, setReconnectionToken] = useLocalStorage<string | null>(
+    "reconnectionToken",
+    null,
+  );
 
   const { mutate: leaveRoom } = useMutation({
     mutationFn: () => room!.leave(),
-    onSuccess: () => setRoom(null),
+    onSuccess: () => {
+      setReconnectionToken(null);
+      setRoom(null);
+    },
   });
 
   useEffect(() => {
-    const disposers = [
-      room.state.listen("phase", (newPhase) => {
-        setPhase(newPhase);
-      }),
-    ];
-    return () => {
-      disposers.forEach((dispose) => dispose());
-    };
-  }, [room]);
+    room.onStateChange((state) => setRoomState(state.toJSON()));
+  }, [room, setRoomState]);
 
   return (
     <div>

@@ -2,9 +2,12 @@ import {
   Schema,
   type,
   MapSchema,
-  SetSchema,
   ArraySchema,
+  filterChildren,
+  filter,
 } from "@colyseus/schema";
+import { Client } from "colyseus";
+import { getRandomRange } from "../../data/sets";
 
 export class Player extends Schema {
   @type("string") sessionId: string = "";
@@ -26,13 +29,37 @@ export class Round extends Schema {
   @type("string") from: string = "";
   @type("string") to: string = "";
 
-  @type("number") target: number = 50; // between 0-100
+  @filter(function (this: Round, client: Client, value: number, root: Schema) {
+    return client.sessionId === this.hinter?.sessionId;
+  })
+  @type("number")
+  target: number = Math.round(Math.random() * 100); // between 0-100
 
-  @type("string") hinterId: string = "";
+  @type(Player) hinter: Player | null = null;
   @type("string") hint: string = "";
 
-  @type({ set: "string" }) guessersIds = new SetSchema<string>();
-  @type({ map: "number" }) guesses = new MapSchema<number>(); // between 0-100
+  @type({ map: Player }) guessers = new MapSchema<Player>();
+  @filterChildren(function (
+    this: Round,
+    client: Client,
+    key: string,
+    value: number,
+    root: Schema,
+  ) {
+    return this.step === "scoring" || client.sessionId === key;
+  })
+  @type({ map: "number" })
+  guesses = new MapSchema<number>(); // between 0-100
+
+  constructor(hinter: Player, players: MapSchema<Player>) {
+    super();
+    this.hinter = hinter;
+    this.guessers = new MapSchema<Player>(players);
+    this.guessers.delete(hinter.sessionId);
+    const range = getRandomRange();
+    this.from = range.from;
+    this.to = range.to;
+  }
 }
 
 export type RoomPhase = "lobby" | "rounds" | "scoreboard";
@@ -43,5 +70,6 @@ export class WavelengthRoomState extends Schema {
   @type({ map: Player }) players = new MapSchema<Player>();
 
   @type({ array: Round }) rounds = new ArraySchema<Round>();
-  @type("number") roundIndex: number = 0;
+  @type("number") roundIndex: number = -1;
+  @type(Round) round: Round | null = null;
 }
