@@ -5,6 +5,7 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ConfigProvider, App as AntdApp } from "antd";
 import { theme } from "./theme";
+import { StyleProvider } from "antd-style";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,9 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={theme}>
         <AntdApp>
-          <RouterProvider router={router} />
+          <StyleProvider>
+            <RouterProvider router={router} />
+          </StyleProvider>
         </AntdApp>
       </ConfigProvider>
       <TanStackRouterDevtools router={router} />

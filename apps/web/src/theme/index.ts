@@ -1,5 +1,6 @@
 import { ThemeConfig, theme as antdTheme } from "antd";
 import "antd/dist/reset.css";
+import "./fonts.css";
 
 export const theme: ThemeConfig = {
   algorithm: antdTheme.darkAlgorithm,
@@ -7,6 +8,7 @@ export const theme: ThemeConfig = {
   token: {
     // colorPrimary: "#48c7fb",
     colorBgBase: "#010625",
+    fontFamily: "GT Walsheim Regular, sans-serif",
   },
   components: {
     Layout: {
