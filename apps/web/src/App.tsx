@@ -4,7 +4,6 @@ import { routeTree } from "./routeTree.gen";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ConfigProvider, App as AntdApp } from "antd";
-import "./reset.css";
 import { theme } from "./theme";
 
 const queryClient = new QueryClient();
