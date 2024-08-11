@@ -1,36 +1,69 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { Flex, Layout, Typography } from "antd";
+import { Layout, Typography } from "antd";
 
 import header from "../../public/assets/header.svg";
+import footer from "../../public/assets/footer.svg";
+import { createStyles } from "antd-style";
 
 export const Route = createRootRoute({
   component: Root,
 });
 
+const useStyles = createStyles({
+  layout: {
+    minHeight: "100vh",
+  },
+  header: {
+    height: 80,
+    paddingInline: 0,
+    position: "relative",
+    backgroundImage: `url("${header}")`,
+    backgroundPositionX: "center",
+    backgroundPositionY: "bottom",
+    backgroundSize: "cover",
+  },
+  title: {
+    textAlign: "center",
+    marginBlockStart: 12,
+    letterSpacing: 3,
+  },
+  content: {
+    display: "flex",
+    padding: "48px 24px",
+  },
+  footer: {
+    backgroundImage: `url("${footer}")`,
+    backgroundSize: "cover",
+    backgroundPositionX: "center",
+  },
+  footerTypography: {
+    textAlign: "center",
+  },
+});
+
 function Root() {
+  const { styles } = useStyles();
+
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Layout.Header
-        style={{
-          backgroundImage: `url("${header}")`,
-          backgroundRepeat: "repeat-x",
-          backgroundPositionX: "center",
-        }}
-      >
-        <Flex align="center" justify="center" style={{ height: "100%" }}>
-          <Typography.Title
-            style={{
-              margin: 0,
-              letterSpacing: 5,
-            }}
-          >
-            WAVELENGTH
-          </Typography.Title>
-        </Flex>
+    <Layout className={styles.layout}>
+      <Layout.Header className={styles.header}>
+        <Typography.Title className={styles.title}>WAVELENGTH</Typography.Title>
       </Layout.Header>
-      <Layout.Content style={{ display: "flex", padding: "48px 24px" }}>
+      <Layout.Content className={styles.content}>
         <Outlet />
       </Layout.Content>
+      <Layout.Footer className={styles.footer}>
+        <Typography className={styles.footerTypography}>
+          Made with ❤️ by{" "}
+          <a
+            href="https://github.com/floklein"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Florent
+          </a>
+        </Typography>
+      </Layout.Footer>
     </Layout>
   );
 }

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "1.21.0",
     "@colyseus/schema": "2.0.34",
     "@tanstack/react-query": "5.51.23",
     "@tanstack/react-query-devtools": "5.51.23",
@@ -17,6 +18,7 @@
     "@tanstack/router-devtools": "1.46.9",
     "@wavelength/api": "workspace:*",
     "antd": "5.20.0",
+    "antd-style": "3.6.2",
     "colyseus.js": "0.15.25",
     "react": "18.3.1",
     "react-dom": "18.3.1",
