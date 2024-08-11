@@ -3,6 +3,7 @@ import { useStore } from "../zustand";
 import { client } from "../colyseus";
 import { WavelengthRoomState } from "@wavelength/api";
 import { useLocalStorage } from "usehooks-ts";
+import { Button, Divider, Flex, List, Space } from "antd";
 
 export function Home() {
   const setRoom = useStore((state) => state.setRoom);
@@ -48,23 +49,35 @@ export function Home() {
   });
 
   return (
-    <div>
-      <h2>
-        Rooms <button onClick={() => createRoom()}>New room</button>{" "}
+    <Space direction="vertical" size="large" style={{ width: "100%" }}>
+      <Flex gap="small" justify="center">
+        <Button type="primary" size="large" onClick={() => createRoom()}>
+          Create a new party
+        </Button>
         {reconnectionToken && (
-          <button onClick={() => reconnectRoom(reconnectionToken)}>
+          <Button size="large" onClick={() => reconnectRoom(reconnectionToken)}>
             Reconnect
-          </button>
+          </Button>
         )}
-      </h2>
-      <ul>
-        {rooms?.map((room) => (
-          <li key={room.roomId}>
-            {room.name} {room.roomId} ({room.clients}/{room.maxClients}){" "}
-            <button onClick={() => joinRoom(room.roomId)}>Join</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      </Flex>
+      <Divider>or</Divider>
+      <List
+        header="Join an available room"
+        bordered
+        dataSource={rooms}
+        renderItem={(item) => (
+          <List.Item
+            actions={[
+              <Button onClick={() => joinRoom(item.roomId)}>Join</Button>,
+            ]}
+          >
+            <List.Item.Meta
+              title={item.roomId}
+              description={`${item.clients} / ${item.maxClients}`}
+            />
+          </List.Item>
+        )}
+      />
+    </Space>
   );
 }

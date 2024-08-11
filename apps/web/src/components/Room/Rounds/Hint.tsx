@@ -1,5 +1,5 @@
 import { Message, Messages } from "@wavelength/api";
-import { useStore } from "../../zustand";
+import { useStore } from "../../../zustand";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export function Hint() {

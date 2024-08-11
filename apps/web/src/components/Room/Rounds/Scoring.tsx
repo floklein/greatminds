@@ -1,4 +1,4 @@
-import { useStore } from "../../zustand";
+import { useStore } from "../../../zustand";
 
 export function Scoring() {
   const guesses = useStore((state) => state.roomState!.round?.guesses);

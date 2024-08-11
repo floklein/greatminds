@@ -1,4 +1,4 @@
-import { useStore } from "../zustand";
+import { useStore } from "../../zustand";
 import { Guessing } from "./Rounds/Guessing";
 import { Hint } from "./Rounds/Hint";
 import { Scoring } from "./Rounds/Scoring";
