@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "../zustand";
-import { Lobby } from "../Room/Lobby";
-import { Rounds } from "../Room/Rounds";
-import { Scoreboard } from "../Room/Scoreboard";
+import { Lobby } from "./Room/Lobby";
+import { Rounds } from "./Room/Rounds";
+import { Scoreboard } from "./Room/Scoreboard";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
 

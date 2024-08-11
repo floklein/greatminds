@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useStore } from "../../zustand";
+import { useStore } from "../../../zustand";
 import { Message, Messages } from "@wavelength/api";
 
 export function Guessing() {
