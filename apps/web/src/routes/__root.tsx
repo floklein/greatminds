@@ -24,12 +24,13 @@ const useStyles = createStyles({
   },
   title: {
     textAlign: "center",
-    marginBlockStart: 12,
+    marginBlockStart: "0.75rem",
     letterSpacing: 3,
   },
   content: {
     display: "flex",
-    padding: "48px 24px",
+    flexDirection: "column",
+    padding: "4rem 1rem",
   },
   footer: {
     backgroundImage: `url("${footer}")`,
