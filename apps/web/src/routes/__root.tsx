@@ -30,6 +30,9 @@ const useStyles = createStyles({
     display: "flex",
     flexDirection: "column",
     padding: "2rem 1rem",
+    width: "100%",
+    maxWidth: "80rem",
+    marginInline: "auto",
   },
   footer: {
     backgroundImage: `url("${footer}")`,
