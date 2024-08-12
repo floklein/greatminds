@@ -5,8 +5,23 @@ import { Rounds } from "./Room/Rounds";
 import { Scoreboard } from "./Room/Scoreboard";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { Button, Flex, Input, Layout, Space, Tooltip } from "antd";
+import { CopyOutlined } from "@ant-design/icons";
+import { Players } from "./Room/Players";
+import { createStyles } from "antd-style";
+
+const useStyles = createStyles(({ token }) => ({
+  headerFlex: {
+    height: "100%",
+  },
+  sider: {
+    borderRadius: token.borderRadiusLG,
+  },
+}));
 
 export function Room() {
+  const { styles } = useStyles();
+
   const room = useStore((state) => state.room!);
   const setRoom = useStore((state) => state.setRoom);
   const phase = useStore((state) => state.roomState?.phase);
@@ -30,13 +45,41 @@ export function Room() {
   }, [room, setRoomState]);
 
   return (
-    <div>
-      <h2>
-        Room: {room.roomId} <button onClick={() => leaveRoom()}>Leave</button>
-      </h2>
-      {phase === "lobby" && <Lobby />}
-      {phase === "rounds" && <Rounds />}
-      {phase === "scoreboard" && <Scoreboard />}
-    </div>
+    <Layout>
+      <Layout>
+        <Layout.Header>
+          <Flex
+            gap="small"
+            align="center"
+            justify="center"
+            className={styles.headerFlex}
+          >
+            <Space.Compact>
+              <Input.Password
+                addonBefore="Room ID"
+                value={room.roomId}
+                size="large"
+              />
+              {phase === "lobby" && (
+                <Tooltip title="Copy">
+                  <Button icon={<CopyOutlined />} size="large" />
+                </Tooltip>
+              )}
+            </Space.Compact>
+            <Button type="text" danger onClick={() => leaveRoom()} size="large">
+              Leave
+            </Button>
+          </Flex>
+        </Layout.Header>
+        <Layout.Content>
+          {phase === "lobby" && <Lobby />}
+          {phase === "rounds" && <Rounds />}
+          {phase === "scoreboard" && <Scoreboard />}
+        </Layout.Content>
+      </Layout>
+      <Layout.Sider width={300} className={styles.sider}>
+        <Players />
+      </Layout.Sider>
+    </Layout>
   );
 }

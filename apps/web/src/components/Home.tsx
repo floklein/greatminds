@@ -3,9 +3,23 @@ import { useStore } from "../zustand";
 import { client } from "../colyseus";
 import { WavelengthRoomState } from "@wavelength/api";
 import { useLocalStorage } from "usehooks-ts";
-import { Button, Divider, Flex, Layout, List, Space } from "antd";
+import { Button, Divider, Flex, List, Space } from "antd";
+import { Center } from "./UI/Center";
+import { createStyles } from "antd-style";
+
+const useStyles = createStyles({
+  space: {
+    width: "100%",
+  },
+  flexItem: {
+    width: "100%",
+    maxWidth: "40rem",
+  },
+});
 
 export function Home() {
+  const { styles } = useStyles();
+
   const setRoom = useStore((state) => state.setRoom);
 
   const [reconnectionToken, setReconnectionToken] = useLocalStorage<
@@ -49,51 +63,41 @@ export function Home() {
   });
 
   return (
-    <Layout style={{ alignItems: "center", justifyContent: "center" }}>
-      <Layout.Content
-        style={{
-          margin: "0 auto",
-          width: "100%",
-          flexGrow: "0",
-          maxWidth: "500px",
-        }}
-      >
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <Flex gap="small" justify="center">
-            <Button type="primary" size="large" onClick={() => createRoom()}>
-              Create a new party
+    <Center itemClassName={styles.flexItem}>
+      <Space direction="vertical" size="large" className={styles.space}>
+        <Flex gap="small" justify="center">
+          <Button type="primary" size="large" onClick={() => createRoom()}>
+            Create a new party
+          </Button>
+          {reconnectionToken && (
+            <Button
+              size="large"
+              onClick={() => reconnectRoom(reconnectionToken)}
+            >
+              Reconnect
             </Button>
-            {reconnectionToken && (
-              <Button
-                size="large"
-                onClick={() => reconnectRoom(reconnectionToken)}
-              >
-                Reconnect
-              </Button>
-            )}
-          </Flex>
-          <Divider>or</Divider>
-          <List
-            header="Join an available room"
-            bordered
-            dataSource={rooms}
-            pagination={{ pageSize: 5 }}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Button onClick={() => joinRoom(item.roomId)}>Join</Button>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={item.roomId}
-                  description={`${item.clients} / ${item.maxClients}`}
-                />
-              </List.Item>
-            )}
-            style={{ overflow: "auto" }}
-          />
-        </Space>
-      </Layout.Content>
-    </Layout>
+          )}
+        </Flex>
+        <Divider>or</Divider>
+        <List
+          header="Join an available room"
+          bordered
+          dataSource={rooms}
+          pagination={{ pageSize: 5 }}
+          renderItem={(item) => (
+            <List.Item
+              actions={[
+                <Button onClick={() => joinRoom(item.roomId)}>Join</Button>,
+              ]}
+            >
+              <List.Item.Meta
+                title={item.roomId}
+                description={`${item.clients} / ${item.maxClients}`}
+              />
+            </List.Item>
+          )}
+        />
+      </Space>
+    </Center>
   );
 }
