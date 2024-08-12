@@ -1,46 +1,45 @@
+import { Button, Form, Input } from "antd";
 import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../../zustand";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { Center } from "../../UI/Center";
+import { ArrowRightOutlined } from "@ant-design/icons";
+
+type FieldType = {
+  hint?: string;
+};
 
 export function Hint() {
   const room = useStore((state) => state.room!);
-  const step = useStore((state) => state.roomState!.round?.step);
-  const isHinter = useStore(
-    (state) =>
-      state.room!.sessionId === state.roomState!.round?.hinter?.sessionId,
-  );
-  const stateHint = useStore((state) => state.roomState!.round?.hint);
 
-  const [hint, setHint] = useState("");
-
-  function handleHintChange(event: ChangeEvent<HTMLInputElement>) {
-    setHint(event.target.value);
+  function handleHintChange(values: FieldType) {
+    room.send<Message[Messages.SubmitHint]>(Messages.SubmitHint, values.hint);
   }
 
-  function handleHintSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    room.send<Message[Messages.SubmitHint]>(Messages.SubmitHint, hint);
-  }
-
-  if (step !== "hinting" && step !== "guessing") {
-    return null;
-  }
   return (
-    <div>
-      {step === "hinting" &&
-        (isHinter ? (
-          <form onSubmit={handleHintSubmit}>
-            <input
-              type="text"
-              placeholder="Your hint"
-              value={hint}
-              onChange={handleHintChange}
-            />
-          </form>
-        ) : (
-          <p>Waiting for hint...</p>
-        ))}
-      {step === "guessing" && <p>Hint: {stateHint}</p>}
-    </div>
+    <Center>
+      <Form<FieldType> size="large" layout="inline" onFinish={handleHintChange}>
+        <Form.Item
+          name="hint"
+          rules={[
+            {
+              required: true,
+              message: "Please type a hint to help guessers guess",
+            },
+          ]}
+        >
+          <Input placeholder="Your hint" />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            icon={<ArrowRightOutlined />}
+            iconPosition="end"
+          >
+            Submit hint
+          </Button>
+        </Form.Item>
+      </Form>
+    </Center>
   );
 }

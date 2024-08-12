@@ -1,7 +1,7 @@
 import { ThemeConfig, theme as antdTheme } from "antd";
+import colorAlpha from "color-alpha";
 import "antd/dist/reset.css";
 import "./fonts.css";
-import colorAlpha from "color-alpha";
 
 export const theme: ThemeConfig = {
   algorithm: antdTheme.darkAlgorithm,

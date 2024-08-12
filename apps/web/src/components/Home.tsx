@@ -35,7 +35,6 @@ export function Home() {
   const { mutate: createRoom } = useMutation({
     mutationFn: () => client.create<WavelengthRoomState>("wavelength"),
     onSuccess: (newRoom) => {
-      console.log(newRoom.reconnectionToken);
       setReconnectionToken(newRoom.reconnectionToken);
       setRoom(newRoom);
     },

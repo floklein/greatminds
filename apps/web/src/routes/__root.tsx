@@ -1,8 +1,8 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Layout, Typography } from "antd";
 
-import header from "../../public/assets/header.svg";
-import footer from "../../public/assets/footer.svg";
+import header from "/assets/header.svg";
+import footer from "/assets/footer.svg";
 import { createStyles } from "antd-style";
 
 export const Route = createRootRoute({
@@ -14,7 +14,6 @@ const useStyles = createStyles({
     minHeight: "100vh",
   },
   header: {
-    height: 80,
     paddingInline: 0,
     position: "relative",
     backgroundImage: `url("${header}")`,
@@ -25,12 +24,12 @@ const useStyles = createStyles({
   title: {
     textAlign: "center",
     marginBlockStart: "0.75rem",
-    letterSpacing: 3,
+    letterSpacing: "0.2rem",
   },
   content: {
     display: "flex",
     flexDirection: "column",
-    padding: "4rem 1rem",
+    padding: "2rem 1rem",
   },
   footer: {
     backgroundImage: `url("${footer}")`,
@@ -48,7 +47,9 @@ function Root() {
   return (
     <Layout className={styles.layout}>
       <Layout.Header className={styles.header}>
-        <Typography.Title className={styles.title}>WAVELENGTH</Typography.Title>
+        <Typography.Title level={2} className={styles.title}>
+          WAVELENGTH
+        </Typography.Title>
       </Layout.Header>
       <Layout.Content className={styles.content}>
         <Outlet />

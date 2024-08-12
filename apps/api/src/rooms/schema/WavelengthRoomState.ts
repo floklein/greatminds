@@ -67,6 +67,7 @@ export type RoomPhase = "lobby" | "rounds" | "scoreboard";
 export class WavelengthRoomState extends Schema {
   @type("string") phase: RoomPhase = "lobby";
 
+  @type("number") maxPlayers: number = 10;
   @type({ map: Player }) players = new MapSchema<Player>();
 
   @type({ array: Round }) rounds = new ArraySchema<Round>();
