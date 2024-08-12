@@ -79,8 +79,8 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         this.setRoundStep("guessing");
       },
     );
-    this.onMessage<Message[Messages.SubmitGuess]>(
-      Messages.SubmitGuess,
+    this.onMessage<Message[Messages.SetGuess]>(
+      Messages.SetGuess,
       (client, message) => {
         console.log(client.sessionId, "guess =", message);
         const player = this.state.players.get(client.sessionId);
@@ -100,14 +100,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
           console.error("Player is not a guesser");
           return;
         }
-        if (this.state.round.guesses.has(client.sessionId)) {
-          console.error("Player already guessed");
-          return;
-        }
         this.state.round.guesses.set(client.sessionId, message);
-        if (this.state.round.guesses.size === this.state.round.guessers.size) {
-          this.setRoundStep("scoring");
-        }
       },
     );
   }
@@ -182,7 +175,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     this.state.round = this.state.rounds[roundIndex];
     this.clock.setTimeout(() => {
       this.setRoundStep("hinting");
-    }, 5000);
+    }, 5 * 1000);
   }
 
   setRoundStep(step: RoundStep) {
@@ -199,12 +192,15 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     }
     if (step === "guessing") {
       console.log("starting guessing step");
+      this.clock.setTimeout(() => {
+        this.setRoundStep("scoring");
+      }, 30 * 1000);
     }
     if (step === "scoring") {
       console.log("starting scoring step");
       this.clock.setTimeout(() => {
         this.setRound(this.state.roundIndex + 1);
-      }, 5000);
+      }, 5 * 1000);
     }
   }
 }

@@ -1,41 +1,66 @@
-import { Badge, Layout, List } from "antd";
+import { Badge, Flex, Layout, List, Space, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 
-const useStyles = createStyles({
+const useStyles = createStyles(({ token }) => ({
   layout: {
-    paddingInline: "1rem",
-    backgroundColor: "unset",
+    background: "unset",
+    paddingInline: token.padding,
   },
-});
+  headerFlex: {
+    height: "100%",
+  },
+  title: {
+    margin: "0 !important",
+  },
+}));
 
 export function Players() {
   const { styles } = useStyles();
 
-  const players = useStore((state) => state.roomState?.players) ?? {};
+  const players = useStore((state) => state.roomState!.players);
+  const phase = useStore((state) => state.roomState!.phase);
+  const maxPlayers = useStore((state) => state.roomState!.maxPlayers);
+
+  const sortedPlayers = Object.values(players).sort(
+    (a, b) => b.score - a.score,
+  );
 
   return (
     <Layout className={styles.layout}>
       <Layout.Header>
-        <h3>Players</h3>
+        <Flex
+          align="center"
+          justify="space-between"
+          className={styles.headerFlex}
+        >
+          <Typography.Title level={5} className={styles.title}>
+            Players
+          </Typography.Title>
+          <Typography.Text type="secondary">
+            {sortedPlayers.length} / {maxPlayers}
+          </Typography.Text>
+        </Flex>
       </Layout.Header>
-      <Layout.Content>
-        <List
-          dataSource={Object.values(players)}
-          renderItem={(player) => (
-            <List.Item
-              actions={[
+      <List
+        dataSource={sortedPlayers}
+        renderItem={(player) => (
+          <List.Item
+            actions={[
+              phase === "lobby" ? (
                 <Badge
                   status={player.ready ? "success" : "error"}
                   text={player.ready ? "Ready" : "Not ready"}
-                />,
-              ]}
-            >
-              {player.name.length ? player.name : player.sessionId}
-            </List.Item>
-          )}
-        />
-      </Layout.Content>
+                />
+              ) : (
+                player.score
+              ),
+            ]}
+          >
+            {player.name.length ? player.name : player.sessionId}
+          </List.Item>
+        )}
+      />
     </Layout>
   );
 }

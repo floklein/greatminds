@@ -5,6 +5,7 @@ import { PropsWithChildren } from "react";
 
 const useStyles = createStyles({
   flex: {
+    width: "100%",
     height: "100%",
     flexGrow: 1,
   },

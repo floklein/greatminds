@@ -1,45 +1,44 @@
+import { Space, Steps } from "antd";
+import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
-import { Guessing } from "./Rounds/Guessing";
 import { Hint } from "./Rounds/Hint";
 import { Scoring } from "./Rounds/Scoring";
-import { Target } from "./Rounds/Target";
+import { Step } from "./Rounds/Step";
+import { Range } from "./Rounds/Range";
+
+const useStyles = createStyles({
+  space: {
+    width: "100%",
+    "& > *": {
+      maxWidth: "100%",
+      overflowX: "auto",
+    },
+  },
+});
 
 export function Rounds() {
-  const round = useStore((state) => state.roomState!.roundIndex);
+  const { styles } = useStyles();
+
+  const roundIndex = useStore((state) => state.roomState!.roundIndex);
+  const rounds = useStore((state) => state.roomState!.rounds);
   const step = useStore((state) => state.roomState!.round?.step);
-  const hinterId = useStore(
-    (state) => state.roomState!.round?.hinter?.sessionId,
+  const isHinter = useStore(
+    (state) =>
+      state.room!.sessionId === state.roomState!.round?.hinter?.sessionId,
   );
-  const hinterName = useStore((state) => state.roomState!.round?.hinter?.name);
-  const from = useStore((state) => state.roomState!.round?.from);
-  const to = useStore((state) => state.roomState!.round?.to);
 
   return (
-    <div>
-      <h2>Rounds</h2>
-      <h3>Round: {round}</h3>
-      <h4>Step: {step}</h4>
-      <p>
-        Hinter: [{hinterId}] {hinterName}
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>From</th>
-            <th>To</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{from}</td>
-            <td>{to}</td>
-          </tr>
-        </tbody>
-      </table>
-      <Target />
-      <Hint />
-      {step === "guessing" && <Guessing />}
+    <Space direction="vertical" size="large" className={styles.space}>
+      <Steps
+        current={roundIndex}
+        items={rounds.map(() => ({}))}
+        labelPlacement="vertical"
+        responsive={false}
+      />
+      <Step />
+      {(step === "hinting" || step === "guessing") && <Range />}
+      {step === "hinting" && isHinter && <Hint />}
       {step === "scoring" && <Scoring />}
-    </div>
+    </Space>
   );
 }

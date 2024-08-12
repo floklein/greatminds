@@ -5,10 +5,11 @@ import { Rounds } from "./Room/Rounds";
 import { Scoreboard } from "./Room/Scoreboard";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { Button, Flex, Input, Layout, Space, Tooltip } from "antd";
+import { Button, Flex, Input, Layout, Space, Spin, Tooltip } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import { Players } from "./Room/Players";
 import { createStyles } from "antd-style";
+import { Center } from "./UI/Center";
 
 const useStyles = createStyles(({ token }) => ({
   headerFlex: {
@@ -16,6 +17,7 @@ const useStyles = createStyles(({ token }) => ({
   },
   sider: {
     borderRadius: token.borderRadiusLG,
+    marginInlineStart: "1rem",
   },
 }));
 
@@ -25,6 +27,7 @@ export function Room() {
   const room = useStore((state) => state.room!);
   const setRoom = useStore((state) => state.setRoom);
   const phase = useStore((state) => state.roomState?.phase);
+  const hasRoomState = useStore((state) => state.roomState !== null);
   const setRoomState = useStore((state) => state.setRoomState);
 
   const [, setReconnectionToken] = useLocalStorage<string | null>(
@@ -44,6 +47,13 @@ export function Room() {
     room.onStateChange((state) => setRoomState(state.toJSON()));
   }, [room, setRoomState]);
 
+  if (!hasRoomState) {
+    return (
+      <Center>
+        <Spin size="large" />
+      </Center>
+    );
+  }
   return (
     <Layout>
       <Layout>
@@ -55,18 +65,14 @@ export function Room() {
             className={styles.headerFlex}
           >
             <Space.Compact>
-              <Input.Password
-                addonBefore="Room ID"
-                value={room.roomId}
-                size="large"
-              />
+              <Input.Password addonBefore="Room ID" value={room.roomId} />
               {phase === "lobby" && (
                 <Tooltip title="Copy">
-                  <Button icon={<CopyOutlined />} size="large" />
+                  <Button icon={<CopyOutlined />} />
                 </Tooltip>
               )}
             </Space.Compact>
-            <Button type="text" danger onClick={() => leaveRoom()} size="large">
+            <Button type="text" danger onClick={() => leaveRoom()}>
               Leave
             </Button>
           </Flex>

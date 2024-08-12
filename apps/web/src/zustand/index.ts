@@ -1,5 +1,5 @@
 import { ToJSON } from "@colyseus/schema";
-import { Player, WavelengthRoomState } from "@wavelength/api";
+import { WavelengthRoomState } from "@wavelength/api";
 import { Room } from "colyseus.js";
 import { create } from "zustand";
 

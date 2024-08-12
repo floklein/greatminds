@@ -1,18 +1,26 @@
-import { ChangeEvent, useState } from "react";
-import { useStore } from "../../zustand";
-import { Message, Messages } from "@wavelength/api";
-import { Center } from "../UI/Center";
 import { Button, Form, Input } from "antd";
 import { createStyles } from "antd-style";
+import { CheckOutlined } from "@ant-design/icons";
+import { Message, Messages } from "@wavelength/api";
+import { useStore } from "../../zustand";
+import { Center } from "../UI/Center";
+
+type FieldType = {
+  name?: string;
+};
 
 const useStyles = createStyles(({ token }, props: { sucess: boolean }) => ({
   button: {
     backgroundColor: props.sucess ? token["green-5"] : undefined,
-    "&&&&:hover": {
-      backgroundColor: props.sucess ? token["green-6"] : undefined,
+    "&:hover": {
+      backgroundColor: props.sucess
+        ? `${token["green-6"]} !important`
+        : undefined,
     },
-    "&&&&:active": {
-      backgroundColor: props.sucess ? token["green-4"] : undefined,
+    "&:active": {
+      backgroundColor: props.sucess
+        ? `${token["green-4"]} !important`
+        : undefined,
     },
   },
   form: {
@@ -21,35 +29,23 @@ const useStyles = createStyles(({ token }, props: { sucess: boolean }) => ({
 }));
 
 export function Lobby() {
-  const form = Form.useForm();
-
   const room = useStore((state) => state.room!);
-
   const storeName = useStore(
-    (state) => state.roomState?.players[state.room!.sessionId]?.name ?? "",
+    (state) => state.roomState!.players[state.room!.sessionId]?.name ?? "",
   );
-  const storeReady = useStore(
-    (state) => state.roomState?.players[state.room!.sessionId]?.ready ?? false,
+  const ready = useStore(
+    (state) => state.roomState!.players[state.room!.sessionId]?.ready ?? false,
   );
 
-  const { styles } = useStyles({ sucess: storeReady });
+  const { styles } = useStyles({ sucess: ready });
 
-  const [name, setName] = useState(storeName);
-  const [ready, setReady] = useState(storeReady);
-
-  function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
-    setName(event.target.value);
-    room.send<Message[Messages.SetPlayerName]>(
-      Messages.SetPlayerName,
-      event.target.value,
-    );
-  }
-
-  function handleReadyChange() {
-    setReady(!ready);
-  }
-
-  function handleFormSubmit() {
+  function handleFormSubmit(values: FieldType) {
+    if (!ready) {
+      room.send<Message[Messages.SetPlayerName]>(
+        Messages.SetPlayerName,
+        values.name ?? "",
+      );
+    }
     room.send<Message[Messages.SetPlayerReady]>(
       Messages.SetPlayerReady,
       !ready,
@@ -58,25 +54,28 @@ export function Lobby() {
 
   return (
     <Center>
-      <Form layout="inline" onFinish={handleFormSubmit} className={styles.form}>
-        <Form.Item>
-          <Input
-            placeholder="Your name"
-            onChange={handleNameChange}
-            disabled={ready}
-            size="large"
-          />
+      <Form<FieldType>
+        initialValues={{ name: storeName }}
+        layout="inline"
+        onFinish={handleFormSubmit}
+        className={styles.form}
+      >
+        <Form.Item<FieldType>
+          name="name"
+          rules={[{ required: true, message: "Please type your name" }]}
+        >
+          <Input size="large" placeholder="Your name" disabled={ready} />
         </Form.Item>
         <Form.Item>
           <Button
             type="primary"
             htmlType="submit"
-            onClick={handleReadyChange}
             className={styles.button}
-            disabled={!name.length}
             size="large"
+            icon={ready ? <CheckOutlined /> : undefined}
+            iconPosition="end"
           >
-            Ready?
+            {ready ? "Ready" : "Ready?"}
           </Button>
         </Form.Item>
       </Form>
