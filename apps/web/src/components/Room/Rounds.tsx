@@ -9,7 +9,7 @@ import { Range } from "./Rounds/Range";
 const useStyles = createStyles({
   space: {
     width: "100%",
-    "& > *": {
+    "& > :first-of-type": {
       maxWidth: "100%",
       overflowX: "auto",
     },

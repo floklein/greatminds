@@ -46,7 +46,11 @@ export class Round extends Schema {
     value: number,
     root: Schema,
   ) {
-    return this.step === "scoring" || client.sessionId === key;
+    return (
+      this.step === "scoring" ||
+      client.sessionId === key ||
+      client.sessionId === this.hinter?.sessionId
+    );
   })
   @type({ map: "number" })
   guesses = new MapSchema<number>(); // between 0-100
