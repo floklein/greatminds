@@ -38,7 +38,12 @@ export function Step() {
           have 30 seconds to guess...
         </>
       )}
-      {step === "scoring" && <>Well played everyone!</>}
+      {step === "scoring" && (
+        <>
+          Well played <span className={styles.span}>everyone</span>! Next round
+          in 10 seconds...
+        </>
+      )}
     </Typography.Title>
   );
 }

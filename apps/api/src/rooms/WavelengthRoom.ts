@@ -8,7 +8,7 @@ import {
 } from "./schema/WavelengthRoomState";
 import { createRoomId } from "../lib/room";
 import { Message, Messages } from "../types";
-import { getScore } from "../config/scores";
+import { getHinterScore, getScore } from "../lib/room";
 
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
@@ -199,18 +199,29 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     }
     if (step === "scoring") {
       console.log("starting scoring step");
-      this.state.round.guesses.forEach((guess, sessionId) => {
+      this.state.round.guesses = this.state.round.guesses.clone(); // trigger filter workaround https://github.com/colyseus/schema/issues/102
+      this.state.round.target = this.state.round.target; // same
+      this.state.round.guessers.forEach((guesser) => {
         if (!this.state.round) {
           console.error("No current round");
           return;
         }
-        const player = this.state.players.get(sessionId);
-        if (!player) {
-          console.error("Player not found");
-          return;
-        }
-        player.score += getScore(this.state.round.target, guess);
+        const guess = this.state.round.guesses.get(guesser.sessionId);
+        const score = getScore(this.state.round.target, guess);
+        this.state.round.scores.set(guesser.sessionId, score);
+        guesser.score += score;
       });
+      if (this.state.round.hinter) {
+        const hinterScore = getHinterScore(
+          this.state.round.scores,
+          this.state.round.guessers.size,
+        );
+        this.state.round.scores.set(
+          this.state.round.hinter.sessionId,
+          hinterScore,
+        );
+        this.state.round.hinter.score += hinterScore;
+      }
       // this.clock.setTimeout(() => {
       //   this.setRound(this.state.roundIndex + 1);
       // }, 5 * 1000);
