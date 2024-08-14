@@ -36,7 +36,9 @@ export function Rounds() {
         responsive={false}
       />
       <Step />
-      {(step === "hinting" || step === "guessing") && <Range />}
+      {(step === "hinting" || step === "guessing" || step === "scoring") && (
+        <Range />
+      )}
       {step === "hinting" && isHinter && <Hint />}
       {step === "scoring" && <Scoring />}
     </Space>

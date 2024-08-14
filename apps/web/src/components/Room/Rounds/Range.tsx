@@ -2,10 +2,10 @@ import { Flex, Slider, Tag } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { createStyles } from "antd-style";
 import { useRef, useState } from "react";
-import { Message, Messages } from "@wavelength/api";
-import { useStore } from "../../../zustand";
 import clsx from "clsx";
 import colorAlpha from "color-alpha";
+import { Message, Messages } from "@wavelength/api";
+import { useStore } from "../../../zustand";
 
 const useStyles = createStyles({
   div: {
@@ -91,9 +91,7 @@ export function Range() {
           | undefined,
     ) ?? {};
   const storeGuess = useStore((state) => storeGuesses?.[state.room!.sessionId]);
-  const isGuessing = useStore(
-    (state) => state.roomState!.round?.step === "guessing",
-  );
+  const step = useStore((state) => state.roomState!.round?.step);
   const players = useStore((state) => state.roomState!.players);
 
   const otherPlayersGuesses = Object.entries(storeGuesses)
@@ -118,7 +116,7 @@ export function Range() {
 
   return (
     <div className={styles.div}>
-      <Flex justify="space-between" className={styles.tags}>
+      <Flex justify="space-between">
         <Tag bordered={false} icon={<ArrowLeftOutlined />}>
           {from}
         </Tag>
@@ -172,12 +170,12 @@ export function Range() {
           <Slider
             value={guess}
             onChange={handleChange}
-            disabled={!isGuessing}
+            disabled={step !== "guessing"}
             included={false}
             min={0}
             max={100}
             tooltip={{
-              open: isGuessing,
+              open: step !== "hinting",
               placement: "bottom",
               rootClassName: styles.tooltip,
             }}

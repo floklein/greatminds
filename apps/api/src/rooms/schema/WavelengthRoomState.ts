@@ -30,7 +30,9 @@ export class Round extends Schema {
   @type("string") to: string = "";
 
   @filter(function (this: Round, client: Client, value: number, root: Schema) {
-    return client.sessionId === this.hinter?.sessionId;
+    return (
+      this.step === "scoring" || client.sessionId === this.hinter?.sessionId
+    );
   })
   @type("number")
   target: number = Math.round(Math.random() * 100); // between 0-100
@@ -39,7 +41,7 @@ export class Round extends Schema {
   @type("string") hint: string = "";
 
   @type({ map: Player }) guessers = new MapSchema<Player>();
-  @filterChildren(function filter(
+  @filterChildren(function (
     this: Round,
     client: Client,
     key: string,
@@ -54,6 +56,8 @@ export class Round extends Schema {
   })
   @type({ map: "number" })
   guesses = new MapSchema<number>(); // between 0-100
+
+  @type({ map: "number" }) scores = new MapSchema<number>();
 
   constructor(hinter: Player, players: MapSchema<Player>) {
     super();
