@@ -7,7 +7,7 @@ import {
   filter,
 } from "@colyseus/schema";
 import { Client } from "colyseus";
-import { getRandomRange } from "../../data/sets";
+import { getRandomRange } from "../../config/sets";
 
 export class Player extends Schema {
   @type("string") sessionId: string = "";
@@ -39,7 +39,7 @@ export class Round extends Schema {
   @type("string") hint: string = "";
 
   @type({ map: Player }) guessers = new MapSchema<Player>();
-  @filterChildren(function (
+  @filterChildren(function filter(
     this: Round,
     client: Client,
     key: string,
