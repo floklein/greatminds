@@ -8,6 +8,7 @@ import {
 } from "./schema/WavelengthRoomState";
 import { createRoomId } from "../lib/room";
 import { Message, Messages } from "../types";
+import { getScore } from "../config/scores";
 
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
@@ -198,9 +199,21 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     }
     if (step === "scoring") {
       console.log("starting scoring step");
-      this.clock.setTimeout(() => {
-        this.setRound(this.state.roundIndex + 1);
-      }, 5 * 1000);
+      this.state.round.guesses.forEach((guess, sessionId) => {
+        if (!this.state.round) {
+          console.error("No current round");
+          return;
+        }
+        const player = this.state.players.get(sessionId);
+        if (!player) {
+          console.error("Player not found");
+          return;
+        }
+        player.score += getScore(this.state.round.target, guess);
+      });
+      // this.clock.setTimeout(() => {
+      //   this.setRound(this.state.roundIndex + 1);
+      // }, 5 * 1000);
     }
   }
 }

@@ -7,7 +7,7 @@ import { useStore } from "../../../zustand";
 import clsx from "clsx";
 import colorAlpha from "color-alpha";
 
-const useStyles = createStyles(({ token }) => ({
+const useStyles = createStyles({
   div: {
     paddingBlock: "2rem",
   },
@@ -70,7 +70,7 @@ const useStyles = createStyles(({ token }) => ({
       backgroundColor: "#DB6249",
     },
   },
-}));
+});
 
 export function Range() {
   const { styles } = useStyles();

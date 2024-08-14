@@ -1,3 +1,5 @@
+import { List } from "antd";
+
 export function Scoreboard() {
-  return <div>scoreboard</div>;
+  return <List header="Scoreboard" />;
 }
