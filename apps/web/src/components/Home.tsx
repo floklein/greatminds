@@ -89,7 +89,7 @@ export function Home() {
             icon={<PlusOutlined />}
             className={styles.createButton}
           >
-            Create a new Wavelength room
+            Start a new game
           </Button>
           {reconnectionToken && (
             <Button
@@ -97,12 +97,12 @@ export function Home() {
               onClick={() => reconnectRoom(reconnectionToken)}
               icon={<UndoOutlined />}
             >
-              Reconnect to the room you just left
+              Reconnect to the game you just left
             </Button>
           )}
         </Flex>
         <Divider>or</Divider>
-        <Card title="Join your friends' room" size="small" bordered={false}>
+        <Card title="Join your friends' game" size="small" bordered={false}>
           <Form<FieldType>
             layout="inline"
             autoComplete="off"
@@ -110,10 +110,10 @@ export function Home() {
           >
             <Form.Item<FieldType>
               name="roomId"
-              rules={[{ required: true, message: "Please type a room ID" }]}
+              rules={[{ required: true, message: "Please type a game ID" }]}
               required={false}
             >
-              <Input.Password placeholder="Room ID" />
+              <Input.Password placeholder="Game ID" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
@@ -123,7 +123,7 @@ export function Home() {
           </Form>
         </Card>
         <Divider>or</Divider>
-        <Card title="Join an available room" size="small" bordered={false}>
+        <Card title="Join an open game" size="small" bordered={false}>
           <List
             dataSource={rooms}
             pagination={{ pageSize: 5 }}

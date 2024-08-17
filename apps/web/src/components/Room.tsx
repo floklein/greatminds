@@ -85,7 +85,7 @@ export function Room() {
           >
             <Space.Compact>
               <Input.Password
-                addonBefore="Room ID"
+                addonBefore="Game ID"
                 value={room.roomId}
                 autoComplete="off"
                 readOnly
@@ -98,7 +98,7 @@ export function Room() {
             </Space.Compact>
             <Popconfirm
               title="Are you sure?"
-              description="You will lose all progress in this room"
+              description="You will lose all progress in this game."
               onConfirm={() => leaveRoom()}
               okText="Yes!"
               cancelText="No, I'll stay"
