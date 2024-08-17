@@ -9,6 +9,7 @@ import {
 import { createRoomId } from "../lib/room";
 import { Message, Messages } from "../types";
 import { getHinterScore, getScore } from "../lib/room";
+import { ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS } from "../config/room";
 
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
@@ -31,13 +32,13 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         if (
           this.state.players.size >= 2 &&
           Array.from(this.state.players.values()).every(
-            (player) => player.ready
+            (player) => player.ready,
           )
         ) {
           console.log("all players ready");
           this.setPhase("rounds");
         }
-      }
+      },
     );
     this.onMessage<Message[Messages.SetPlayerName]>(
       Messages.SetPlayerName,
@@ -49,7 +50,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
           return;
         }
         player.name = message;
-      }
+      },
     );
     this.onMessage<Message[Messages.SubmitHint]>(
       Messages.SubmitHint,
@@ -78,7 +79,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         }
         this.state.round.hint = message;
         this.setRoundStep("guessing");
-      }
+      },
     );
     this.onMessage<Message[Messages.SetGuess]>(
       Messages.SetGuess,
@@ -102,7 +103,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
           return;
         }
         this.state.round.guesses.set(client.sessionId, message);
-      }
+      },
     );
   }
 
@@ -118,7 +119,10 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         return;
       }
       console.log(client.sessionId, "left...");
-      await this.allowReconnection(client, 30);
+      await this.allowReconnection(
+        client,
+        ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
+      );
       console.log(client.sessionId, "...but reconnected!");
     } catch (error) {
       console.log(client.sessionId, "...and did not reconnect!");
@@ -214,11 +218,11 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
       if (this.state.round.hinter) {
         const hinterScore = getHinterScore(
           this.state.round.scores,
-          this.state.round.guessers.size
+          this.state.round.guessers.size,
         );
         this.state.round.scores.set(
           this.state.round.hinter.sessionId,
-          hinterScore
+          hinterScore,
         );
         this.state.round.hinter.score += hinterScore;
       }

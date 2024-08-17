@@ -23,7 +23,7 @@ export function Hint() {
           rules={[
             {
               required: true,
-              message: "Please type a hint to help guessers guess",
+              message: "Please type a hint to help the guessers",
             },
           ]}
         >
