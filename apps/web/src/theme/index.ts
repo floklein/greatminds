@@ -10,6 +10,9 @@ export const theme: ThemeConfig = {
     // colorPrimary: "#48c7fb",
     colorBgBase: "#010625",
     fontFamily: "GT Walsheim Regular, sans-serif",
+    green4: "#005b4e",
+    green5: "#008270",
+    green6: "#009681",
   },
   components: {
     Layout: {

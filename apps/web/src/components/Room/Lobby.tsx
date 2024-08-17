@@ -11,16 +11,12 @@ type FieldType = {
 
 const useStyles = createStyles(({ token }, props: { sucess: boolean }) => ({
   button: {
-    backgroundColor: props.sucess ? token["green-5"] : undefined,
+    backgroundColor: props.sucess ? token.green5 : undefined,
     "&:hover": {
-      backgroundColor: props.sucess
-        ? `${token["green-6"]} !important`
-        : undefined,
+      backgroundColor: props.sucess ? `${token.green6} !important` : undefined,
     },
     "&:active": {
-      backgroundColor: props.sucess
-        ? `${token["green-4"]} !important`
-        : undefined,
+      backgroundColor: props.sucess ? `${token.green4} !important` : undefined,
     },
   },
   form: {
@@ -59,12 +55,18 @@ export function Lobby() {
         layout="inline"
         onFinish={handleFormSubmit}
         className={styles.form}
+        autoComplete="off"
       >
         <Form.Item<FieldType>
           name="name"
           rules={[{ required: true, message: "Please type your name" }]}
         >
-          <Input size="large" placeholder="Your name" disabled={ready} />
+          <Input
+            size="large"
+            placeholder="Your name"
+            autoFocus
+            disabled={ready}
+          />
         </Form.Item>
         <Form.Item>
           <Button
