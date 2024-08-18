@@ -29,7 +29,7 @@ export class Round extends Schema {
   @type("string") from: string = "";
   @type("string") to: string = "";
 
-  @filter(function (this: Round, client: Client, value: number, root: Schema) {
+  @filter(function (this: Round, client: Client) {
     return (
       this.step === "scoring" || client.sessionId === this.hinter?.sessionId
     );
@@ -41,13 +41,7 @@ export class Round extends Schema {
   @type("string") hint: string = "";
 
   @type({ map: Player }) guessers = new MapSchema<Player>();
-  @filterChildren(function (
-    this: Round,
-    client: Client,
-    key: string,
-    value: number,
-    root: Schema,
-  ) {
+  @filterChildren(function (this: Round, client: Client, key: string) {
     return (
       this.step === "scoring" ||
       client.sessionId === key ||

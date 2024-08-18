@@ -2,3 +2,8 @@
   font-family: "GT Walsheim Regular";
   src: url("/assets/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf");
 }
+
+@font-face {
+  font-family: "GT Walsheim Black";
+  src: url("/public/assets/fonts/GT-Walsheim-Black-Trial-BF651b7fc736a5b.otf");
+}

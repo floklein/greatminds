@@ -23,7 +23,7 @@ export default config({
      */
     app.use(auth.prefix, auth.routes());
 
-    app.get("/hello_world", (req, res) => {
+    app.get("/hello_world", (_, res) => {
       res.send("It's time to kick ass and chew bubblegum!");
     });
 

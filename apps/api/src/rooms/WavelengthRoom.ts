@@ -16,7 +16,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
 
   maxClients = 10;
 
-  async onCreate(options: any) {
+  async onCreate() {
     this.roomId = await this.generateRoomId();
     this.setState(new WavelengthRoomState());
     this.onMessage<Message[Messages.SetPlayerReady]>(
@@ -105,9 +105,13 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         this.state.round.guesses.set(client.sessionId, message);
       },
     );
+    this.onMessage<Message[Messages.PlayAgain]>(Messages.PlayAgain, () => {
+      console.log("play again");
+      this.setPhase("lobby");
+    });
   }
 
-  onJoin(client: Client, options: any) {
+  onJoin(client: Client) {
     console.log(client.sessionId, "joined!");
     this.state.players.set(client.sessionId, new Player(client.sessionId));
   }
@@ -157,6 +161,14 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     if (phase === "lobby") {
       console.log("starting lobby phase");
       this.unlock();
+      this.state.players.forEach((player) => {
+        // TODO: does not work
+        player.ready = false;
+        player.score = 0;
+      });
+      this.state.round = null;
+      this.state.roundIndex = 0;
+      this.state.rounds.clear();
     }
     if (phase === "rounds") {
       console.log("starting rounds phase");
