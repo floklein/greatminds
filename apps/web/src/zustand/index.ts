@@ -1,4 +1,4 @@
-import { ToJSON } from "@colyseus/schema";
+import type { ToJSON } from "@colyseus/schema";
 import { WavelengthRoomState } from "@wavelength/api";
 import { Room } from "colyseus.js";
 import { create } from "zustand";
