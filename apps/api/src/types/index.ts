@@ -3,6 +3,7 @@ export enum Messages {
   SetPlayerReady = "setPlayerReady",
   SubmitHint = "submitHint",
   SetGuess = "setGuess",
+  PlayAgain = "playAgain",
 }
 
 export interface Message {
@@ -10,4 +11,5 @@ export interface Message {
   [Messages.SetPlayerReady]: boolean;
   [Messages.SubmitHint]: string;
   [Messages.SetGuess]: number;
+  [Messages.PlayAgain]: void;
 }

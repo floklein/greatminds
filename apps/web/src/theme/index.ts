@@ -1,5 +1,4 @@
 import { ThemeConfig, theme as antdTheme } from "antd";
-import colorAlpha from "color-alpha";
 import "antd/dist/reset.css";
 import "./fonts.css";
 
@@ -18,7 +17,7 @@ export const theme: ThemeConfig = {
     Layout: {
       headerBg: "transparent",
       headerPadding: 0,
-      siderBg: colorAlpha("#000312", 0.5),
+      siderBg: "transparent",
     },
   },
 };

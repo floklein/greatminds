@@ -1,4 +1,4 @@
-import { Badge, Flex, Layout, List, Space, Typography } from "antd";
+import { Badge, Flex, Layout, List, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 

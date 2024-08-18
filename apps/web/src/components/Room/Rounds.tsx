@@ -9,10 +9,10 @@ import { Range } from "./Rounds/Range";
 const useStyles = createStyles({
   space: {
     width: "100%",
-    "& > :first-of-type": {
-      maxWidth: "100%",
-      overflowX: "auto",
-    },
+  },
+  steps: {
+    maxWidth: "100%",
+    overflowX: "auto",
   },
 });
 
@@ -34,6 +34,7 @@ export function Rounds() {
         items={rounds.map(() => ({}))}
         labelPlacement="vertical"
         responsive={false}
+        className={styles.steps}
       />
       <Step />
       {(step === "hinting" || step === "guessing" || step === "scoring") && (

@@ -47,5 +47,5 @@ export const getHinterScore = (
   scores.forEach((score) => {
     hinterScore += score;
   });
-  return Math.ceil(hinterScore / guessersLength);
+  return Math.ceil(hinterScore / (guessersLength + 1));
 };

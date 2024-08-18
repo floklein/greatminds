@@ -4,7 +4,7 @@ import { Lobby } from "./Room/Lobby";
 import { Rounds } from "./Room/Rounds";
 import { Scoreboard } from "./Room/Scoreboard";
 import { useEffect, useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 import {
   Button,
   Flex,
@@ -19,14 +19,26 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Players } from "./Room/Players";
 import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
+import colorAlpha from "color-alpha";
+import clsx from "clsx";
 
 const useStyles = createStyles(({ token }) => ({
+  header: {
+    marginBlockEnd: "2rem",
+  },
   headerFlex: {
     height: "100%",
   },
+  footer: {
+    padding: 0,
+    marginBlockStart: "2rem",
+  },
   sider: {
-    borderRadius: token.borderRadiusLG,
     marginInlineStart: "1rem",
+  },
+  players: {
+    borderRadius: token.borderRadiusLG,
+    backgroundColor: `${colorAlpha("#000312", 0.5)} !important`,
   },
 }));
 
@@ -45,6 +57,8 @@ export function Room() {
   );
 
   const [copied, setCopied] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
   const { mutate: leaveRoom } = useMutation({
     mutationFn: () => room!.leave(),
@@ -76,7 +90,7 @@ export function Room() {
   return (
     <Layout>
       <Layout>
-        <Layout.Header>
+        <Layout.Header className={styles.header}>
           <Flex
             gap="small"
             align="center"
@@ -116,9 +130,18 @@ export function Room() {
           {phase === "scoreboard" && <Scoreboard />}
         </Layout.Content>
       </Layout>
-      <Layout.Sider width={300} className={styles.sider}>
-        <Players />
-      </Layout.Sider>
+      {isMobile ? (
+        <Layout.Footer className={clsx(styles.footer, styles.players)}>
+          <Players />
+        </Layout.Footer>
+      ) : (
+        <Layout.Sider
+          width={300}
+          className={clsx(styles.sider, styles.players)}
+        >
+          <Players />
+        </Layout.Sider>
+      )}
     </Layout>
   );
 }
