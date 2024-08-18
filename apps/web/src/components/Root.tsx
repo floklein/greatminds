@@ -1,13 +1,8 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Layout, Typography } from "antd";
-
 import header from "/assets/header.svg";
 import footer from "/assets/footer.svg";
 import { createStyles } from "antd-style";
-
-export const Route = createRootRoute({
-  component: Root,
-});
+import { PropsWithChildren } from "react";
 
 const useStyles = createStyles({
   layout: {
@@ -44,7 +39,7 @@ const useStyles = createStyles({
   },
 });
 
-function Root() {
+export function Root({ children }: PropsWithChildren) {
   const { styles } = useStyles();
 
   return (
@@ -54,9 +49,7 @@ function Root() {
           WAVELENGTH
         </Typography.Title>
       </Layout.Header>
-      <Layout.Content className={styles.content}>
-        <Outlet />
-      </Layout.Content>
+      <Layout.Content className={styles.content}>{children}</Layout.Content>
       <Layout.Footer className={styles.footer}>
         <Typography className={styles.footerTypography}>
           Made with ❤️ by{" "}

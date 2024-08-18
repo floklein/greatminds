@@ -1,4 +1,5 @@
-import { ThemeConfig, theme as antdTheme } from "antd";
+import { ThemeConfig } from "antd/es/config-provider";
+import antdTheme from "antd/es/theme";
 import "antd/dist/reset.css";
 import "./fonts.css";
 
