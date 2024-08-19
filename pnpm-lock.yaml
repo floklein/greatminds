@@ -111,6 +111,9 @@ importers:
       i18next:
         specifier: 23.14.0
         version: 23.14.0
+      i18next-browser-languagedetector:
+        specifier: 8.0.0
+        version: 8.0.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -1757,6 +1760,9 @@ packages:
   httpie@2.0.0-next.13:
     resolution: {integrity: sha512-KbKOnq8wt0hVEfteYCSnEsPgzaWxcVc4qZ4OaDU9mVOYLRo3XChjWs3MiuRgFu5y+4JDo7sDKdKzkAn1ljQYFA==}
     engines: {node: '>=10'}
+
+  i18next-browser-languagedetector@8.0.0:
+    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
 
   i18next@23.14.0:
     resolution: {integrity: sha512-Y5GL4OdA8IU2geRrt2+Uc1iIhsjICdHZzT9tNwQ3TVqdNzgxHToGCKf/TPRP80vTCAP6svg2WbbJL+Gx5MFQVA==}
@@ -4736,6 +4742,10 @@ snapshots:
       toidentifier: 1.0.1
 
   httpie@2.0.0-next.13: {}
+
+  i18next-browser-languagedetector@8.0.0:
+    dependencies:
+      '@babel/runtime': 7.25.0
 
   i18next@23.14.0:
     dependencies:

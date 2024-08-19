@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import { en } from "./en";
 import { fr } from "./fr";
+import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 
 const defaultNS = "home";
 const resources = {
@@ -17,10 +18,23 @@ declare module "i18next" {
 }
 
 export async function initializeI18n() {
-  await i18next.use(initReactI18next).init({
-    lng: "fr",
-    fallbackLng: "fr",
-    resources,
-    defaultNS,
-  });
+  await i18next
+    .use(initReactI18next)
+    .use(I18nextBrowserLanguageDetector)
+    .init({
+      fallbackLng: "fr",
+      detection: {
+        order: [
+          "querystring",
+          "cookie",
+          "sessionStorage",
+          "localStorage",
+          "navigator",
+          "htmlTag",
+        ],
+      },
+      supportedLngs: ["fr", "en"],
+      resources,
+      defaultNS,
+    });
 }
