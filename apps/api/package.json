@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "./build/index.js",
   "exports": "./src/exports.ts",
+  "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">= 16.13.0"
   },
