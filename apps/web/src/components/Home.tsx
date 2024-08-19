@@ -38,13 +38,13 @@ export function Home() {
 
   const [reconnectionToken, setReconnectionToken] = useReconnectionToken();
 
-  const { data: rooms } = useQuery({
+  const { data: rooms, isLoading: loadingRooms } = useQuery({
     queryFn: () => client.getAvailableRooms<WavelengthRoomState>(),
     queryKey: ["rooms"],
     refetchInterval: 1000,
   });
 
-  const { mutate: createRoom } = useMutation({
+  const { mutate: createRoom, isPending: creatingRoom } = useMutation({
     mutationFn: () => client.create<WavelengthRoomState>("wavelength"),
     onSuccess: (newRoom) => {
       setReconnectionToken(newRoom.reconnectionToken);
@@ -52,7 +52,7 @@ export function Home() {
     },
   });
 
-  const { mutate: joinRoom } = useMutation({
+  const { mutate: joinRoom, isPending: joiningRoom } = useMutation({
     mutationFn: (roomId: string) =>
       client.joinById<WavelengthRoomState>(roomId),
     onSuccess: (newRoom) => {
@@ -61,7 +61,7 @@ export function Home() {
     },
   });
 
-  const { mutate: reconnectRoom } = useMutation({
+  const { mutate: reconnectRoom, isPending: reconnectingRoom } = useMutation({
     mutationFn: (reconnectionToken: string) =>
       client.reconnect<WavelengthRoomState>(reconnectionToken),
     onSuccess: (newRoom) => {
@@ -87,6 +87,7 @@ export function Home() {
             size="large"
             onClick={() => createRoom()}
             icon={<PlusOutlined />}
+            loading={creatingRoom}
             className={styles.createButton}
           >
             Start a new game
@@ -96,6 +97,7 @@ export function Home() {
               type="text"
               onClick={() => reconnectRoom(reconnectionToken)}
               icon={<UndoOutlined />}
+              loading={reconnectingRoom}
             >
               Reconnect to the game you just left
             </Button>
@@ -116,7 +118,7 @@ export function Home() {
               <Input.Password placeholder="Game ID" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={joiningRoom}>
                 Join
               </Button>
             </Form.Item>
@@ -125,12 +127,17 @@ export function Home() {
         <Divider>or</Divider>
         <Card title="Join an open game" size="small" bordered={false}>
           <List
+            loading={loadingRooms}
             dataSource={rooms}
             pagination={{ pageSize: 5 }}
             renderItem={(item) => (
               <List.Item
                 actions={[
-                  <Button type="primary" onClick={() => joinRoom(item.roomId)}>
+                  <Button
+                    type="primary"
+                    onClick={() => joinRoom(item.roomId)}
+                    loading={joiningRoom}
+                  >
                     Join
                   </Button>,
                 ]}
