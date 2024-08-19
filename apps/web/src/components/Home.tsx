@@ -41,7 +41,7 @@ export function Home() {
   const { data: rooms, isLoading: loadingRooms } = useQuery({
     queryFn: () => client.getAvailableRooms<WavelengthRoomState>(),
     queryKey: ["rooms"],
-    refetchInterval: 1000,
+    refetchInterval: 10000,
   });
 
   const { mutate: createRoom, isPending: creatingRoom } = useMutation({
