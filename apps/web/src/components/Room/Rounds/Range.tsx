@@ -6,6 +6,7 @@ import clsx from "clsx";
 import colorAlpha from "color-alpha";
 import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../../zustand";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles({
   div: {
@@ -73,6 +74,7 @@ const useStyles = createStyles({
 });
 
 export function Range() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const room = useStore((state) => state.room!);
@@ -140,7 +142,8 @@ export function Range() {
             tooltip={{
               open: true,
               placement: "bottom",
-              formatter: (value) => `${guess.guesserName}: ${value}`,
+              formatter: (value) =>
+                t("tooltip.guess", { player: guess.guesserName, value }),
               rootClassName: styles.otherTooltip,
             }}
             className={clsx(styles.slider, styles.otherSlider)}
@@ -159,7 +162,7 @@ export function Range() {
             tooltip={{
               open: true,
               placement: "top",
-              formatter: (value) => `Target: ${value}`,
+              formatter: (value) => t("tooltip.target", { value }),
               rootClassName: styles.targetTooltip,
             }}
             className={clsx(styles.slider, styles.otherSlider)}

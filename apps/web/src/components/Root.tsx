@@ -1,8 +1,9 @@
 import { Layout, Typography } from "antd";
-import header from "/assets/header.svg";
-import footer from "/assets/footer.svg";
+import header from "/assets/images/header.svg";
+import footer from "/assets/images/footer.svg";
 import { createStyles } from "antd-style";
 import { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles({
   layout: {
@@ -40,6 +41,7 @@ const useStyles = createStyles({
 });
 
 export function Root({ children }: PropsWithChildren) {
+  const { t } = useTranslation("root");
   const { styles } = useStyles();
 
   return (
@@ -52,14 +54,14 @@ export function Root({ children }: PropsWithChildren) {
       <Layout.Content className={styles.content}>{children}</Layout.Content>
       <Layout.Footer className={styles.footer}>
         <Typography className={styles.footerTypography}>
-          Made with ❤️ by{" "}
-          <a
+          {t("typography.madeWithLoveBy")}{" "}
+          <Typography.Link
             href="https://github.com/floklein"
             target="_blank"
             rel="noopener noreferrer"
           >
             Florent
-          </a>
+          </Typography.Link>
         </Typography>
       </Layout.Footer>
     </Layout>

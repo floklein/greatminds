@@ -7,6 +7,7 @@ import { Center } from "./UI/Center";
 import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
 import { useReconnectionToken } from "../hooks";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   roomId?: string;
@@ -32,6 +33,7 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Home() {
+  const { t } = useTranslation("home");
   const { styles } = useStyles();
 
   const setRoom = useStore((state) => state.setRoom);
@@ -90,7 +92,7 @@ export function Home() {
             loading={creatingRoom}
             className={styles.createButton}
           >
-            Start a new game
+            {t("button.createGame")}
           </Button>
           {reconnectionToken && (
             <Button
@@ -99,12 +101,16 @@ export function Home() {
               icon={<UndoOutlined />}
               loading={reconnectingRoom}
             >
-              Reconnect to the game you just left
+              {t("button.reconnectGame")}
             </Button>
           )}
         </Flex>
-        <Divider>or</Divider>
-        <Card title="Join your friends' game" size="small" bordered={false}>
+        <Divider>{t("divider.or")}</Divider>
+        <Card
+          title={t("card.title.joinGameById")}
+          size="small"
+          bordered={false}
+        >
           <Form<FieldType>
             layout="inline"
             autoComplete="off"
@@ -112,21 +118,24 @@ export function Home() {
           >
             <Form.Item<FieldType>
               name="roomId"
-              rules={[{ required: true, message: "Please type a game ID" }]}
+              rules={[
+                { required: true, message: t("form.error.gameIdRequired") },
+              ]}
               required={false}
             >
-              <Input.Password placeholder="Game ID" />
+              <Input.Password placeholder={t("form.placeholder.gameId")} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={joiningRoom}>
-                Join
+                {t("button.joinGame")}
               </Button>
             </Form.Item>
           </Form>
         </Card>
-        <Divider>or</Divider>
-        <Card title="Join an open game" size="small" bordered={false}>
+        <Divider>{t("divider.or")}</Divider>
+        <Card title={t("card.title.joinGame")} size="small" bordered={false}>
           <List
+            locale={{ emptyText: t("card.text.noGames") }}
             loading={loadingRooms}
             dataSource={rooms}
             pagination={{ pageSize: 5 }}
@@ -138,13 +147,16 @@ export function Home() {
                     onClick={() => joinRoom(item.roomId)}
                     loading={joiningRoom}
                   >
-                    Join
+                    {t("button.joinGame")}
                   </Button>,
                 ]}
               >
                 <List.Item.Meta
                   title={item.roomId}
-                  description={`${item.clients} / ${item.maxClients} players`}
+                  description={t("card.description.playersInGame", {
+                    count: item.clients,
+                    max: item.maxClients,
+                  })}
                 />
               </List.Item>
             )}

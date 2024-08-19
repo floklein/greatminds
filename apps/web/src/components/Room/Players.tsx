@@ -1,6 +1,7 @@
 import { Badge, Flex, Layout, List, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({
   layout: {
@@ -16,6 +17,7 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Players() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const players = useStore((state) => state.roomState!.players);
@@ -35,7 +37,7 @@ export function Players() {
           className={styles.headerFlex}
         >
           <Typography.Title level={5} className={styles.title}>
-            Players
+            {t("title.players")}
           </Typography.Title>
           <Typography.Text type="secondary">
             {sortedPlayers.length} / {maxPlayers}
@@ -44,20 +46,22 @@ export function Players() {
       </Layout.Header>
       <List
         dataSource={sortedPlayers}
-        renderItem={(player) => (
+        renderItem={(player, index) => (
           <List.Item
             actions={[
               phase === "lobby" ? (
                 <Badge
                   status={player.ready ? "success" : "error"}
-                  text={player.ready ? "Ready" : "Not ready"}
+                  text={player.ready ? t("badge.ready") : t("badge.notReady")}
                 />
               ) : (
                 player.score
               ),
             ]}
           >
-            {player.name.length ? player.name : player.sessionId}
+            {player.name.length
+              ? player.name
+              : t("list.text.playerN", { index: index + 1 })}
           </List.Item>
         )}
       />

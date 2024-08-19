@@ -7,6 +7,7 @@ import {
 import { useStore } from "../../../zustand";
 import { List, Tag } from "antd";
 import { createStyles } from "antd-style";
+import { useTranslation } from "react-i18next";
 
 function ScoreTag({ score }: { score: number }) {
   function getColor() {
@@ -36,6 +37,7 @@ const useStyles = createStyles({
 });
 
 export function Scoring() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const scores =
@@ -63,13 +65,17 @@ export function Scoring() {
   return (
     <List
       bordered
-      header="Scoreboard"
+      header={t("list.title.roundScoreboard")}
       dataSource={sortedGuessesByDistance}
       renderItem={(guess) => (
         <List.Item actions={[<ScoreTag score={guess.score} />]}>
           <List.Item.Meta
             title={guess.player.name}
-            description={guess.sessionId === hinterId ? "Hinter" : "Guesser"}
+            description={
+              guess.sessionId === hinterId
+                ? t("list.description.hinter")
+                : t("list.description.guesser")
+            }
           />
         </List.Item>
       )}
