@@ -41,6 +41,9 @@ importers:
       colyseus:
         specifier: 0.15.17
         version: 0.15.17(@colyseus/schema@2.0.34)(express@4.19.2)
+      cors:
+        specifier: 2.8.5
+        version: 2.8.5
       express:
         specifier: 4.19.2
         version: 4.19.2
@@ -51,6 +54,9 @@ importers:
       '@colyseus/testing':
         specifier: 0.15.3
         version: 0.15.3(@colyseus/schema@2.0.34)
+      '@types/cors':
+        specifier: 2.8.17
+        version: 2.8.17
       '@types/express':
         specifier: 4.17.21
         version: 4.17.21
@@ -959,6 +965,9 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
+
+  '@types/cors@2.8.17':
+    resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -3692,6 +3701,10 @@ snapshots:
       '@types/node': 22.4.0
 
   '@types/connect@3.4.38':
+    dependencies:
+      '@types/node': 22.4.0
+
+  '@types/cors@2.8.17':
     dependencies:
       '@types/node': 22.4.0
 
