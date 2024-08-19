@@ -4,7 +4,7 @@ import { useStore } from "../../zustand";
 import { Place } from "./Scoreboard/Place";
 import { Center } from "../UI/Center";
 
-import waveArrow from "../../../public/assets/waveArrow.svg";
+import waveArrow from "/assets/waveArrow.svg";
 import { Messages } from "@wavelength/api";
 
 const useStyles = createStyles(({ token }) => ({
