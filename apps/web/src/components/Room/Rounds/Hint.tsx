@@ -3,12 +3,15 @@ import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../../zustand";
 import { Center } from "../../UI/Center";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   hint?: string;
 };
 
 export function Hint() {
+  const { t } = useTranslation("room");
+
   const room = useStore((state) => state.room!);
 
   function handleHintChange(values: FieldType) {
@@ -23,11 +26,11 @@ export function Hint() {
           rules={[
             {
               required: true,
-              message: "Please type a hint to help the guessers",
+              message: t("form.error.hint"),
             },
           ]}
         >
-          <Input placeholder="Your hint" />
+          <Input placeholder={t("form.placeholder.hint")} />
         </Form.Item>
         <Form.Item>
           <Button
@@ -36,7 +39,7 @@ export function Hint() {
             icon={<ArrowRightOutlined />}
             iconPosition="end"
           >
-            Submit hint
+            {t("button.submitHint")}
           </Button>
         </Form.Item>
       </Form>

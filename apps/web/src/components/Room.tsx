@@ -21,6 +21,7 @@ import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
 import colorAlpha from "color-alpha";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({
   header: {
@@ -43,6 +44,7 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Room() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const room = useStore((state) => state.room!);
@@ -99,27 +101,29 @@ export function Room() {
           >
             <Space.Compact>
               <Input.Password
-                addonBefore="Game ID"
+                addonBefore={t("form.label.gameId")}
                 value={room.roomId}
                 autoComplete="off"
                 readOnly
               />
               {phase === "lobby" && (
-                <Tooltip title={copied ? "Copied!" : "Copy"}>
+                <Tooltip
+                  title={copied ? t("tooltip.copied") : t("tooltip.copy")}
+                >
                   <Button icon={<CopyOutlined />} onClick={copyRoomId} />
                 </Tooltip>
               )}
             </Space.Compact>
             <Popconfirm
-              title="Are you sure?"
-              description="You will lose all progress in this game."
+              title={t("pop.title.leave")}
+              description={t("pop.description.leave")}
               onConfirm={() => leaveRoom()}
-              okText="Yes!"
-              cancelText="No, I'll stay"
+              okText={t("pop.ok.leave")}
+              cancelText={t("pop.cancel.leave")}
               icon={null}
             >
               <Button type="text" danger>
-                Leave
+                {t("button.leaveGame")}
               </Button>
             </Popconfirm>
           </Flex>

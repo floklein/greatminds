@@ -4,8 +4,9 @@ import { useStore } from "../../zustand";
 import { Place } from "./Scoreboard/Place";
 import { Center } from "../UI/Center";
 
-import waveArrow from "/assets/waveArrow.svg";
+import waveArrow from "/assets/images/waveArrow.svg";
 import { Messages } from "@wavelength/api";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({
   space: {
@@ -42,6 +43,7 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Scoreboard() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const room = useStore((state) => state.room!);
@@ -71,15 +73,17 @@ export function Scoreboard() {
         type="secondary"
         className={styles.typography}
       >
-        And the <span className={styles.span}>winner</span> is...
+        {t("title.scoreboard1")}
+        <span className={styles.span}>{t("title.scoreboard2")}</span>
+        {t("title.scoreboard3")}
       </Typography.Title>
       <List
-        header="Scoreboard"
+        header={t("list.title.scoreboard")}
         dataSource={sortedPlayers}
         bordered
         itemLayout="horizontal"
         renderItem={(player) => (
-          <List.Item>
+          <List.Item actions={[player.score]}>
             <List.Item.Meta
               avatar={<Place place={player.place} />}
               title={player.name}
@@ -97,7 +101,7 @@ export function Scoreboard() {
           className={styles.playAgainButton}
           onClick={playAgain}
         >
-          Play again?
+          {t("button.playAgain")}
         </Button>
       </Center>
     </Space>

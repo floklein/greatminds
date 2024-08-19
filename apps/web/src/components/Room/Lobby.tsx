@@ -4,6 +4,7 @@ import { CheckOutlined } from "@ant-design/icons";
 import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../zustand";
 import { Center } from "../UI/Center";
+import { useTranslation } from "react-i18next";
 
 type FieldType = {
   name?: string;
@@ -25,6 +26,8 @@ const useStyles = createStyles(({ token }, props: { sucess: boolean }) => ({
 }));
 
 export function Lobby() {
+  const { t } = useTranslation("room");
+
   const room = useStore((state) => state.room!);
   const storeName = useStore(
     (state) => state.roomState!.players[state.room!.sessionId]?.name ?? "",
@@ -59,11 +62,11 @@ export function Lobby() {
       >
         <Form.Item<FieldType>
           name="name"
-          rules={[{ required: true, message: "Please type your name" }]}
+          rules={[{ required: true, message: t("form.error.name") }]}
         >
           <Input
             size="large"
-            placeholder="Your name"
+            placeholder={t("form.placeholder.name")}
             autoFocus
             disabled={ready}
           />
@@ -77,7 +80,7 @@ export function Lobby() {
             icon={ready ? <CheckOutlined /> : undefined}
             iconPosition="end"
           >
-            {ready ? "Ready" : "Ready?"}
+            {ready ? t("button.ready") : t("button.notReady")}
           </Button>
         </Form.Item>
       </Form>

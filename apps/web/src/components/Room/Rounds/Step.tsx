@@ -1,6 +1,7 @@
 import { Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../../zustand";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({
   typography: {
@@ -12,6 +13,7 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Step() {
+  const { t } = useTranslation("room");
   const { styles } = useStyles();
 
   const hinterName =
@@ -23,25 +25,27 @@ export function Step() {
     <Typography.Title level={3} type="secondary" className={styles.typography}>
       {step === "revealing" && (
         <>
-          This round's hinter is{" "}
+          {t("title.revealing1")}
           <span className={styles.span}>{hinterName}</span>.
         </>
       )}
       {step === "hinting" && (
         <>
-          <span className={styles.span}>{hinterName}</span> is typing an hint...
+          <span className={styles.span}>{hinterName}</span>
+          {t("title.hinting1")}
         </>
       )}
       {step === "guessing" && (
         <>
-          The hint is <span className={styles.span}>"{hint}"</span>. Guessers
-          have 30 seconds to guess...
+          {t("title.guessing1")} <span className={styles.span}>"{hint}"</span>
+          {t("title.guessing2")}
         </>
       )}
       {step === "scoring" && (
         <>
-          Well played <span className={styles.span}>everyone</span>! Next round
-          in 10 seconds...
+          {t("title.scoring1")}
+          <span className={styles.span}>{t("title.scoring2")}</span>
+          {t("title.scoring3")}
         </>
       )}
     </Typography.Title>
