@@ -67,6 +67,7 @@ export const room = {
     description: {
       hinter: "Hinter",
       guesser: "Guesser",
+      you: "you",
     },
   },
 };
