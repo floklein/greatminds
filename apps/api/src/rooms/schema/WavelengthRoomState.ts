@@ -7,7 +7,7 @@ import {
   filter,
 } from "@colyseus/schema";
 import { Client } from "colyseus";
-import { getRandomRange } from "../../config/sets";
+import { getRandomRange, WavelengthRange } from "../../config/sets";
 
 export class Player extends Schema {
   @type("string") sessionId: string = "";
@@ -26,8 +26,7 @@ export type RoundStep = "revealing" | "hinting" | "guessing" | "scoring";
 export class Round extends Schema {
   @type("string") step: RoundStep = "revealing";
 
-  @type("string") from: string = "";
-  @type("string") to: string = "";
+  @type("string") range: WavelengthRange = getRandomRange();
 
   @filter(function (this: Round, client: Client) {
     return (
@@ -58,9 +57,6 @@ export class Round extends Schema {
     this.hinter = hinter;
     this.guessers = new MapSchema<Player>(players);
     this.guessers.delete(hinter.sessionId);
-    const range = getRandomRange();
-    this.from = range.from;
-    this.to = range.to;
   }
 }
 

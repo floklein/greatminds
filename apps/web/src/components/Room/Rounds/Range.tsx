@@ -74,7 +74,7 @@ const useStyles = createStyles({
 });
 
 export function Range() {
-  const { t } = useTranslation("room");
+  const { t } = useTranslation(["room", "range"]);
   const { styles } = useStyles();
 
   const room = useStore((state) => state.room!);
@@ -83,8 +83,7 @@ export function Range() {
       state.roomState!.round?.hinter?.sessionId === state.room!.sessionId,
   );
   const target = useStore((state) => state.roomState!.round?.target);
-  const from = useStore((state) => state.roomState!.round?.from);
-  const to = useStore((state) => state.roomState!.round?.to);
+  const range = useStore((state) => state.roomState!.round?.range);
   const storeGuesses =
     useStore(
       (state) =>
@@ -120,14 +119,14 @@ export function Range() {
     <div className={styles.div}>
       <Flex justify="space-between">
         <Tag bordered={false} icon={<ArrowLeftOutlined />}>
-          {from}
+          {range !== undefined && t(`range:${range}`, { context: "from" })}
         </Tag>
         <Tag
           bordered={false}
           icon={<ArrowRightOutlined />}
           className={styles.rightTag}
         >
-          {to}
+          {range !== undefined && t(`range:${range}`, { context: "to" })}
         </Tag>
       </Flex>
       <div className={styles.sliders}>
