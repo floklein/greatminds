@@ -21,8 +21,10 @@ export const room = {
       hint: "Votre indice",
     },
     error: {
-      name: "Veuillez entrer votre nom",
-      hint: "Veuillez entrer un indice pour aider les Guessers",
+      requiredName: "Veuillez entrer votre nom",
+      validName: "16 caractères max",
+      requiredHint: "Veuillez entrer un indice pour aider les Guessers",
+      validHint: "50 caractères max",
     },
   },
   pop: {

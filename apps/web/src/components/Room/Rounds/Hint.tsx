@@ -2,7 +2,6 @@ import { Button, Form, Input } from "antd";
 import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../../zustand";
 import { Center } from "../../UI/Center";
-import { ArrowRightOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
 type FieldType = {
@@ -26,19 +25,19 @@ export function Hint() {
           rules={[
             {
               required: true,
-              message: t("form.error.hint"),
+              message: t("form.error.requiredHint"),
+            },
+            {
+              type: "string",
+              pattern: /^.{1,50}$/,
+              message: t("form.error.validHint"),
             },
           ]}
         >
           <Input placeholder={t("form.placeholder.hint")} />
         </Form.Item>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            icon={<ArrowRightOutlined />}
-            iconPosition="end"
-          >
+          <Button type="primary" htmlType="submit" iconPosition="end">
             {t("button.submitHint")}
           </Button>
         </Form.Item>

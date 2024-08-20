@@ -62,7 +62,14 @@ export function Lobby() {
       >
         <Form.Item<FieldType>
           name="name"
-          rules={[{ required: true, message: t("form.error.name") }]}
+          rules={[
+            { required: true, message: t("form.error.requiredName") },
+            {
+              type: "string",
+              pattern: /^.{1,16}$/,
+              message: t("form.error.validName"),
+            },
+          ]}
         >
           <Input
             size="large"
