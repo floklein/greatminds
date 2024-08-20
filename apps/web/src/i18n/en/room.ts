@@ -21,8 +21,10 @@ export const room = {
       hint: "Your hint",
     },
     error: {
-      name: "Please enter your name",
-      hint: "Please enter a hint to help the Guessers",
+      requiredName: "Please enter your name",
+      validName: "16 characters max",
+      requiredHint: "Please enter a hint to help the Guessers",
+      validHint: "50 characters max",
     },
   },
   pop: {
