@@ -20,7 +20,7 @@ const useStyles = createStyles(({ token }) => ({
   },
   list: {
     width: "100%",
-    maxWidth: "20rem",
+    maxWidth: "25rem",
     marginInline: "auto",
   },
   playerName: {
@@ -80,7 +80,6 @@ export function Scoreboard() {
         header={t("list.title.scoreboard")}
         dataSource={sortedPlayers}
         bordered
-        itemLayout="horizontal"
         renderItem={(player, index) => (
           <List.Item actions={[player.score]}>
             <motion.div
