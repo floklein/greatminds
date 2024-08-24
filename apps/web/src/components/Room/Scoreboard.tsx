@@ -3,7 +3,7 @@ import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { Place } from "./Scoreboard/Place";
 import { Center } from "../UI/Center";
-
+import { motion } from "framer-motion";
 import waveArrow from "/assets/images/waveArrow.svg";
 import { Messages } from "@wavelength/api";
 import { useTranslation } from "react-i18next";
@@ -28,10 +28,9 @@ const useStyles = createStyles(({ token }) => ({
       margin: "0 !important",
     },
   },
-  arrow: {
-    transform: "rotate(180deg)",
-  },
   playAgainButton: {
+    display: "block",
+    marginInline: "auto",
     backgroundColor: token.cyan5,
     "&:hover": {
       backgroundColor: `${token.cyan6} !important`,
@@ -82,19 +81,42 @@ export function Scoreboard() {
         dataSource={sortedPlayers}
         bordered
         itemLayout="horizontal"
-        renderItem={(player) => (
+        renderItem={(player, index) => (
           <List.Item actions={[player.score]}>
-            <List.Item.Meta
-              avatar={<Place place={player.place} />}
-              title={player.name}
-              className={styles.playerName}
-            />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: sortedPlayers.length - index }}
+            >
+              <List.Item.Meta
+                avatar={<Place place={player.place} />}
+                title={player.name}
+                className={styles.playerName}
+              />
+            </motion.div>
           </List.Item>
         )}
         className={styles.list}
       />
       <Center>
-        <img src={waveArrow} alt="arrow" className={styles.arrow} />
+        <motion.img
+          style={{
+            transformOrigin: "center",
+            display: "block",
+            marginInline: "auto",
+            transform: "rotate(180deg)",
+          }}
+          initial={{ height: 0 }}
+          animate={{ height: 100 }}
+          transition={{
+            type: "spring",
+            stiffness: 150,
+            damping: 10,
+            mass: 2,
+          }}
+          src={waveArrow}
+          alt="arrow"
+        />
         <Button
           type="primary"
           size="large"

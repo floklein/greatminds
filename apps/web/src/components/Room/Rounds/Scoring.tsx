@@ -5,12 +5,13 @@ import {
   PERFECT_SCORE_POINTS,
 } from "@wavelength/api";
 import { useStore } from "../../../zustand";
-import { List, Tag } from "antd";
+import { List, Tag, TagProps } from "antd";
 import { createStyles } from "antd-style";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 function ScoreTag({ score }: { score: number }) {
-  function getColor() {
+  function getColor(): TagProps["color"] {
     if (score >= PERFECT_SCORE_POINTS) {
       return "green";
     } else if (score >= GREAT_SCORE_POINTS) {
@@ -20,6 +21,7 @@ function ScoreTag({ score }: { score: number }) {
     } else if (score >= BAD_SCORE_POINTS) {
       return "red";
     }
+    return undefined;
   }
 
   if (score === 0) {
@@ -63,23 +65,25 @@ export function Scoring() {
     .sort((a, b) => b.score - a.score);
 
   return (
-    <List
-      bordered
-      header={t("list.title.roundScoreboard")}
-      dataSource={sortedGuessesByDistance}
-      renderItem={(guess) => (
-        <List.Item actions={[<ScoreTag score={guess.score} />]}>
-          <List.Item.Meta
-            title={guess.player.name}
-            description={
-              guess.sessionId === hinterId
-                ? t("list.description.hinter")
-                : t("list.description.guesser")
-            }
-          />
-        </List.Item>
-      )}
-      className={styles.list}
-    />
+    <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <List
+        bordered
+        header={t("list.title.roundScoreboard")}
+        dataSource={sortedGuessesByDistance}
+        renderItem={(guess) => (
+          <List.Item actions={[<ScoreTag score={guess.score} />]}>
+            <List.Item.Meta
+              title={guess.player.name}
+              description={
+                guess.sessionId === hinterId
+                  ? t("list.description.hinter")
+                  : t("list.description.guesser")
+              }
+            />
+          </List.Item>
+        )}
+        className={styles.list}
+      />
+    </motion.div>
   );
 }

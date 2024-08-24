@@ -2,9 +2,12 @@ export const room = {
   title: {
     players: "Players",
     revealing1: "This round's Hinter is ",
+    revealing1_hinter: "You are this round's Hinter, ",
     hinting1: " is looking for a hint...",
+    hinting1_hinter: ", type a hint that will help Guessers guess the target.",
     guessing1: "The hint is ",
-    guessing2: ". Guessers have 30 seconds to guess...",
+    guessing2: ". Guessers, you have 30 seconds to guess.",
+    guessing2_hinter: ". Guessers have 30 seconds to guess...",
     scoring1: "Well played ",
     scoring2: "everyone",
     scoring3: "! Next round in 10 seconds...",
@@ -23,7 +26,7 @@ export const room = {
     error: {
       requiredName: "Please enter your name",
       validName: "16 characters max",
-      requiredHint: "Please enter a hint to help the Guessers",
+      requiredHint: "Please enter a hint",
       validHint: "50 characters max",
     },
   },

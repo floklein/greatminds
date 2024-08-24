@@ -6,7 +6,7 @@ import {
   RoundStep,
   WavelengthRoomState,
 } from "./schema/WavelengthRoomState";
-import { createRoomId } from "../lib/room";
+import { createRoomId, getRoundsLength } from "../lib/room";
 import { Message, Messages } from "../types";
 import { getHinterScore, getScore } from "../lib/room";
 import { ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS } from "../config/room";
@@ -173,9 +173,13 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
     if (phase === "rounds") {
       console.log("starting rounds phase");
       this.lock();
-      this.state.players.forEach((player) => {
-        this.state.rounds.push(new Round(player, this.state.players));
-      });
+      const playersArray = Array.from(this.state.players.values());
+      const roundsLength = getRoundsLength(this.state.players.size);
+      for (let i = 0; i < roundsLength; i++) {
+        this.state.rounds.push(
+          new Round(playersArray[i % playersArray.length], this.state.players),
+        );
+      }
       this.setRound(0);
     }
     if (phase === "scoreboard") {

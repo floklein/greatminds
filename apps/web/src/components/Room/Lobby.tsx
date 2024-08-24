@@ -5,6 +5,7 @@ import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../zustand";
 import { Center } from "../UI/Center";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 type FieldType = {
   name?: string;
@@ -53,44 +54,46 @@ export function Lobby() {
 
   return (
     <Center>
-      <Form<FieldType>
-        initialValues={{ name: storeName }}
-        layout="inline"
-        onFinish={handleFormSubmit}
-        className={styles.form}
-        autoComplete="off"
-      >
-        <Form.Item<FieldType>
-          name="name"
-          rules={[
-            { required: true, message: t("form.error.requiredName") },
-            {
-              type: "string",
-              pattern: /^.{1,16}$/,
-              message: t("form.error.validName"),
-            },
-          ]}
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+        <Form<FieldType>
+          initialValues={{ name: storeName }}
+          layout="inline"
+          onFinish={handleFormSubmit}
+          className={styles.form}
+          autoComplete="off"
         >
-          <Input
-            size="large"
-            placeholder={t("form.placeholder.name")}
-            autoFocus
-            disabled={ready}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.button}
-            size="large"
-            icon={ready ? <CheckOutlined /> : undefined}
-            iconPosition="end"
+          <Form.Item<FieldType>
+            name="name"
+            rules={[
+              { required: true, message: t("form.error.requiredName") },
+              {
+                type: "string",
+                pattern: /^.{1,16}$/,
+                message: t("form.error.validName"),
+              },
+            ]}
           >
-            {ready ? t("button.ready") : t("button.notReady")}
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input
+              size="large"
+              placeholder={t("form.placeholder.name")}
+              autoFocus
+              disabled={ready}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.button}
+              size="large"
+              icon={ready ? <CheckOutlined /> : undefined}
+              iconPosition="end"
+            >
+              {ready ? t("button.ready") : t("button.notReady")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </motion.div>
     </Center>
   );
 }
