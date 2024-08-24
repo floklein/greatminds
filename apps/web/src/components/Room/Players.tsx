@@ -50,13 +50,13 @@ export function Players() {
         renderItem={(player, index) => (
           <List.Item
             actions={[
-              phase === "lobby" || phase === "scoreboard" ? (
+              phase === "rounds" ? (
+                player.score
+              ) : (
                 <Badge
                   status={player.ready ? "success" : "error"}
                   text={player.ready ? t("badge.ready") : t("badge.notReady")}
                 />
-              ) : (
-                player.score
               ),
             ]}
           >
