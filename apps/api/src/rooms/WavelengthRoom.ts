@@ -162,9 +162,9 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
       console.log("starting lobby phase");
       this.unlock();
       this.state.players.forEach((player) => {
-        // TODO: does not work
         player.ready = false;
         player.score = 0;
+        this.state.players.set(player.sessionId, player);
       });
       this.state.round = null;
       this.state.roundIndex = 0;
