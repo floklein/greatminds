@@ -14,7 +14,7 @@ import { ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS } from "../config/room";
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
 
-  maxClients = 10;
+  maxClients = 20;
 
   async onCreate() {
     this.roomId = await this.generateRoomId();

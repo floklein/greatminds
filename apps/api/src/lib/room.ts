@@ -43,7 +43,7 @@ export function getDistance(target: number, guess: number | undefined) {
 
 export function getScore(target: number, guess: number | undefined) {
   const distance = getDistance(target, guess);
-  if (distance === PERFECT_SCORE_DISTANCE) {
+  if (distance <= PERFECT_SCORE_DISTANCE) {
     return PERFECT_SCORE_POINTS;
   } else if (distance <= GREAT_SCORE_DISTANCE) {
     return GREAT_SCORE_POINTS;
