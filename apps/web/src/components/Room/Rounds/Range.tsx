@@ -14,13 +14,21 @@ import {
 } from "@wavelength/api";
 import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 const useStyles = createStyles(
   ({ token }, { target }: { target?: number }) => ({
     div: {
       paddingBlock: "2rem",
     },
+    tag: {
+      margin: 0,
+      fontSize: token.fontSize,
+      paddingBlock: token.paddingXS,
+      paddingInline: token.paddingSM,
+    },
     rightTag: {
+      marginLeft: "auto",
       direction: "rtl",
     },
     sliders: {
@@ -65,11 +73,7 @@ const useStyles = createStyles(
     },
     otherTooltip: {},
     targetSliderHandle: {
-      zIndex: 2,
-      "&::after": {
-        backgroundColor: `${token.green6} !important`,
-        boxShadow: `0 0 0 2px ${colorAlpha(token.green6, 0.75)} !important`,
-      },
+      visibility: "hidden",
     },
     targetSliderRail: {
       background:
@@ -133,17 +137,37 @@ export function Range() {
 
   return (
     <div className={styles.div}>
-      <Flex justify="space-between">
-        <Tag bordered={false} icon={<ArrowLeftOutlined />}>
-          {range !== undefined && t(`range:${range}`, { context: "from" })}
-        </Tag>
-        <Tag
-          bordered={false}
-          icon={<ArrowRightOutlined />}
-          className={styles.rightTag}
+      <Flex justify="space-between" gap="small" wrap>
+        <motion.div
+          initial={{ x: 50 }}
+          animate={{ x: 0 }}
+          transition={{
+            type: "spring",
+          }}
         >
-          {range !== undefined && t(`range:${range}`, { context: "to" })}
-        </Tag>
+          <Tag
+            bordered={false}
+            icon={<ArrowLeftOutlined />}
+            className={styles.tag}
+          >
+            {range !== undefined && t(`range:${range}`, { context: "from" })}
+          </Tag>
+        </motion.div>
+        <motion.div
+          initial={{ x: -50 }}
+          animate={{ x: 0 }}
+          transition={{
+            type: "spring",
+          }}
+        >
+          <Tag
+            bordered={false}
+            icon={<ArrowRightOutlined />}
+            className={clsx(styles.tag, styles.rightTag)}
+          >
+            {range !== undefined && t(`range:${range}`, { context: "to" })}
+          </Tag>
+        </motion.div>
       </Flex>
       <div className={styles.sliders}>
         {otherPlayersGuesses.map((guess) => (

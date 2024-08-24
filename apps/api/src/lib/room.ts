@@ -21,10 +21,27 @@ export function createRoomId() {
   return result;
 }
 
-export const getDistance = (target: number, guess: number | undefined) =>
-  guess !== undefined ? Math.abs(target - guess) : Infinity;
+export function getRoundsLength(playersLength: number) {
+  if (playersLength <= 2) {
+    return 10;
+  }
+  if (playersLength === 3) {
+    return 9;
+  }
+  if (playersLength === 4) {
+    return 8;
+  }
+  if (playersLength === 5) {
+    return 10;
+  }
+  return playersLength;
+}
 
-export const getScore = (target: number, guess: number | undefined) => {
+export function getDistance(target: number, guess: number | undefined) {
+  return guess !== undefined ? Math.abs(target - guess) : Infinity;
+}
+
+export function getScore(target: number, guess: number | undefined) {
   const distance = getDistance(target, guess);
   if (distance === PERFECT_SCORE_DISTANCE) {
     return PERFECT_SCORE_POINTS;
@@ -37,15 +54,15 @@ export const getScore = (target: number, guess: number | undefined) => {
   } else {
     return 0;
   }
-};
+}
 
-export const getHinterScore = (
+export function getHinterScore(
   scores: MapSchema<number>,
   guessersLength: number,
-) => {
+) {
   let hinterScore = 0;
   scores.forEach((score) => {
     hinterScore += score;
   });
   return Math.ceil(hinterScore / (guessersLength + 1));
-};
+}

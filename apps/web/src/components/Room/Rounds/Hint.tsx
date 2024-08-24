@@ -3,6 +3,7 @@ import { Message, Messages } from "@wavelength/api";
 import { useStore } from "../../../zustand";
 import { Center } from "../../UI/Center";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 type FieldType = {
   hint?: string;
@@ -19,29 +20,42 @@ export function Hint() {
 
   return (
     <Center>
-      <Form<FieldType> size="large" layout="inline" onFinish={handleHintChange}>
-        <Form.Item
-          name="hint"
-          rules={[
-            {
-              required: true,
-              message: t("form.error.requiredHint"),
-            },
-            {
-              type: "string",
-              pattern: /^.{1,50}$/,
-              message: t("form.error.validHint"),
-            },
-          ]}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Form<FieldType>
+          size="large"
+          layout="inline"
+          onFinish={handleHintChange}
         >
-          <Input placeholder={t("form.placeholder.hint")} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" iconPosition="end">
-            {t("button.submitHint")}
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            name="hint"
+            rules={[
+              {
+                required: true,
+                message: t("form.error.requiredHint"),
+              },
+              {
+                type: "string",
+                pattern: /^.{1,50}$/,
+                message: t("form.error.validHint"),
+              },
+            ]}
+          >
+            <Input
+              placeholder={t("form.placeholder.hint")}
+              autoComplete="off"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" iconPosition="end">
+              {t("button.submitHint")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </motion.div>
     </Center>
   );
 }
