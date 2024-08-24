@@ -21,7 +21,7 @@ export function useReconnectionToken() {
       setToken(null);
       setCreatedAt(null);
     }
-  }, [token, createdAt]);
+  }, [token, createdAt, setToken, setCreatedAt]);
 
   function setReconnectionToken(newToken: string | null) {
     setToken(newToken);
