@@ -4,78 +4,92 @@ import { createStyles } from "antd-style";
 import { useRef, useState } from "react";
 import clsx from "clsx";
 import colorAlpha from "color-alpha";
-import { Message, Messages } from "@wavelength/api";
+import {
+  BAD_SCORE_DISTANCE,
+  GREAT_SCORE_DISTANCE,
+  Message,
+  Messages,
+  OKAY_SCORE_DISTANCE,
+  PERFECT_SCORE_DISTANCE,
+} from "@wavelength/api";
 import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
 
-const useStyles = createStyles({
-  div: {
-    paddingBlock: "2rem",
-  },
-  rightTag: {
-    direction: "rtl",
-  },
-  sliders: {
-    position: "relative",
-    height: "29px",
-    marginBlock: "3rem",
-  },
-  slider: {
-    position: "absolute",
-    marginBlockStart: "0.5rem",
-    marginInline: "1rem",
-    top: 0,
-    bottom: 0,
-    left: "-1rem",
-    right: "-1rem",
-  },
-  sliderHandle: {
-    zIndex: 3,
-    "&::after": {
-      backgroundColor: `#008270 !important`,
-      boxShadow: `0 0 0 2px ${colorAlpha("#008270", 0.75)} !important`,
+const useStyles = createStyles(
+  ({ token }, { target }: { target?: number }) => ({
+    div: {
+      paddingBlock: "2rem",
     },
-  },
-  tooltip: {
-    "& .ant-tooltip-inner": {
-      backgroundColor: "#008270",
+    rightTag: {
+      direction: "rtl",
     },
-    "& .ant-tooltip-arrow::before": {
-      backgroundColor: "#008270",
+    sliders: {
+      position: "relative",
+      height: "29px",
+      marginBlock: "3rem",
     },
-  },
-  otherSlider: {
-    pointerEvents: "none",
-  },
-  otherSliderRail: {
-    "&&&": {
-      backgroundColor: "transparent !important",
+    slider: {
+      position: "absolute",
+      marginBlockStart: "0.5rem",
+      marginInline: "1rem",
+      top: 0,
+      bottom: 0,
+      left: "-1rem",
+      right: "-1rem",
     },
-  },
-  otherSliderHandle: {
-    zIndex: 1,
-  },
-  otherTooltip: {},
-  targetSliderHandle: {
-    zIndex: 2,
-    "&::after": {
-      backgroundColor: `#DB6249 !important`,
-      boxShadow: `0 0 0 2px ${colorAlpha("#DB6249", 0.75)} !important`,
+    sliderHandle: {
+      zIndex: 3,
+      "&::after": {
+        backgroundColor: `#DB6249 !important`,
+        boxShadow: `0 0 0 2px ${colorAlpha("#DB6249", 0.75)} !important`,
+      },
     },
-  },
-  targetTooltip: {
-    "& .ant-tooltip-inner": {
-      backgroundColor: "#DB6249",
+    tooltip: {
+      "& .ant-tooltip-inner": {
+        backgroundColor: "#DB6249",
+      },
+      "& .ant-tooltip-arrow::before": {
+        backgroundColor: "#DB6249",
+      },
     },
-    "& .ant-tooltip-arrow::before": {
-      backgroundColor: "#DB6249",
+    otherSlider: {
+      pointerEvents: "none",
     },
-  },
-});
+    otherSliderRail: {
+      "&&&": {
+        backgroundColor: "transparent !important",
+      },
+    },
+    otherSliderHandle: {
+      zIndex: 1,
+    },
+    otherTooltip: {},
+    targetSliderHandle: {
+      zIndex: 2,
+      "&::after": {
+        backgroundColor: `${token.green6} !important`,
+        boxShadow: `0 0 0 2px ${colorAlpha(token.green6, 0.75)} !important`,
+      },
+    },
+    targetSliderRail: {
+      background:
+        target !== undefined
+          ? `linear-gradient(to right, transparent 0%, transparent ${target - BAD_SCORE_DISTANCE}%, ${token.red} ${target - BAD_SCORE_DISTANCE}%, ${token.red} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange} ${target + OKAY_SCORE_DISTANCE}%, ${token.red} ${target + OKAY_SCORE_DISTANCE}%, ${token.red} ${target + BAD_SCORE_DISTANCE}%, transparent ${target + BAD_SCORE_DISTANCE}%, transparent 100%)`
+          : undefined,
+    },
+    targetTooltip: {
+      "& .ant-tooltip-inner": {
+        backgroundColor: token.green5,
+      },
+      "& .ant-tooltip-arrow::before": {
+        backgroundColor: token.green5,
+      },
+    },
+  }),
+);
 
 export function Range() {
   const { t } = useTranslation(["room", "range"]);
-  const { styles } = useStyles();
 
   const room = useStore((state) => state.room!);
   const isHinter = useStore(
@@ -94,6 +108,8 @@ export function Range() {
   const storeGuess = useStore((state) => storeGuesses?.[state.room!.sessionId]);
   const step = useStore((state) => state.roomState!.round?.step);
   const players = useStore((state) => state.roomState!.players);
+
+  const { styles } = useStyles({ target });
 
   const otherPlayersGuesses = Object.entries(storeGuesses)
     .filter(([sessionId]) => sessionId !== room!.sessionId)
@@ -165,7 +181,10 @@ export function Range() {
               rootClassName: styles.targetTooltip,
             }}
             className={clsx(styles.slider, styles.otherSlider)}
-            classNames={{ handle: styles.targetSliderHandle }}
+            classNames={{
+              handle: styles.targetSliderHandle,
+              rail: styles.targetSliderRail,
+            }}
           />
         )}
         {!isHinter && (

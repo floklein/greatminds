@@ -32,12 +32,12 @@ const useStyles = createStyles(({ token }) => ({
     transform: "rotate(180deg)",
   },
   playAgainButton: {
-    backgroundColor: token.green5,
+    backgroundColor: token.cyan5,
     "&:hover": {
-      backgroundColor: `${token.green6} !important`,
+      backgroundColor: `${token.cyan6} !important`,
     },
     "&:active": {
-      backgroundColor: `${token.green4} !important`,
+      backgroundColor: `${token.cyan4} !important`,
     },
   },
 }));
