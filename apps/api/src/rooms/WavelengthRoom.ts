@@ -9,12 +9,15 @@ import {
 import { createRoomId, getRoundsLength } from "../lib/room";
 import { Message, Messages } from "../types";
 import { getHinterScore, getScore } from "../lib/room";
-import { ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS } from "../config/room";
+import {
+  ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
+  ROOM_MAX_CLIENTS,
+} from "../config/room";
 
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
 
-  maxClients = 20;
+  maxClients = ROOM_MAX_CLIENTS;
 
   async onCreate() {
     this.roomId = await this.generateRoomId();

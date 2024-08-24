@@ -2,6 +2,7 @@ import { Badge, Flex, Layout, List, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { useTranslation } from "react-i18next";
+import { ROOM_MAX_CLIENTS } from "@wavelength/api";
 
 const useStyles = createStyles(({ token }) => ({
   layout: {
@@ -22,7 +23,6 @@ export function Players() {
 
   const players = useStore((state) => state.roomState!.players);
   const phase = useStore((state) => state.roomState!.phase);
-  const maxPlayers = useStore((state) => state.roomState!.maxPlayers);
   const clientId = useStore((state) => state.room!.sessionId);
 
   const sortedPlayers = Object.values(players).sort(
@@ -41,7 +41,7 @@ export function Players() {
             {t("title.players")}
           </Typography.Title>
           <Typography.Text type="secondary">
-            {sortedPlayers.length} / {maxPlayers}
+            {sortedPlayers.length} / {ROOM_MAX_CLIENTS}
           </Typography.Text>
         </Flex>
       </Layout.Header>
