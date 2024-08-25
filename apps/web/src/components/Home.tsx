@@ -8,6 +8,7 @@ import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
 import { useReconnectionToken } from "../hooks";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 type FieldType = {
   roomId?: string;
@@ -84,16 +85,18 @@ export function Home() {
     <Center itemClassName={styles.flexItem}>
       <Space direction="vertical" size="large" className={styles.space}>
         <Flex vertical gap="middle" align="center" justify="center">
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => createRoom()}
-            icon={<PlusOutlined />}
-            loading={creatingRoom}
-            className={styles.createButton}
-          >
-            {t("button.createGame")}
-          </Button>
+          <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 1.1 }}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => createRoom()}
+              icon={<PlusOutlined />}
+              loading={creatingRoom}
+              className={styles.createButton}
+            >
+              {t("button.createGame")}
+            </Button>
+          </motion.div>
           {reconnectionToken && (
             <Button
               type="text"
