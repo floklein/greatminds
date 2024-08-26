@@ -26,39 +26,47 @@ const useStyles = createStyles(
       fontSize: token.fontSize,
       paddingBlock: token.paddingXS,
       paddingInline: token.paddingSM,
+      whiteSpace: "wrap",
     },
     rightTag: {
-      marginLeft: "auto",
       direction: "rtl",
     },
     sliders: {
       position: "relative",
-      height: "29px",
-      marginBlock: "3rem",
+      height: "36px",
+      marginBlock: "50px",
     },
     slider: {
       position: "absolute",
-      marginBlockStart: "0.5rem",
+      marginBlock: 0,
       marginInline: "1rem",
       top: 0,
       bottom: 0,
       left: "-1rem",
       right: "-1rem",
+      "&.ant-slider": {
+        "--ant-slider-rail-size": "12px",
+        "--ant-slider-handle-size": "20px",
+        "--ant-slider-handle-size-hover": "22px",
+      },
     },
-    sliderHandle: {
+    meSlider: {
+      "&.ant-slider": {
+        "--ant-color-bg-elevated": token.volcano,
+        "--ant-slider-handle-color": token.volcano8,
+        "--ant-slider-handle-active-color": token.volcano8,
+        "--ant-color-primary-border-hover": token.volcano9,
+        "--ant-slider-handle-active-outline-color": colorAlpha(
+          token.volcano,
+          0.2,
+        ),
+      },
+    },
+    meSliderHandle: {
       zIndex: 3,
-      "&::after": {
-        backgroundColor: `#DB6249 !important`,
-        boxShadow: `0 0 0 2px ${colorAlpha("#DB6249", 0.75)} !important`,
-      },
     },
-    tooltip: {
-      "& .ant-tooltip-inner": {
-        backgroundColor: "#DB6249",
-      },
-      "& .ant-tooltip-arrow::before": {
-        backgroundColor: "#DB6249",
-      },
+    meTooltip: {
+      "--ant-color-bg-spotlight": token.volcano,
     },
     otherSlider: {
       pointerEvents: "none",
@@ -71,23 +79,17 @@ const useStyles = createStyles(
     otherSliderHandle: {
       zIndex: 1,
     },
-    otherTooltip: {},
     targetSliderHandle: {
       visibility: "hidden",
     },
     targetSliderRail: {
       background:
         target !== undefined
-          ? `linear-gradient(to right, transparent 0%, transparent ${target - BAD_SCORE_DISTANCE}%, ${token.red} ${target - BAD_SCORE_DISTANCE}%, ${token.red} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange} ${target + OKAY_SCORE_DISTANCE}%, ${token.red} ${target + OKAY_SCORE_DISTANCE}%, ${token.red} ${target + BAD_SCORE_DISTANCE}%, transparent ${target + BAD_SCORE_DISTANCE}%, transparent 100%)`
+          ? `linear-gradient(to right, transparent 0%, transparent ${target - BAD_SCORE_DISTANCE}%, ${token.red5} ${target - BAD_SCORE_DISTANCE}%, ${token.red5} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange5} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange5} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue5} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue5} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green5} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green5} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue5} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue5} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange5} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange5} ${target + OKAY_SCORE_DISTANCE}%, ${token.red5} ${target + OKAY_SCORE_DISTANCE}%, ${token.red5} ${target + BAD_SCORE_DISTANCE}%, transparent ${target + BAD_SCORE_DISTANCE}%, transparent 100%)`
           : undefined,
     },
     targetTooltip: {
-      "& .ant-tooltip-inner": {
-        backgroundColor: token.green5,
-      },
-      "& .ant-tooltip-arrow::before": {
-        backgroundColor: token.green5,
-      },
+      "--ant-color-bg-spotlight": token.green5,
     },
   }),
 );
@@ -159,6 +161,7 @@ export function Range() {
           transition={{
             type: "spring",
           }}
+          style={{ marginInlineStart: "auto" }}
         >
           <Tag
             bordered={false}
@@ -183,7 +186,6 @@ export function Range() {
               placement: "bottom",
               formatter: (value) =>
                 t("tooltip.guess", { player: guess.guesserName, value }),
-              rootClassName: styles.otherTooltip,
             }}
             className={clsx(styles.slider, styles.otherSlider)}
             classNames={{
@@ -206,8 +208,8 @@ export function Range() {
             }}
             className={clsx(styles.slider, styles.otherSlider)}
             classNames={{
-              handle: styles.targetSliderHandle,
               rail: styles.targetSliderRail,
+              handle: styles.targetSliderHandle,
             }}
           />
         )}
@@ -222,10 +224,12 @@ export function Range() {
             tooltip={{
               open: step !== "hinting",
               placement: "bottom",
-              rootClassName: styles.tooltip,
+              rootClassName: styles.meTooltip,
             }}
-            className={styles.slider}
-            classNames={{ handle: styles.sliderHandle }}
+            className={clsx(styles.slider, styles.meSlider)}
+            classNames={{
+              handle: styles.meSliderHandle,
+            }}
           />
         )}
       </div>
