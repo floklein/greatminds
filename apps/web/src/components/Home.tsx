@@ -85,7 +85,7 @@ export function Home() {
     <Center itemClassName={styles.flexItem}>
       <Space direction="vertical" size="large" className={styles.space}>
         <Flex vertical gap="middle" align="center" justify="center">
-          <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 1.1 }}>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.05 }}>
             <Button
               type="primary"
               size="large"
