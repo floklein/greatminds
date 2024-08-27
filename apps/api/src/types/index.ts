@@ -1,3 +1,5 @@
+import { Client as CClient } from "@colyseus/core";
+
 export enum Messages {
   SetPlayerName = "setPlayerName",
   SetPlayerReady = "setPlayerReady",
@@ -15,3 +17,5 @@ export interface Message {
   [Messages.PlayAgain]: void;
   [Messages.KickPlayer]: string;
 }
+export type UserData = { isKicked?: boolean };
+export type Client = CClient<UserData>;
