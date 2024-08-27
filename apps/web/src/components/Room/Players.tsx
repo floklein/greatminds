@@ -1,8 +1,9 @@
-import { Badge, Flex, Layout, List, Typography } from "antd";
+import { Flex, Layout, List, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { useTranslation } from "react-i18next";
 import { ROOM_MAX_CLIENTS } from "@wavelength/api";
+import { PlayerItem } from "../Players/PlayerItem";
 
 const useStyles = createStyles(({ token }) => ({
   layout: {
@@ -22,8 +23,6 @@ export function Players() {
   const { styles } = useStyles();
 
   const players = useStore((state) => state.roomState!.players);
-  const phase = useStore((state) => state.roomState!.phase);
-  const clientId = useStore((state) => state.room!.sessionId);
 
   const sortedPlayers = Object.values(players).sort(
     (a, b) => b.score - a.score,
@@ -48,28 +47,7 @@ export function Players() {
       <List
         dataSource={sortedPlayers}
         renderItem={(player, index) => (
-          <List.Item
-            actions={[
-              phase === "rounds" ? (
-                player.score
-              ) : (
-                <Badge
-                  status={player.ready ? "success" : "error"}
-                  text={player.ready ? t("badge.ready") : t("badge.notReady")}
-                />
-              ),
-            ]}
-          >
-            {player.name.length
-              ? player.name
-              : t("list.text.playerN", { index: index + 1 })}
-            &nbsp;
-            {player.sessionId === clientId && (
-              <Typography.Text type="secondary">
-                ({t("list.description.you")})
-              </Typography.Text>
-            )}
-          </List.Item>
+          <PlayerItem player={player} index={index} />
         )}
       />
     </Layout>

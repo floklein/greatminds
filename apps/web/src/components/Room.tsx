@@ -72,7 +72,8 @@ export function Room() {
 
   useEffect(() => {
     room.onStateChange((state) => setRoomState(state.toJSON()));
-  }, [room, setRoomState]);
+    room.onLeave(() => setRoom(null));
+  }, [room, setRoom, setRoomState]);
 
   function copyRoomId() {
     navigator.clipboard.writeText(room.roomId);
