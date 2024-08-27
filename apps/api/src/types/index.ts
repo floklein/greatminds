@@ -4,6 +4,7 @@ export enum Messages {
   SubmitHint = "submitHint",
   SetGuess = "setGuess",
   PlayAgain = "playAgain",
+  KickPlayer = "kickPlayer",
 }
 
 export interface Message {
@@ -12,4 +13,5 @@ export interface Message {
   [Messages.SubmitHint]: string;
   [Messages.SetGuess]: number;
   [Messages.PlayAgain]: void;
+  [Messages.KickPlayer]: string;
 }

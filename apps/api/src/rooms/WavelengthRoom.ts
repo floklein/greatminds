@@ -112,11 +112,32 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
       console.log("play again");
       this.setPhase("lobby");
     });
+    this.onMessage<Message[Messages.KickPlayer]>(
+      Messages.KickPlayer,
+      (client, message) => {
+        if (!this.isAdmin(client)) {
+          console.error("Not admin");
+          return;
+        }
+        if (message === this.state.admin?.sessionId) {
+          console.error("Cannot kick admin");
+          return;
+        }
+        console.log(client.sessionId, "kicked", message);
+        const kickedClient = this.clients.getById(message);
+        kickedClient?.leave();
+        this.state.players.delete(message);
+      },
+    );
   }
 
   onJoin(client: Client) {
     console.log(client.sessionId, "joined!");
-    this.state.players.set(client.sessionId, new Player(client.sessionId));
+    const player = new Player(client.sessionId);
+    this.state.players.set(client.sessionId, player);
+    if (!this.state.admin) {
+      this.state.admin = player;
+    }
   }
 
   async onLeave(client: Client, consented: boolean) {
@@ -147,16 +168,6 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
 
   onDispose() {
     console.log("room", this.roomId, "disposing...");
-  }
-
-  async generateRoomId(): Promise<string> {
-    const currentIds = await this.presence.smembers(this.LOBBY_CHANNEL);
-    let id: string;
-    do {
-      id = createRoomId();
-    } while (currentIds.includes(id));
-    await this.presence.sadd(this.LOBBY_CHANNEL, id);
-    return id;
   }
 
   setPhase(phase: RoomPhase) {
@@ -249,5 +260,21 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
         this.setRound(this.state.roundIndex + 1);
       }, 10 * 1000);
     }
+  }
+
+  // UTILS
+
+  async generateRoomId(): Promise<string> {
+    const currentIds = await this.presence.smembers(this.LOBBY_CHANNEL);
+    let id: string;
+    do {
+      id = createRoomId();
+    } while (currentIds.includes(id));
+    await this.presence.sadd(this.LOBBY_CHANNEL, id);
+    return id;
+  }
+
+  isAdmin(client: Client) {
+    return client.sessionId === this.state.admin?.sessionId;
   }
 }

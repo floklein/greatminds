@@ -63,6 +63,8 @@ export class Round extends Schema {
 export type RoomPhase = "lobby" | "rounds" | "scoreboard";
 
 export class WavelengthRoomState extends Schema {
+  @type(Player) admin: Player | null = null;
+
   @type("string") phase: RoomPhase = "lobby";
 
   @type({ map: Player }) players = new MapSchema<Player>();

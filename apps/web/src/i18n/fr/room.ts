@@ -34,9 +34,11 @@ export const room = {
   pop: {
     title: {
       leave: "Êtes-vous sûr ?",
+      kick: "Êtes-vous sûr ?",
     },
     description: {
       leave: "Vous perdrez votre progression dans cette partie.",
+      kick: "Vous allez expulser {{player}} de la partie.",
     },
     ok: {
       leave: "Oui !",
@@ -74,6 +76,14 @@ export const room = {
       hinter: "Hinter",
       guesser: "Guesser",
       you: "vous",
+    },
+  },
+  tag: {
+    admin: "Admin",
+  },
+  menu: {
+    label: {
+      kick: "Expulser {{player}}",
     },
   },
 };
