@@ -1,4 +1,4 @@
-import { Room, Client } from "@colyseus/core";
+import { Room, ClientArray as CClientArray } from "@colyseus/core";
 import {
   Player,
   RoomPhase,
@@ -13,11 +13,15 @@ import {
   ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
   ROOM_MAX_CLIENTS,
 } from "../config/room";
+import { Client, UserData } from "../types";
 
 export class WavelengthRoom extends Room<WavelengthRoomState> {
   LOBBY_CHANNEL = "wavelength_lobby";
 
+  clients = new CClientArray<UserData>();
   maxClients = ROOM_MAX_CLIENTS;
+
+  // LIFECYCLE
 
   async onCreate() {
     this.roomId = await this.generateRoomId();
@@ -123,16 +127,26 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
           console.error("Cannot kick admin");
           return;
         }
-        console.log(client.sessionId, "kicked", message);
+        if (message === client.sessionId) {
+          console.error("Cannot kick yourself");
+          return;
+        }
         const kickedClient = this.clients.getById(message);
-        kickedClient?.leave();
-        this.state.players.delete(message);
+        if (!kickedClient) {
+          console.error("Client to kick not found");
+          return;
+        }
+        console.log(client.sessionId, "kicked", message);
+        kickedClient.userData ??= {};
+        kickedClient.userData.isKicked = true;
+        kickedClient.leave();
       },
     );
   }
 
   onJoin(client: Client) {
     console.log(client.sessionId, "joined!");
+    client.userData = { isKicked: false };
     const player = new Player(client.sessionId);
     this.state.players.set(client.sessionId, player);
     if (!this.state.admin) {
@@ -142,16 +156,17 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
 
   async onLeave(client: Client, consented: boolean) {
     try {
-      if (consented) {
+      if (consented === false && client.userData?.isKicked !== true) {
+        console.log(client.sessionId, "left...");
+        await this.allowReconnection(
+          client,
+          ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
+        );
+        console.log(client.sessionId, "...but reconnected!");
+      } else {
         console.log(client.sessionId, "left with consent!");
         return;
       }
-      console.log(client.sessionId, "left...");
-      await this.allowReconnection(
-        client,
-        ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
-      );
-      console.log(client.sessionId, "...but reconnected!");
     } catch (error) {
       console.log(client.sessionId, "...and did not reconnect!");
       this.state.players.delete(client.sessionId);
@@ -169,6 +184,8 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
   onDispose() {
     console.log("room", this.roomId, "disposing...");
   }
+
+  // CORE
 
   setPhase(phase: RoomPhase) {
     this.state.phase = phase;
