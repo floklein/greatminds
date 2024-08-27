@@ -34,7 +34,7 @@ export class Round extends Schema {
     );
   })
   @type("number")
-  target: number = Math.round(Math.random() * 100); // between 0-100
+  target: number = Math.round(Math.random() * 200 - 100);
 
   @type(Player) hinter: Player | null = null;
   @type("string") hint: string = "";
@@ -48,7 +48,7 @@ export class Round extends Schema {
     );
   })
   @type({ map: "number" })
-  guesses = new MapSchema<number>(); // between 0-100
+  guesses = new MapSchema<number>();
 
   @type({ map: "number" }) scores = new MapSchema<number>();
 

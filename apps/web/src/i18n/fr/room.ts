@@ -1,17 +1,17 @@
 export const room = {
   title: {
     players: "Joueurs",
-    revealing1: "Le Hinter de ce round est ",
-    revealing1_hinter: "Vous êtes le Hinter de ce round, ",
+    revealing1: "Le Master de ce tour est ",
+    revealing1_hinter: "Vous êtes le Master de ce tour, ",
     hinting1: " cherche un indice...",
     hinting1_hinter:
       ", tapez un indice qui aidera les Guessers à deviner la cible.",
-    guessing1: "L'indice est ",
-    guessing2: ". Guessers, vous avez 30 secondes pour deviner.",
+    guessing1: "{{hinter}} a écrit ",
+    guessing2: " en indice. Guessers, vous avez 30 secondes pour deviner.",
     guessing2_hinter: ". Les Guessers ont 30 secondes pour deviner...",
     scoring1: "Bien joué ",
     scoring2: "à tous",
-    scoring3: " ! Prochain round dans 10 secondes...",
+    scoring3: " ! Prochain tour dans 10 secondes...",
     scoreboard1: "Et le ",
     scoreboard2: "gagnant",
     scoreboard3: " est...",
@@ -66,14 +66,14 @@ export const room = {
   },
   list: {
     title: {
-      roundScoreboard: "Scores du round",
+      tourScoreboard: "Scores du tour",
       scoreboard: "Scores finaux",
     },
     text: {
       playerN: "Joueur {{index}}",
     },
     description: {
-      hinter: "Hinter",
+      hinter: "Master",
       guesser: "Guesser",
       you: "vous",
     },

@@ -1,12 +1,12 @@
 export const room = {
   title: {
     players: "Players",
-    revealing1: "This round's Hinter is ",
-    revealing1_hinter: "You are this round's Hinter, ",
+    revealing1: "This round's Master is ",
+    revealing1_hinter: "You are this round's Master, ",
     hinting1: " is looking for a hint...",
     hinting1_hinter: ", type a hint that will help Guessers guess the target.",
-    guessing1: "The hint is ",
-    guessing2: ". Guessers, you have 30 seconds to guess.",
+    guessing1: "{{hinter}} wrote ",
+    guessing2: " as a hint. Guessers, you have 30 seconds to guess.",
     guessing2_hinter: ". Guessers have 30 seconds to guess...",
     scoring1: "Well played ",
     scoring2: "everyone",
@@ -72,7 +72,7 @@ export const room = {
       playerN: "Player {{index}}",
     },
     description: {
-      hinter: "Hinter",
+      hinter: "Master",
       guesser: "Guesser",
       you: "you",
     },
