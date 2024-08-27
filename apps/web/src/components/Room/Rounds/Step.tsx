@@ -52,7 +52,8 @@ export function Step() {
         )}
         {step === "guessing" && (
           <>
-            {t("title.guessing1")} <span className={styles.span}>"{hint}"</span>
+            {t("title.guessing1", { hinter: hinterName })}
+            <span className={styles.span}>"{hint}"</span>
             {t("title.guessing2", { context: isHinter ? "hinter" : undefined })}
           </>
         )}

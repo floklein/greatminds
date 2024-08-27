@@ -67,13 +67,18 @@ export function Room() {
     onSuccess: () => {
       setReconnectionToken(null);
       setRoom(null);
+      setRoomState(null);
     },
   });
 
   useEffect(() => {
     room.onStateChange((state) => setRoomState(state.toJSON()));
-    room.onLeave(() => setRoom(null));
-  }, [room, setRoom, setRoomState]);
+    room.onLeave(() => {
+      setReconnectionToken(null);
+      setRoom(null);
+      setRoomState(null);
+    });
+  }, [room, setReconnectionToken, setRoom, setRoomState]);
 
   function copyRoomId() {
     navigator.clipboard.writeText(room.roomId);

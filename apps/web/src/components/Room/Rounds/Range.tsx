@@ -16,8 +16,14 @@ import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
-const useStyles = createStyles(
-  ({ token }, { target }: { target?: number }) => ({
+const badScoreDistance = BAD_SCORE_DISTANCE / 2;
+const okayScoreDistance = OKAY_SCORE_DISTANCE / 2;
+const greatScoreDistance = GREAT_SCORE_DISTANCE / 2;
+const perfectScoreDistance = PERFECT_SCORE_DISTANCE / 2;
+
+const useStyles = createStyles(({ token }, { target }: { target?: number }) => {
+  const gradientCenter = (target ?? 0) / 2 + 50;
+  return {
     div: {
       paddingBlock: "2rem",
     },
@@ -48,6 +54,10 @@ const useStyles = createStyles(
         "--ant-slider-rail-size": "12px",
         "--ant-slider-handle-size": "20px",
         "--ant-slider-handle-size-hover": "22px",
+      },
+      "&.ant-slider .ant-slider-dot": {
+        backgroundColor: colorAlpha(token.colorWhite, 0.25),
+        border: "none",
       },
     },
     meSlider: {
@@ -85,14 +95,14 @@ const useStyles = createStyles(
     targetSliderRail: {
       background:
         target !== undefined
-          ? `linear-gradient(to right, transparent 0%, transparent ${target - BAD_SCORE_DISTANCE}%, ${token.red5} ${target - BAD_SCORE_DISTANCE}%, ${token.red5} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange5} ${target - OKAY_SCORE_DISTANCE}%, ${token.orange5} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue5} ${target - GREAT_SCORE_DISTANCE}%, ${token.blue5} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green5} ${target - PERFECT_SCORE_DISTANCE}%, ${token.green5} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue5} ${target + PERFECT_SCORE_DISTANCE}%, ${token.blue5} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange5} ${target + GREAT_SCORE_DISTANCE}%, ${token.orange5} ${target + OKAY_SCORE_DISTANCE}%, ${token.red5} ${target + OKAY_SCORE_DISTANCE}%, ${token.red5} ${target + BAD_SCORE_DISTANCE}%, transparent ${target + BAD_SCORE_DISTANCE}%, transparent 100%)`
+          ? `linear-gradient(to right, transparent 0%, transparent ${gradientCenter - badScoreDistance}%, ${token.red5} ${gradientCenter - badScoreDistance}%, ${token.red5} ${gradientCenter - okayScoreDistance}%, ${token.orange5} ${gradientCenter - okayScoreDistance}%, ${token.orange5} ${gradientCenter - greatScoreDistance}%, ${token.blue5} ${gradientCenter - greatScoreDistance}%, ${token.blue5} ${gradientCenter - perfectScoreDistance}%, ${token.green5} ${gradientCenter - perfectScoreDistance}%, ${token.green5} ${gradientCenter + perfectScoreDistance}%, ${token.blue5} ${gradientCenter + perfectScoreDistance}%, ${token.blue5} ${gradientCenter + greatScoreDistance}%, ${token.orange5} ${gradientCenter + greatScoreDistance}%, ${token.orange5} ${gradientCenter + okayScoreDistance}%, ${token.red5} ${gradientCenter + okayScoreDistance}%, ${token.red5} ${gradientCenter + badScoreDistance}%, transparent ${gradientCenter + badScoreDistance}%, transparent 100%)`
           : undefined,
     },
     targetTooltip: {
       "--ant-color-bg-spotlight": token.green5,
     },
-  }),
-);
+  };
+});
 
 export function Range() {
   const { t } = useTranslation(["room", "range"]);
@@ -125,7 +135,7 @@ export function Range() {
       guessValue: guess,
     }));
 
-  const [guess, setGuess] = useState(storeGuess ?? 50);
+  const [guess, setGuess] = useState(storeGuess ?? 0);
 
   const debounce = useRef<ReturnType<typeof setTimeout>>();
 
@@ -179,7 +189,7 @@ export function Range() {
             value={guess.guessValue}
             disabled
             included={false}
-            min={0}
+            min={-100}
             max={100}
             tooltip={{
               open: true,
@@ -198,8 +208,16 @@ export function Range() {
           <Slider
             value={target}
             included={false}
-            min={0}
+            min={-100}
             max={100}
+            disabled
+            marks={{
+              "-100": "-100",
+              "-50": "-50",
+              0: "0",
+              50: "50",
+              100: "100",
+            }}
             tooltip={{
               open: true,
               placement: "top",
@@ -219,8 +237,15 @@ export function Range() {
             onChange={handleChange}
             disabled={step !== "guessing"}
             included={false}
-            min={0}
+            min={-100}
             max={100}
+            marks={{
+              "-100": "-100",
+              "-50": "-50",
+              0: "0",
+              50: "50",
+              100: "100",
+            }}
             tooltip={{
               open: step !== "hinting",
               placement: "bottom",
