@@ -66,7 +66,7 @@ export const room = {
   },
   list: {
     title: {
-      tourScoreboard: "Scores du tour",
+      roundScoreboard: "Scores du tour",
       scoreboard: "Scores finaux",
     },
     text: {
