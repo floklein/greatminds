@@ -101,6 +101,9 @@ const useStyles = createStyles(({ token }, { target }: { target?: number }) => {
     targetTooltip: {
       "--ant-color-bg-spotlight": token.green5,
     },
+    hidden: {
+      display: "none",
+    },
   };
 });
 
@@ -194,8 +197,12 @@ export function Range() {
             tooltip={{
               open: true,
               placement: "bottom",
-              formatter: (value) =>
-                t("tooltip.guess", { player: guess.guesserName, value }),
+              formatter: (value) => (
+                <>
+                  {t("tooltip.guess", { player: guess.guesserName })}
+                  <span className={styles.hidden}>{value}</span>
+                </>
+              ),
             }}
             className={clsx(styles.slider, styles.otherSlider)}
             classNames={{
@@ -219,7 +226,12 @@ export function Range() {
             tooltip={{
               open: true,
               placement: "top",
-              formatter: (value) => t("tooltip.target", { value }),
+              formatter: (value) => (
+                <>
+                  {t("tooltip.target")}
+                  <span className={styles.hidden}>{value}</span>
+                </>
+              ),
               rootClassName: styles.targetTooltip,
             }}
             className={clsx(styles.slider, styles.otherSlider)}
@@ -245,7 +257,12 @@ export function Range() {
             tooltip={{
               open: step !== "hinting",
               placement: "bottom",
-              formatter: (value) => t("tooltip.you", { value }),
+              formatter: (value) => (
+                <>
+                  {t("tooltip.you")}
+                  <span className={styles.hidden}>{value}</span>
+                </>
+              ),
               rootClassName: styles.meTooltip,
             }}
             className={clsx(styles.slider, styles.meSlider)}

@@ -19,12 +19,12 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Players } from "./Room/Players";
 import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
-import colorAlpha from "color-alpha";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({
   header: {
+    paddingInline: 0,
     marginBlockEnd: "2rem",
   },
   headerFlex: {
@@ -39,7 +39,7 @@ const useStyles = createStyles(({ token }) => ({
   },
   players: {
     borderRadius: token.borderRadiusLG,
-    backgroundColor: `${colorAlpha("#000312", 0.5)} !important`,
+    backgroundColor: `${token.colorBgElevated} !important`,
   },
   password: {
     width: "210px",

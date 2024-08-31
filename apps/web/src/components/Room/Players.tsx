@@ -10,6 +10,9 @@ const useStyles = createStyles(({ token }) => ({
     background: "unset",
     paddingInline: token.padding,
   },
+  header: {
+    paddingInline: 0,
+  },
   headerFlex: {
     height: "100%",
   },
@@ -30,7 +33,7 @@ export function Players() {
 
   return (
     <Layout className={styles.layout}>
-      <Layout.Header>
+      <Layout.Header className={styles.header}>
         <Flex
           align="center"
           justify="space-between"

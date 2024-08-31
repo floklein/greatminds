@@ -10,8 +10,8 @@ const useStyles = createStyles({
     width: "1.5rem",
     height: "1.5rem",
     borderRadius: "1rem",
-    fontFamily: "GT Walsheim Black, sans-serif",
-    lineHeight: "2rem",
+    fontWeight: 1000,
+    fontSize: "1rem",
     textAlign: "center",
   },
   placeGold: {

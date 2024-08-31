@@ -1,7 +1,7 @@
 export const home = {
   button: {
     createGame: "Lancer une nouvelle partie",
-    reconnectGame: "Se reconnecter à la partie en cours",
+    reconnectGame: "Se reconnecter",
     joinGame: "Rejoindre",
   },
   card: {

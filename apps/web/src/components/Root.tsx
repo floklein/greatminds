@@ -1,26 +1,28 @@
 import { Layout, Typography } from "antd";
 import header from "/assets/images/header.svg";
-import footer from "/assets/images/footer.svg";
 import { createStyles } from "antd-style";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 
-const useStyles = createStyles({
+const useStyles = createStyles(({ token }) => ({
   layout: {
     minHeight: "100vh",
   },
   header: {
-    paddingInline: 0,
-    position: "relative",
     backgroundImage: `url("${header}")`,
-    backgroundPositionX: "center",
-    backgroundPositionY: "bottom",
-    backgroundSize: "cover",
+    backgroundSize: "auto 100px",
+    backgroundRepeat: "repeat-x",
+    "@media (max-width: 800px)": {
+      paddingInline: token.padding,
+    },
   },
   title: {
-    textAlign: "center",
-    marginBlockStart: "0.75rem",
-    letterSpacing: "0.2rem",
+    color: `${token.volcano} !important`,
+    margin: "16px 0 0 0 !important",
+  },
+  subtitle: {
+    color: `${token.colorTextSecondary} !important`,
+    fontSize: token.fontSizeHeading5,
   },
   content: {
     display: "flex",
@@ -31,14 +33,12 @@ const useStyles = createStyles({
     marginInline: "auto",
   },
   footer: {
-    backgroundImage: `url("${footer}")`,
-    backgroundSize: "cover",
-    backgroundPositionX: "center",
+    background: `linear-gradient(to bottom, transparent, ${token.colorBgElevated})`,
   },
   footerTypography: {
     textAlign: "center",
   },
-});
+}));
 
 export function Root({ children }: PropsWithChildren) {
   const { t } = useTranslation("root");
@@ -47,9 +47,11 @@ export function Root({ children }: PropsWithChildren) {
   return (
     <Layout className={styles.layout}>
       <Layout.Header className={styles.header}>
-        <Typography.Title level={2} className={styles.title}>
-          GreatMinds
-        </Typography.Title>
+        <div>
+          <Typography.Title level={2} className={styles.title}>
+            great minds <span className={styles.subtitle}>think alike</span>
+          </Typography.Title>
+        </div>
       </Layout.Header>
       <Layout.Content className={styles.content}>{children}</Layout.Content>
       <Layout.Footer className={styles.footer}>

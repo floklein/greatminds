@@ -32,7 +32,7 @@ export function Step() {
   return (
     <Flex align="center" justify="center" className={styles.flex}>
       <Typography.Title
-        level={3}
+        level={4}
         type="secondary"
         className={styles.typography}
       >
