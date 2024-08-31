@@ -1,5 +1,5 @@
 export const root = {
   typography: {
-    madeWithLoveBy: "Fait avec ❤️ par",
+    madeWithLoveBy: "Créé avec ❤️ par",
   },
 };
