@@ -3,7 +3,7 @@ import {
   GREAT_SCORE_POINTS,
   OKAY_SCORE_POINTS,
   PERFECT_SCORE_POINTS,
-} from "@wavelength/api";
+} from "@greatminds/api";
 import { useStore } from "../../../zustand";
 import { List, Tag, TagProps } from "antd";
 import { createStyles } from "antd-style";

@@ -1,13 +1,13 @@
 import type { ToJSON } from "@colyseus/schema";
-import { WavelengthRoomState } from "@wavelength/api";
+import { GreatMindsRoomState } from "@greatminds/api";
 import { Room } from "colyseus.js";
 import { create } from "zustand";
 
 export interface Store {
-  room: Room<WavelengthRoomState> | null;
-  setRoom: (room: Room<WavelengthRoomState> | null) => void;
-  roomState: ToJSON<WavelengthRoomState> | null;
-  setRoomState: (roomState: ToJSON<WavelengthRoomState> | null) => void;
+  room: Room<GreatMindsRoomState> | null;
+  setRoom: (room: Room<GreatMindsRoomState> | null) => void;
+  roomState: ToJSON<GreatMindsRoomState> | null;
+  setRoomState: (roomState: ToJSON<GreatMindsRoomState> | null) => void;
 }
 
 export const useStore = create<Store>((set) => ({

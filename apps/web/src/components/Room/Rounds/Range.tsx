@@ -11,7 +11,7 @@ import {
   Messages,
   OKAY_SCORE_DISTANCE,
   PERFECT_SCORE_DISTANCE,
-} from "@wavelength/api";
+} from "@greatminds/api";
 import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";

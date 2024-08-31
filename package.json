@@ -1,5 +1,5 @@
 {
-  "name": "wavelength",
+  "name": "greatminds",
   "private": true,
   "scripts": {
     "start": "turbo start",

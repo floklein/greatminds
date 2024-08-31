@@ -3,7 +3,7 @@ import {
   MoreOutlined,
   UserDeleteOutlined,
 } from "@ant-design/icons";
-import { Message, Messages, Player } from "@wavelength/api";
+import { Message, Messages, Player } from "@greatminds/api";
 import {
   Badge,
   Button,

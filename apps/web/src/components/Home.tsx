@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useStore } from "../zustand";
 import { client } from "../colyseus";
-import { WavelengthRoomState } from "@wavelength/api";
+import { GreatMindsRoomState } from "@greatminds/api";
 import { Button, Card, Divider, Flex, Form, Input, List, Space } from "antd";
 import { Center } from "./UI/Center";
 import { createStyles } from "antd-style";
@@ -42,13 +42,13 @@ export function Home() {
   const [reconnectionToken, setReconnectionToken] = useReconnectionToken();
 
   const { data: rooms, isLoading: loadingRooms } = useQuery({
-    queryFn: () => client.getAvailableRooms<WavelengthRoomState>(),
+    queryFn: () => client.getAvailableRooms<GreatMindsRoomState>(),
     queryKey: ["rooms"],
     refetchInterval: 10000,
   });
 
   const { mutate: createRoom, isPending: creatingRoom } = useMutation({
-    mutationFn: () => client.create<WavelengthRoomState>("wavelength"),
+    mutationFn: () => client.create<GreatMindsRoomState>("greatminds"),
     onSuccess: (newRoom) => {
       setReconnectionToken(newRoom.reconnectionToken);
       setRoom(newRoom);
@@ -57,7 +57,7 @@ export function Home() {
 
   const { mutate: joinRoom, isPending: joiningRoom } = useMutation({
     mutationFn: (roomId: string) =>
-      client.joinById<WavelengthRoomState>(roomId),
+      client.joinById<GreatMindsRoomState>(roomId),
     onSuccess: (newRoom) => {
       setReconnectionToken(newRoom.reconnectionToken);
       setRoom(newRoom);
@@ -66,7 +66,7 @@ export function Home() {
 
   const { mutate: reconnectRoom, isPending: reconnectingRoom } = useMutation({
     mutationFn: (reconnectionToken: string) =>
-      client.reconnect<WavelengthRoomState>(reconnectionToken),
+      client.reconnect<GreatMindsRoomState>(reconnectionToken),
     onSuccess: (newRoom) => {
       setReconnectionToken(newRoom.reconnectionToken);
       setRoom(newRoom);

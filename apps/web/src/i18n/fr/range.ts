@@ -1,6 +1,6 @@
-import { WavelengthRange } from "@wavelength/api";
+import { GreatMindsRange } from "@greatminds/api";
 
-export const range: Record<`${WavelengthRange}_${"from" | "to"}`, string> = {
+export const range: Record<`${GreatMindsRange}_${"from" | "to"}`, string> = {
   "cold|hot_from": "Froid",
   "cold|hot_to": "Chaud",
   "small|big_from": "Petit",

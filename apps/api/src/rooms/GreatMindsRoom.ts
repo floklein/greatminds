@@ -4,8 +4,8 @@ import {
   RoomPhase,
   Round,
   RoundStep,
-  WavelengthRoomState,
-} from "./schema/WavelengthRoomState";
+  GreatMindsRoomState,
+} from "./schema/GreatMindsRoomState";
 import { createRoomId, getRoundsLength } from "../lib/room";
 import { Message, Messages } from "../types";
 import { getHinterScore, getScore } from "../lib/room";
@@ -15,8 +15,8 @@ import {
 } from "../config/room";
 import { Client, UserData } from "../types";
 
-export class WavelengthRoom extends Room<WavelengthRoomState> {
-  LOBBY_CHANNEL = "wavelength_lobby";
+export class GreatMindsRoom extends Room<GreatMindsRoomState> {
+  LOBBY_CHANNEL = "greatminds_lobby";
 
   clients = new CClientArray<UserData>();
   maxClients = ROOM_MAX_CLIENTS;
@@ -25,7 +25,7 @@ export class WavelengthRoom extends Room<WavelengthRoomState> {
 
   async onCreate() {
     this.roomId = await this.generateRoomId();
-    this.setState(new WavelengthRoomState());
+    this.setState(new GreatMindsRoomState());
     this.onMessage<Message[Messages.SetPlayerReady]>(
       Messages.SetPlayerReady,
       (client, message) => {

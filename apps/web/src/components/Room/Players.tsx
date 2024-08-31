@@ -2,7 +2,7 @@ import { Flex, Layout, List, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { useTranslation } from "react-i18next";
-import { ROOM_MAX_CLIENTS } from "@wavelength/api";
+import { ROOM_MAX_CLIENTS } from "@greatminds/api";
 import { PlayerItem } from "../Players/PlayerItem";
 
 const useStyles = createStyles(({ token }) => ({
