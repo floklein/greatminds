@@ -212,11 +212,9 @@ export function Range() {
             max={100}
             disabled
             marks={{
-              "-100": "-100",
-              "-50": "-50",
-              0: "0",
-              50: "50",
-              100: "100",
+              "-100": " ",
+              0: " ",
+              100: " ",
             }}
             tooltip={{
               open: true,
@@ -240,15 +238,14 @@ export function Range() {
             min={-100}
             max={100}
             marks={{
-              "-100": "-100",
-              "-50": "-50",
-              0: "0",
-              50: "50",
-              100: "100",
+              "-100": " ",
+              0: " ",
+              100: " ",
             }}
             tooltip={{
               open: step !== "hinting",
               placement: "bottom",
+              formatter: (value) => t("tooltip.you", { value }),
               rootClassName: styles.meTooltip,
             }}
             className={clsx(styles.slider, styles.meSlider)}
