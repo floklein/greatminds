@@ -57,8 +57,9 @@ export const room = {
   tooltip: {
     copied: "Copié !",
     copy: "Copier",
-    guess: "{{player}} : {{value}}",
-    target: "Cible : {{value}}",
+    you: "Vous",
+    guess: "{{player}}",
+    target: "Cible",
   },
   badge: {
     ready: "Prêt",

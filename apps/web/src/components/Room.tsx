@@ -41,6 +41,9 @@ const useStyles = createStyles(({ token }) => ({
     borderRadius: token.borderRadiusLG,
     backgroundColor: `${colorAlpha("#000312", 0.5)} !important`,
   },
+  password: {
+    width: "210px",
+  },
 }));
 
 export function Room() {
@@ -111,6 +114,7 @@ export function Room() {
                 value={room.roomId}
                 autoComplete="off"
                 readOnly
+                className={styles.password}
               />
               {phase === "lobby" && (
                 <Tooltip
