@@ -151,8 +151,8 @@ export const set = [
   "money|fame",
 ] as const;
 
-export type WavelengthRange = (typeof set)[number];
+export type GreatMindsRange = (typeof set)[number];
 
-export function getRandomRange(): WavelengthRange {
+export function getRandomRange(): GreatMindsRange {
   return set[Math.floor(Math.random() * set.length)];
 }

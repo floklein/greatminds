@@ -5,7 +5,7 @@ import { Place } from "./Scoreboard/Place";
 import { Center } from "../UI/Center";
 import { motion } from "framer-motion";
 import waveArrow from "/assets/images/waveArrow.svg";
-import { Messages } from "@wavelength/api";
+import { Messages } from "@greatminds/api";
 import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles(({ token }) => ({

@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { createStyles } from "antd-style";
 import { CheckOutlined } from "@ant-design/icons";
-import { Message, Messages } from "@wavelength/api";
+import { Message, Messages } from "@greatminds/api";
 import { useStore } from "../../zustand";
 import { Center } from "../UI/Center";
 import { useTranslation } from "react-i18next";

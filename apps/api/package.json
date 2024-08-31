@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@wavelength/api",
+  "name": "@greatminds/api",
   "version": "1.0.0",
   "main": "./build/index.js",
   "exports": "./src/exports.ts",

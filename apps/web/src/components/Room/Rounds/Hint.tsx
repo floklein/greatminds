@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import { Message, Messages } from "@wavelength/api";
+import { Message, Messages } from "@greatminds/api";
 import { useStore } from "../../../zustand";
 import { Center } from "../../UI/Center";
 import { useTranslation } from "react-i18next";

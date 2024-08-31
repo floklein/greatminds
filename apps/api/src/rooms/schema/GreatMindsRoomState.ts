@@ -7,7 +7,7 @@ import {
   filter,
 } from "@colyseus/schema";
 import { Client } from "colyseus";
-import { getRandomRange, WavelengthRange } from "../../config/sets";
+import { getRandomRange, GreatMindsRange } from "../../config/sets";
 
 export class Player extends Schema {
   @type("string") sessionId: string = "";
@@ -26,7 +26,7 @@ export type RoundStep = "revealing" | "hinting" | "guessing" | "scoring";
 export class Round extends Schema {
   @type("string") step: RoundStep = "revealing";
 
-  @type("string") range: WavelengthRange = getRandomRange();
+  @type("string") range: GreatMindsRange = getRandomRange();
 
   @filter(function (this: Round, client: Client) {
     return (
@@ -62,7 +62,7 @@ export class Round extends Schema {
 
 export type RoomPhase = "lobby" | "rounds" | "scoreboard";
 
-export class WavelengthRoomState extends Schema {
+export class GreatMindsRoomState extends Schema {
   @type(Player) admin: Player | null = null;
 
   @type("string") phase: RoomPhase = "lobby";

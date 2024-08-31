@@ -3,7 +3,7 @@ import { ColyseusTestServer, boot } from "@colyseus/testing";
 
 // import your "app.config.ts" file here.
 import appConfig from "../src/app.config";
-import { WavelengthRoomState } from "../src/rooms/schema/WavelengthRoomState";
+import { GreatMindsRoomState } from "../src/rooms/schema/GreatMindsRoomState";
 
 describe("testing your Colyseus app", () => {
   let colyseus: ColyseusTestServer;
@@ -15,8 +15,8 @@ describe("testing your Colyseus app", () => {
 
   it("connecting into a room", async () => {
     // `room` is the server-side Room instance reference.
-    const room = await colyseus.createRoom<WavelengthRoomState>(
-      "wavelength",
+    const room = await colyseus.createRoom<GreatMindsRoomState>(
+      "greatminds",
       {},
     );
 

@@ -48,7 +48,7 @@ export function Root({ children }: PropsWithChildren) {
     <Layout className={styles.layout}>
       <Layout.Header className={styles.header}>
         <Typography.Title level={2} className={styles.title}>
-          WAVELENGTH
+          GreatMinds
         </Typography.Title>
       </Layout.Header>
       <Layout.Content className={styles.content}>{children}</Layout.Content>

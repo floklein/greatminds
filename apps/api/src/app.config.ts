@@ -7,14 +7,14 @@ import cors from "cors";
 /**
  * Import your Room files
  */
-import { WavelengthRoom } from "./rooms/WavelengthRoom";
+import { GreatMindsRoom } from "./rooms/GreatMindsRoom";
 
 export default config({
   initializeGameServer: (gameServer) => {
     /**
      * Define your room handlers:
      */
-    gameServer.define("wavelength", WavelengthRoom);
+    gameServer.define("greatminds", GreatMindsRoom);
   },
 
   initializeExpress: (app) => {
