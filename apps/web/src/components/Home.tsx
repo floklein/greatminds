@@ -23,12 +23,12 @@ const useStyles = createStyles(({ token }) => ({
     maxWidth: "30rem",
   },
   createButton: {
-    backgroundColor: token.cyan5,
+    backgroundColor: token.volcano,
     "&:hover": {
-      backgroundColor: `${token.cyan6} !important`,
+      backgroundColor: `${token.volcano5} !important`,
     },
     "&:active": {
-      backgroundColor: `${token.cyan4} !important`,
+      backgroundColor: `${token.volcano7} !important`,
     },
   },
 }));

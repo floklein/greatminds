@@ -13,12 +13,12 @@ type FieldType = {
 
 const useStyles = createStyles(({ token }, props: { sucess: boolean }) => ({
   button: {
-    backgroundColor: props.sucess ? token.cyan5 : undefined,
+    backgroundColor: props.sucess ? token.green5 : undefined,
     "&:hover": {
-      backgroundColor: props.sucess ? `${token.cyan6} !important` : undefined,
+      backgroundColor: props.sucess ? `${token.green6} !important` : undefined,
     },
     "&:active": {
-      backgroundColor: props.sucess ? `${token.cyan4} !important` : undefined,
+      backgroundColor: props.sucess ? `${token.green4} !important` : undefined,
     },
   },
   form: {
@@ -85,6 +85,7 @@ export function Lobby() {
               type="primary"
               htmlType="submit"
               className={styles.button}
+              color={ready ? "success" : undefined}
               size="large"
               icon={ready ? <CheckOutlined /> : undefined}
               iconPosition="end"
