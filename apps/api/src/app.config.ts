@@ -17,8 +17,6 @@ const basicAuthMiddleware = basicAuth({
  */
 import { GreatMindsRoom } from "./rooms/GreatMindsRoom";
 
-console.log(process.env);
-
 export default config({
   initializeGameServer: (gameServer) => {
     /**
