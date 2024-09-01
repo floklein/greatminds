@@ -10,6 +10,7 @@ import {
   Flex,
   Input,
   Layout,
+  message,
   Popconfirm,
   Space,
   Spin,
@@ -21,6 +22,7 @@ import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import { Message, Messages } from "@greatminds/api";
 
 const useStyles = createStyles(({ token }) => ({
   header: {
@@ -47,8 +49,9 @@ const useStyles = createStyles(({ token }) => ({
 }));
 
 export function Room() {
-  const { t } = useTranslation("room");
+  const { t } = useTranslation(["room", "errors"]);
   const { styles } = useStyles();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const room = useStore((state) => state.room!);
   const setRoom = useStore((state) => state.setRoom);
@@ -76,12 +79,18 @@ export function Room() {
 
   useEffect(() => {
     room.onStateChange((state) => setRoomState(state.toJSON()));
+    room.onMessage<Message[Messages.SendError]>(Messages.SendError, (error) =>
+      messageApi.error(t(`errors:${error}`)),
+    );
     room.onLeave(() => {
       setReconnectionToken(null);
       setRoom(null);
       setRoomState(null);
     });
-  }, [room, setReconnectionToken, setRoom, setRoomState]);
+    return () => {
+      room.removeAllListeners();
+    };
+  }, [messageApi, room, setReconnectionToken, setRoom, setRoomState, t]);
 
   function copyRoomId() {
     navigator.clipboard.writeText(room.roomId);
@@ -100,6 +109,7 @@ export function Room() {
   }
   return (
     <Layout>
+      {contextHolder}
       <Layout>
         <Layout.Header className={styles.header}>
           <Flex

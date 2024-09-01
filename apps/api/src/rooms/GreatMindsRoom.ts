@@ -1,4 +1,4 @@
-import { Room, ClientArray as CClientArray } from "@colyseus/core";
+import { Room, ClientArray as CClientArray, logger } from "@colyseus/core";
 import {
   Player,
   RoomPhase,
@@ -7,7 +7,7 @@ import {
   GreatMindsRoomState,
 } from "./schema/GreatMindsRoomState";
 import { createRoomId, getRoundsLength } from "../lib/room";
-import { Message, Messages } from "../types";
+import { Errors, Message, Messages } from "../types";
 import { getHinterScore, getScore } from "../lib/room";
 import {
   ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
@@ -29,10 +29,10 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     this.onMessage<Message[Messages.SetPlayerReady]>(
       Messages.SetPlayerReady,
       (client, message) => {
-        console.log(client.sessionId, "ready =", message);
+        logger.info(client.sessionId, "ready =", message);
         const player = this.state.players.get(client.sessionId);
         if (!player) {
-          console.error("Player not found");
+          logger.error("Player not found");
           return;
         }
         player.ready = message;
@@ -42,7 +42,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
             (player) => player.ready,
           )
         ) {
-          console.log("all players ready");
+          logger.info("all players ready");
           this.setPhase("rounds");
         }
       },
@@ -50,10 +50,10 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     this.onMessage<Message[Messages.SetPlayerName]>(
       Messages.SetPlayerName,
       (client, message) => {
-        console.log(client.sessionId, "name =", message);
+        logger.info(client.sessionId, "name =", message);
         const player = this.state.players.get(client.sessionId);
         if (!player) {
-          console.error("Player not found");
+          logger.error("Player not found");
           return;
         }
         player.name = message;
@@ -62,26 +62,26 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     this.onMessage<Message[Messages.SubmitHint]>(
       Messages.SubmitHint,
       (client, message) => {
-        console.log(client.sessionId, "hint =", message);
+        logger.info(client.sessionId, "hint =", message);
         const player = this.state.players.get(client.sessionId);
         if (!player) {
-          console.error("Player not found");
+          logger.error("Player not found");
           return;
         }
         if (!this.state.round || !this.state.round.hinter) {
-          console.error("No current round or hinter");
+          logger.error("No current round or hinter");
           return;
         }
         if (this.state.round.step !== "hinting") {
-          console.error("Not in hinting step");
+          logger.error("Not in hinting step");
           return;
         }
         if (player.sessionId !== this.state.round.hinter.sessionId) {
-          console.error("Player is not the hinter");
+          logger.error("Player is not the hinter");
           return;
         }
         if (message.length === 0) {
-          console.error("Hint is empty");
+          logger.error("Hint is empty");
           return;
         }
         this.state.round.hint = message;
@@ -91,52 +91,52 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     this.onMessage<Message[Messages.SetGuess]>(
       Messages.SetGuess,
       (client, message) => {
-        console.log(client.sessionId, "guess =", message);
+        logger.info(client.sessionId, "guess =", message);
         const player = this.state.players.get(client.sessionId);
         if (!player) {
-          console.error("Player not found");
+          logger.error("Player not found");
           return;
         }
         if (!this.state.round) {
-          console.error("No current round");
+          logger.error("No current round");
           return;
         }
         if (this.state.round.step !== "guessing") {
-          console.error("Not in guessing step");
+          logger.error("Not in guessing step");
           return;
         }
         if (!this.state.round.guessers.has(client.sessionId)) {
-          console.error("Player is not a guesser");
+          logger.error("Player is not a guesser");
           return;
         }
         this.state.round.guesses.set(client.sessionId, message);
       },
     );
     this.onMessage<Message[Messages.PlayAgain]>(Messages.PlayAgain, () => {
-      console.log("play again");
+      logger.info("play again");
       this.setPhase("lobby");
     });
     this.onMessage<Message[Messages.KickPlayer]>(
       Messages.KickPlayer,
       (client, message) => {
         if (!this.isAdmin(client)) {
-          console.error("Not admin");
+          logger.error("Not admin");
           return;
         }
         if (message === this.state.admin?.sessionId) {
-          console.error("Cannot kick admin");
+          logger.error("Cannot kick admin");
           return;
         }
         if (message === client.sessionId) {
-          console.error("Cannot kick yourself");
+          logger.error("Cannot kick yourself");
           return;
         }
         const kickedClient = this.clients.getById(message);
         if (!kickedClient) {
-          console.error("Client to kick not found");
+          logger.error("Client to kick not found");
           return;
         }
-        console.log(client.sessionId, "kicked", message);
+        logger.info(client.sessionId, "kicked", message);
         kickedClient.userData ??= {};
         kickedClient.userData.isKicked = true;
         kickedClient.leave();
@@ -145,7 +145,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
   }
 
   onJoin(client: Client) {
-    console.log(client.sessionId, "joined!");
+    logger.info(client.sessionId, "joined!");
     client.userData = { isKicked: false };
     const player = new Player(client.sessionId);
     this.state.players.set(client.sessionId, player);
@@ -157,18 +157,18 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
   async onLeave(client: Client, consented: boolean) {
     try {
       if (consented === false && client.userData?.isKicked !== true) {
-        console.log(client.sessionId, "left...");
+        logger.info(client.sessionId, "left...");
         await this.allowReconnection(
           client,
           ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
         );
-        console.log(client.sessionId, "...but reconnected!");
+        logger.info(client.sessionId, "...but reconnected!");
       } else {
-        console.log(client.sessionId, "left with consent!");
+        logger.info(client.sessionId, "left with consent!");
         return;
       }
     } catch (error) {
-      console.log(client.sessionId, "...and did not reconnect!");
+      logger.info(client.sessionId, "...and did not reconnect!");
       this.state.players.delete(client.sessionId);
     } finally {
       if (
@@ -178,11 +178,21 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       ) {
         this.setPhase("rounds");
       }
+      if (
+        this.state.phase === "rounds" &&
+        this.state.round?.hint.length === 0 &&
+        client.sessionId === this.state.round?.hinter?.sessionId
+      ) {
+        this.broadcast(Messages.SendError, Errors.HinterLeft, {
+          except: client,
+        });
+        this.setRound(this.state.roundIndex + 1);
+      }
     }
   }
 
   onDispose() {
-    console.log("room", this.roomId, "disposing...");
+    logger.info("room", this.roomId, "disposing...");
   }
 
   // CORE
@@ -190,7 +200,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
   setPhase(phase: RoomPhase) {
     this.state.phase = phase;
     if (phase === "lobby") {
-      console.log("starting lobby phase");
+      logger.info("starting lobby phase");
       this.unlock();
       this.state.players.forEach((player) => {
         player.ready = false;
@@ -202,7 +212,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       this.state.rounds.clear();
     }
     if (phase === "rounds") {
-      console.log("starting rounds phase");
+      logger.info("starting rounds phase");
       this.lock();
       const playersArray = Array.from(this.state.players.values());
       const roundsLength = getRoundsLength(this.state.players.size);
@@ -214,7 +224,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       this.setRound(0);
     }
     if (phase === "scoreboard") {
-      console.log("starting scoreboard phase");
+      logger.info("starting scoreboard phase");
     }
   }
 
@@ -232,29 +242,29 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
 
   setRoundStep(step: RoundStep) {
     if (!this.state.round) {
-      console.error("No current round");
+      logger.error("No current round");
       return;
     }
     this.state.round.step = step;
     if (step === "revealing") {
-      console.log("starting revealing step (SHOULD NOT HAPPEN)");
+      logger.info("starting revealing step (SHOULD NOT HAPPEN)");
     }
     if (step === "hinting") {
-      console.log("starting hinting step");
+      logger.info("starting hinting step");
     }
     if (step === "guessing") {
-      console.log("starting guessing step");
+      logger.info("starting guessing step");
       this.clock.setTimeout(() => {
         this.setRoundStep("scoring");
       }, 30 * 1000);
     }
     if (step === "scoring") {
-      console.log("starting scoring step");
+      logger.info("starting scoring step");
       this.state.round.guesses = this.state.round.guesses.clone(); // trigger filter workaround https://github.com/colyseus/schema/issues/102
       this.state.round.target = this.state.round.target; // same
       this.state.round.guessers.forEach((guesser) => {
         if (!this.state.round) {
-          console.error("No current round");
+          logger.error("No current round");
           return;
         }
         const guess = this.state.round.guesses.get(guesser.sessionId);
