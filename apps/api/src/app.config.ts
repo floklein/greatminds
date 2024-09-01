@@ -3,11 +3,21 @@ import { monitor } from "@colyseus/monitor";
 import { playground } from "@colyseus/playground";
 import { auth } from "@colyseus/auth";
 import cors from "cors";
+import basicAuth from "express-basic-auth";
+
+const basicAuthMiddleware = basicAuth({
+  users: {
+    admin: "Ck7uj1htTc3N6Y",
+  },
+  challenge: true,
+});
 
 /**
  * Import your Room files
  */
 import { GreatMindsRoom } from "./rooms/GreatMindsRoom";
+
+console.log(process.env);
 
 export default config({
   initializeGameServer: (gameServer) => {
@@ -34,7 +44,7 @@ export default config({
      * Use @colyseus/playground
      * (It is not recommended to expose this route in a production environment)
      */
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV === "development") {
       app.use("/", playground);
     }
 
@@ -43,7 +53,7 @@ export default config({
      * It is recommended to protect this route with a password
      * Read more: https://docs.colyseus.io/tools/monitor/#restrict-access-to-the-panel-using-a-password
      */
-    app.use("/colyseus", monitor());
+    app.use("/colyseus", basicAuthMiddleware, monitor());
   },
 
   beforeListen: () => {
