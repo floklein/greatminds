@@ -81,7 +81,7 @@ export function Root({ children }: PropsWithChildren) {
               <GithubOutlined />
             </Typography.Link>
             <Typography.Link
-              href="https://github.com/floklein"
+              href="https://www.linkedin.com/in/florentklein"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.linkedin}
