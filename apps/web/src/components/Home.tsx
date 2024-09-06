@@ -2,7 +2,20 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useStore } from "../zustand";
 import { client } from "../colyseus";
 import { GreatMindsRoomState } from "@greatminds/api";
-import { Button, Card, Divider, Flex, Form, Input, List, Space } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Form,
+  Input,
+  List,
+  Space,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import { Center } from "./UI/Center";
 import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
@@ -21,6 +34,18 @@ const useStyles = createStyles(({ token }) => ({
   flexItem: {
     width: "100%",
     maxWidth: "30rem",
+  },
+  tutorial: {
+    backgroundColor: token.colorBgElevated,
+    border: "none",
+    marginBlockEnd: token.paddingLG,
+  },
+  greatMinds: {
+    color: token.colorLink,
+    fontFamily: "Quando, sans serif",
+  },
+  tooltip: {
+    fontFamily: "Gloria Hallelujah, cursive",
   },
   createButton: {
     backgroundColor: token.volcano,
@@ -44,7 +69,7 @@ export function Home() {
   const { data: rooms, isLoading: loadingRooms } = useQuery({
     queryFn: () => client.getAvailableRooms<GreatMindsRoomState>(),
     queryKey: ["rooms"],
-    refetchInterval: 10000,
+    refetchInterval: 5000,
   });
 
   const { mutate: createRoom, isPending: creatingRoom } = useMutation({
@@ -84,6 +109,64 @@ export function Home() {
   return (
     <Center itemClassName={styles.flexItem}>
       <Space direction="vertical" size="large" className={styles.space}>
+        <Alert
+          className={styles.tutorial}
+          message={
+            <>
+              <Typography.Text className={styles.greatMinds}>
+                great minds
+              </Typography.Text>{" "}
+              is a party game to play with your friends.
+            </>
+          }
+          description={
+            <>
+              <Typography.Paragraph>
+                It's played in rounds. Each round, a random{" "}
+                <Tooltip
+                  title="bad movie / good movie"
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>theme range</Tag>
+                </Tooltip>{" "}
+                is picked along with a random{" "}
+                <Tooltip
+                  title="bad movie <--x------> good movie"
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>target</Tag>
+                </Tooltip>
+                .
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                A{" "}
+                <Tooltip title="might be you" rootClassName={styles.tooltip}>
+                  <Tag>Master</Tag>
+                </Tooltip>{" "}
+                is designated. His role is to help{" "}
+                <Tooltip title="your friends" rootClassName={styles.tooltip}>
+                  <Tag>Guessers</Tag>
+                </Tooltip>{" "}
+                guess the random target by giving them a{" "}
+                <Tooltip title="star wars 7" rootClassName={styles.tooltip}>
+                  <Tag>hint</Tag>
+                </Tooltip>
+                .
+              </Typography.Paragraph>
+              <Typography.Paragraph style={{ marginBlockEnd: 0 }}>
+                The closer the Guessers are to the target, the more{" "}
+                <Tooltip
+                  title="5 points for a perfect guess"
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>points</Tag>
+                </Tooltip>{" "}
+                they get. The more points Guessers get, the more points the
+                Master gets.
+              </Typography.Paragraph>
+            </>
+          }
+        />
         <Flex vertical gap="middle" align="center" justify="center">
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.05 }}>
             <Button
