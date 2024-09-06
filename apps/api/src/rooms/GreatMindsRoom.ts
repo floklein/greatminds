@@ -163,31 +163,13 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
           ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
         );
         logger.info(client.sessionId, "...but reconnected!");
-      } else {
-        logger.info(client.sessionId, "left with consent!");
         return;
       }
+      logger.info(client.sessionId, "left with consent!");
+      this.handleClientLeft(client);
     } catch (error) {
       logger.info(client.sessionId, "...and did not reconnect!");
-      this.state.players.delete(client.sessionId);
-    } finally {
-      if (
-        this.state.phase === "lobby" &&
-        this.state.players.size >= 2 &&
-        Array.from(this.state.players.values()).every((player) => player.ready)
-      ) {
-        this.setPhase("rounds");
-      }
-      if (
-        this.state.phase === "rounds" &&
-        this.state.round?.hint.length === 0 &&
-        client.sessionId === this.state.round?.hinter?.sessionId
-      ) {
-        this.broadcast(Messages.SendError, Errors.HinterLeft, {
-          except: client,
-        });
-        this.setRound(this.state.roundIndex + 1);
-      }
+      this.handleClientLeft(client);
     }
   }
 
@@ -235,6 +217,14 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     }
     this.state.roundIndex = roundIndex;
     this.state.round = this.state.rounds[roundIndex];
+    if (
+      !this.state.round.hinter ||
+      !this.state.players.get(this.state.round.hinter.sessionId)
+    ) {
+      logger.error("No hinter");
+      this.setRound(roundIndex + 1);
+      return;
+    }
     this.clock.setTimeout(() => {
       this.setRoundStep("hinting");
     }, 5 * 1000);
@@ -286,6 +276,27 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       this.clock.setTimeout(() => {
         this.setRound(this.state.roundIndex + 1);
       }, 10 * 1000);
+    }
+  }
+
+  handleClientLeft(client: Client) {
+    this.state.players.delete(client.sessionId);
+    if (
+      this.state.phase === "lobby" &&
+      this.state.players.size >= 2 &&
+      Array.from(this.state.players.values()).every((player) => player.ready)
+    ) {
+      this.setPhase("rounds");
+    }
+    if (
+      this.state.phase === "rounds" &&
+      this.state.round?.hint.length === 0 &&
+      client.sessionId === this.state.round?.hinter?.sessionId
+    ) {
+      this.broadcast(Messages.SendError, Errors.HinterLeft, {
+        except: client,
+      });
+      this.setRound(this.state.roundIndex + 1);
     }
   }
 
