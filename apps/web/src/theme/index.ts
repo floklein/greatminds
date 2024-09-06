@@ -2,6 +2,7 @@ import { ThemeConfig } from "antd/es/config-provider";
 import antdTheme from "antd/es/theme";
 import "antd/dist/reset.css";
 import "@fontsource/quando";
+import "@fontsource/gloria-hallelujah";
 import "./global.css";
 import colorAlpha from "color-alpha";
 
@@ -32,6 +33,9 @@ export const theme: ThemeConfig = {
     Layout: {
       headerBg: "transparent",
       siderBg: "transparent",
+    },
+    Tag: {
+      marginXS: 0,
     },
   },
 };
