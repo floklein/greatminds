@@ -53,7 +53,7 @@ export function Root({ children }: PropsWithChildren) {
       <Layout.Header className={styles.header}>
         <div>
           <Typography.Title level={2} className={styles.title}>
-            great minds <span className={styles.subtitle}>think alike</span>
+            great minds <span className={styles.subtitle}>(think alike)</span>
           </Typography.Title>
         </div>
       </Layout.Header>
