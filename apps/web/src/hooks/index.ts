@@ -8,3 +8,9 @@ export function useReconnectionToken() {
 
   return [token, setToken] as const;
 }
+
+export function useIsAdmin() {
+  const [isAdmin, setIsAdmin] = useLocalStorage<boolean>("isAdmin", false);
+
+  return [isAdmin, setIsAdmin] as const;
+}
