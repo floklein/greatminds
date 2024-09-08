@@ -7,7 +7,7 @@ import { GithubOutlined, LinkedinFilled } from "@ant-design/icons";
 
 const useStyles = createStyles(({ token }) => ({
   layout: {
-    minHeight: "100vh",
+    minHeight: "100dvh",
   },
   header: {
     backgroundImage: `url("${header}")`,
