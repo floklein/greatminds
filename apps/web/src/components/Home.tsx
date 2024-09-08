@@ -19,7 +19,7 @@ import {
 import { Center } from "./UI/Center";
 import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
-import { useReconnectionToken } from "../hooks";
+import { useIsAdmin, useReconnectionToken } from "../hooks";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
@@ -65,11 +65,13 @@ export function Home() {
   const setRoom = useStore((state) => state.setRoom);
 
   const [reconnectionToken, setReconnectionToken] = useReconnectionToken();
+  const [isAdmin] = useIsAdmin();
 
   const { data: rooms, isLoading: loadingRooms } = useQuery({
     queryFn: () => client.getAvailableRooms<GreatMindsRoomState>(),
     queryKey: ["rooms"],
     refetchInterval: 5000,
+    enabled: isAdmin,
   });
 
   const { mutate: createRoom, isPending: creatingRoom } = useMutation({
@@ -114,55 +116,63 @@ export function Home() {
           message={
             <>
               <Typography.Text className={styles.greatMinds}>
-                great minds
-              </Typography.Text>{" "}
-              is a party game to play with your friends.
+                {t("tutorial.title1")}
+              </Typography.Text>
+              {t("tutorial.title2")}
             </>
           }
           description={
             <>
               <Typography.Paragraph>
-                It's played in rounds. Each round, a random{" "}
+                {t("tutorial.paragraph1a")}
                 <Tooltip
-                  title="bad movie / good movie"
+                  title={t("tutorial.tooltip1")}
                   rootClassName={styles.tooltip}
                 >
-                  <Tag>theme range</Tag>
-                </Tooltip>{" "}
-                is picked along with a random{" "}
-                <Tooltip
-                  title="bad movie <--x------> good movie"
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>target</Tag>
+                  <Tag bordered>{t("tutorial.tag1")}</Tag>
                 </Tooltip>
-                .
+                {t("tutorial.paragraph1b")}
+                <Tooltip
+                  title={t("tutorial.tooltip2")}
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>{t("tutorial.tag2")}</Tag>
+                </Tooltip>
+                {t("tutorial.paragraph1c")}
               </Typography.Paragraph>
               <Typography.Paragraph>
-                A{" "}
-                <Tooltip title="might be you" rootClassName={styles.tooltip}>
-                  <Tag>Master</Tag>
-                </Tooltip>{" "}
-                is designated. His role is to help{" "}
-                <Tooltip title="your friends" rootClassName={styles.tooltip}>
-                  <Tag>Guessers</Tag>
-                </Tooltip>{" "}
-                guess the random target by giving them a{" "}
-                <Tooltip title="star wars 7" rootClassName={styles.tooltip}>
-                  <Tag>hint</Tag>
-                </Tooltip>
-                .
-              </Typography.Paragraph>
-              <Typography.Paragraph style={{ marginBlockEnd: 0 }}>
-                The closer the Guessers are to the target, the more{" "}
+                {t("tutorial.paragraph2a")}
                 <Tooltip
-                  title="5 points for a perfect guess"
+                  title={t("tutorial.tooltip3")}
                   rootClassName={styles.tooltip}
                 >
-                  <Tag>points</Tag>
-                </Tooltip>{" "}
-                they get. The more points Guessers get, the more points the
-                Master gets.
+                  <Tag>{t("tutorial.tag3")}</Tag>
+                </Tooltip>
+                {t("tutorial.paragraph2b")}
+                <Tooltip
+                  title={t("tutorial.tooltip4")}
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>{t("tutorial.tag4")}</Tag>
+                </Tooltip>
+                {t("tutorial.paragraph2c")}
+                <Tooltip
+                  title={t("tutorial.tooltip5")}
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>{t("tutorial.tag5")}</Tag>
+                </Tooltip>
+                {t("tutorial.paragraph2d")}
+              </Typography.Paragraph>
+              <Typography.Paragraph style={{ marginBlockEnd: 0 }}>
+                {t("tutorial.paragraph3a")}
+                <Tooltip
+                  title={t("tutorial.tooltip6")}
+                  rootClassName={styles.tooltip}
+                >
+                  <Tag>{t("tutorial.tag6")}</Tag>
+                </Tooltip>
+                {t("tutorial.paragraph3b")}
               </Typography.Paragraph>
             </>
           }
@@ -218,36 +228,44 @@ export function Home() {
             </Form.Item>
           </Form>
         </Card>
-        <Divider>{t("divider.or")}</Divider>
-        <Card title={t("card.title.joinGame")} size="small" bordered={false}>
-          <List
-            locale={{ emptyText: t("card.text.noGames") }}
-            loading={loadingRooms}
-            dataSource={rooms}
-            pagination={{ pageSize: 5 }}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Button
-                    type="primary"
-                    onClick={() => joinRoom(item.roomId)}
-                    loading={joiningRoom}
+        {isAdmin && (
+          <>
+            <Divider>{t("divider.or")}</Divider>
+            <Card
+              title={t("card.title.joinGame")}
+              size="small"
+              bordered={false}
+            >
+              <List
+                locale={{ emptyText: t("card.text.noGames") }}
+                loading={loadingRooms}
+                dataSource={rooms}
+                pagination={{ pageSize: 5 }}
+                renderItem={(item) => (
+                  <List.Item
+                    actions={[
+                      <Button
+                        type="primary"
+                        onClick={() => joinRoom(item.roomId)}
+                        loading={joiningRoom}
+                      >
+                        {t("button.joinGame")}
+                      </Button>,
+                    ]}
                   >
-                    {t("button.joinGame")}
-                  </Button>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={item.roomId}
-                  description={t("card.description.playersInGame", {
-                    count: item.clients,
-                    max: item.maxClients,
-                  })}
-                />
-              </List.Item>
-            )}
-          />
-        </Card>
+                    <List.Item.Meta
+                      title={item.roomId}
+                      description={t("card.description.playersInGame", {
+                        count: item.clients,
+                        max: item.maxClients,
+                      })}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </>
+        )}
       </Space>
     </Center>
   );
