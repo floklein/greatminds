@@ -12,6 +12,9 @@ import { getHinterScore, getScore } from "../lib/room";
 import {
   ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
   ROOM_MAX_CLIENTS,
+  REVEALING_STEP_DURATION_SECONDS,
+  GUESSING_STEP_DURATION_SECONDS,
+  SCORING_STEP_DURATION_SECONDS,
 } from "../config/room";
 import { Client, UserData } from "../types";
 
@@ -112,10 +115,17 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         this.state.round.guesses.set(client.sessionId, message);
       },
     );
-    this.onMessage<Message[Messages.PlayAgain]>(Messages.PlayAgain, () => {
-      logger.info("play again");
-      this.setPhase("lobby");
-    });
+    this.onMessage<Message[Messages.PlayAgain]>(
+      Messages.PlayAgain,
+      (client) => {
+        if (!this.isAdmin(client)) {
+          logger.error("Not admin");
+          return;
+        }
+        logger.info("play again");
+        this.setPhase("lobby");
+      },
+    );
     this.onMessage<Message[Messages.KickPlayer]>(
       Messages.KickPlayer,
       (client, message) => {
@@ -227,7 +237,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
     }
     this.clock.setTimeout(() => {
       this.setRoundStep("hinting");
-    }, 5 * 1000);
+    }, REVEALING_STEP_DURATION_SECONDS * 1000);
   }
 
   setRoundStep(step: RoundStep) {
@@ -246,7 +256,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       logger.info("starting guessing step");
       this.clock.setTimeout(() => {
         this.setRoundStep("scoring");
-      }, 30 * 1000);
+      }, GUESSING_STEP_DURATION_SECONDS * 1000);
     }
     if (step === "scoring") {
       logger.info("starting scoring step");
@@ -275,7 +285,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       }
       this.clock.setTimeout(() => {
         this.setRound(this.state.roundIndex + 1);
-      }, 10 * 1000);
+      }, SCORING_STEP_DURATION_SECONDS * 1000);
     }
   }
 
