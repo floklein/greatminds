@@ -207,11 +207,7 @@ export function Home() {
           size="small"
           bordered={false}
         >
-          <Form<FieldType>
-            layout="inline"
-            autoComplete="off"
-            onFinish={handleJoinSubmit}
-          >
+          <Form<FieldType> layout="inline" onFinish={handleJoinSubmit}>
             <Form.Item<FieldType>
               name="roomId"
               rules={[
@@ -219,7 +215,10 @@ export function Home() {
               ]}
               required={false}
             >
-              <Input.Password placeholder={t("form.placeholder.gameId")} />
+              <Input.Password
+                placeholder={t("form.placeholder.gameId")}
+                autoComplete="off"
+              />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={joiningRoom}>

@@ -60,7 +60,6 @@ export function Lobby() {
           layout="inline"
           onFinish={handleFormSubmit}
           className={styles.form}
-          autoComplete="off"
         >
           <Form.Item<FieldType>
             name="name"
@@ -78,6 +77,7 @@ export function Lobby() {
               placeholder={t("form.placeholder.name")}
               autoFocus
               disabled={ready}
+              autoComplete="off"
             />
           </Form.Item>
           <Form.Item>
