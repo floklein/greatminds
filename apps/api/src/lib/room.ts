@@ -22,6 +22,9 @@ export function createRoomId() {
 }
 
 export function getRoundsLength(playersLength: number) {
+  if (process.env.NODE_ENV === "development") {
+    return playersLength;
+  }
   if (playersLength <= 2) {
     return 10;
   }

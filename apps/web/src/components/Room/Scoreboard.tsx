@@ -40,6 +40,9 @@ export function Scoreboard() {
 
   const room = useStore((state) => state.room!);
   const players = useStore((state) => state.roomState!.players) ?? {};
+  const isAdmin = useStore(
+    (state) => state.roomState!.admin?.sessionId === state.room!.sessionId,
+  );
 
   let place = 1;
   const sortedPlayers = Object.values(players)
@@ -93,34 +96,36 @@ export function Scoreboard() {
           )}
         />
       </Card>
-      <Center>
-        <motion.img
-          style={{
-            transformOrigin: "center",
-            display: "block",
-            marginInline: "auto",
-            transform: "rotate(180deg)",
-          }}
-          initial={{ height: 0 }}
-          animate={{ height: 100 }}
-          transition={{
-            type: "spring",
-            stiffness: 150,
-            damping: 10,
-            mass: 2,
-          }}
-          src={waveArrow}
-          alt="arrow"
-        />
-        <Button
-          type="primary"
-          size="large"
-          className={styles.playAgainButton}
-          onClick={playAgain}
-        >
-          {t("button.playAgain")}
-        </Button>
-      </Center>
+      {isAdmin && (
+        <Center>
+          <motion.img
+            style={{
+              transformOrigin: "center",
+              display: "block",
+              marginInline: "auto",
+              transform: "rotate(180deg)",
+            }}
+            initial={{ height: 0 }}
+            animate={{ height: 100 }}
+            transition={{
+              type: "spring",
+              stiffness: 150,
+              damping: 10,
+              mass: 2,
+            }}
+            src={waveArrow}
+            alt="arrow"
+          />
+          <Button
+            type="primary"
+            size="large"
+            className={styles.playAgainButton}
+            onClick={playAgain}
+          >
+            {t("button.playAgain")}
+          </Button>
+        </Center>
+      )}
     </Space>
   );
 }
