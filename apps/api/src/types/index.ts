@@ -1,5 +1,10 @@
 import { Client as CClient } from "@colyseus/core";
 
+export enum GameMode {
+  TextHints = "textHints",
+  SketchHints = "sketchHints",
+}
+
 export enum Messages {
   SendError = "sendError",
   SetPlayerName = "setPlayerName",
@@ -8,6 +13,8 @@ export enum Messages {
   SetGuess = "setGuess",
   PlayAgain = "playAgain",
   KickPlayer = "kickPlayer",
+  SetPrivate = "setPrivate",
+  SetMode = "setMode",
 }
 
 export interface Message {
@@ -18,6 +25,8 @@ export interface Message {
   [Messages.SetGuess]: number;
   [Messages.PlayAgain]: void;
   [Messages.KickPlayer]: string;
+  [Messages.SetPrivate]: boolean;
+  [Messages.SetMode]: GameMode;
 }
 
 export type UserData = { isKicked?: boolean };

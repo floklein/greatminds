@@ -7,7 +7,7 @@ export const home = {
   card: {
     title: {
       joinGameById: "Join your friends' game",
-      joinGame: "Join an open game",
+      joinGame: "Join a public game",
     },
     description: {
       playersInGame: "{{count}} / {{max}} players",

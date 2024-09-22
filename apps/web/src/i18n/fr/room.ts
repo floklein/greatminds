@@ -21,7 +21,7 @@ export const room = {
     label: {
       gameId: "ID de la partie",
       mode: "Mode de jeu",
-      visibility: "Visibilité",
+      private: "Visibilité",
     },
     placeholder: {
       name: "Votre nom",
@@ -73,6 +73,7 @@ export const room = {
   badge: {
     ready: "Prêt",
     notReady: "Pas prêt",
+    comingSoon: "Bientôt",
   },
   list: {
     title: {

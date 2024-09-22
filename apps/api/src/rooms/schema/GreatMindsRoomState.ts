@@ -8,6 +8,7 @@ import {
 } from "@colyseus/schema";
 import { Client } from "colyseus";
 import { getRandomRange, GreatMindsRange } from "../../config/sets";
+import { GameMode } from "../../types";
 
 export class Player extends Schema {
   @type("string") sessionId: string = "";
@@ -63,6 +64,9 @@ export class Round extends Schema {
 export type RoomPhase = "lobby" | "rounds" | "scoreboard";
 
 export class GreatMindsRoomState extends Schema {
+  @type("string") mode: GameMode = GameMode.TextHints;
+  @type("boolean") private: boolean = true; // mirror of room's `private`
+
   @type(Player) admin: Player | null = null;
 
   @type("string") phase: RoomPhase = "lobby";

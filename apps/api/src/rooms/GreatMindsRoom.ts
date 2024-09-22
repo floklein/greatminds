@@ -28,6 +28,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
 
   async onCreate() {
     this.roomId = await this.generateRoomId();
+    this.setPrivate(true);
     this.setState(new GreatMindsRoomState());
     this.onMessage<Message[Messages.SetPlayerReady]>(
       Messages.SetPlayerReady,
@@ -152,6 +153,26 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         kickedClient.leave();
       },
     );
+    this.onMessage<Message[Messages.SetPrivate]>(
+      Messages.SetPrivate,
+      async (client, message) => {
+        if (!this.isAdmin(client)) {
+          logger.error("Not admin");
+          return;
+        }
+        await this.setPrivate(message);
+      },
+    );
+    this.onMessage<Message[Messages.SetMode]>(
+      Messages.SetMode,
+      (client, message) => {
+        if (!this.isAdmin(client)) {
+          logger.error("Not admin");
+          return;
+        }
+        this.state.mode = message;
+      },
+    );
   }
 
   onJoin(client: Client) {
@@ -185,6 +206,11 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
 
   onDispose() {
     logger.info("room", this.roomId, "disposing...");
+  }
+
+  async setPrivate(newPrivate: boolean) {
+    await super.setPrivate(newPrivate);
+    this.state.private = newPrivate;
   }
 
   // CORE
