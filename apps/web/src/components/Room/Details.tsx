@@ -1,14 +1,16 @@
-import { Flex, Layout, List, Typography } from "antd";
+import { Flex, List, Space, Typography } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { useTranslation } from "react-i18next";
 import { ROOM_MAX_CLIENTS } from "@greatminds/api";
-import { PlayerItem } from "../Players/PlayerItem";
+import { PlayerItem } from "./Details/PlayerItem";
+import { Settings } from "./Details/Settings";
 
 const useStyles = createStyles(({ token }) => ({
-  layout: {
-    background: "unset",
+  details: {
+    width: "100%",
     paddingInline: token.padding,
+    paddingBlock: token.paddingLG,
   },
   header: {
     paddingInline: 0,
@@ -16,12 +18,15 @@ const useStyles = createStyles(({ token }) => ({
   headerFlex: {
     height: "100%",
   },
-  title: {
+  settingsTitle: {
+    marginBottom: `${token.paddingSM}px !important`,
+  },
+  playersTitle: {
     margin: "0 !important",
   },
 }));
 
-export function Players() {
+export function Details() {
   const { t } = useTranslation("room");
   const { styles } = useStyles();
 
@@ -32,27 +37,33 @@ export function Players() {
   );
 
   return (
-    <Layout className={styles.layout}>
-      <Layout.Header className={styles.header}>
+    <Space direction="vertical" size="large" className={styles.details}>
+      <div>
+        <Typography.Title level={5} className={styles.settingsTitle}>
+          {t("title.settings")}
+        </Typography.Title>
+        <Settings />
+      </div>
+      <div>
         <Flex
           align="center"
           justify="space-between"
           className={styles.headerFlex}
         >
-          <Typography.Title level={5} className={styles.title}>
+          <Typography.Title level={5} className={styles.playersTitle}>
             {t("title.players")}
           </Typography.Title>
           <Typography.Text type="secondary">
             {sortedPlayers.length} / {ROOM_MAX_CLIENTS}
           </Typography.Text>
         </Flex>
-      </Layout.Header>
-      <List
-        dataSource={sortedPlayers}
-        renderItem={(player, index) => (
-          <PlayerItem player={player} index={index} />
-        )}
-      />
-    </Layout>
+        <List
+          dataSource={sortedPlayers}
+          renderItem={(player, index) => (
+            <PlayerItem player={player} index={index} />
+          )}
+        />
+      </div>
+    </Space>
   );
 }

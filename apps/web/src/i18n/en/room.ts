@@ -1,5 +1,6 @@
 export const room = {
   title: {
+    settings: "Game",
     players: "Players",
     revealing1: "This round's Master is ",
     revealing1_hinter: "You are this round's Master, ",
@@ -18,6 +19,8 @@ export const room = {
   form: {
     label: {
       gameId: "Game ID",
+      mode: "Game mode",
+      visibility: "Visibility",
     },
     placeholder: {
       name: "Your name",
@@ -28,6 +31,12 @@ export const room = {
       validName: "16 characters max",
       requiredHint: "Please enter a hint",
       validHint: "50 characters max",
+    },
+    value: {
+      textHints: "Text hints",
+      sketchHints: "Sketch hints",
+      private: "Private",
+      public: "Public",
     },
   },
   pop: {
