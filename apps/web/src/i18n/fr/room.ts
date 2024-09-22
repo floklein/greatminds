@@ -1,5 +1,6 @@
 export const room = {
   title: {
+    settings: "Partie",
     players: "Joueurs",
     revealing1: "Le Master de ce tour est ",
     revealing1_hinter: "Vous êtes le Master de ce tour, ",
@@ -19,6 +20,8 @@ export const room = {
   form: {
     label: {
       gameId: "ID de la partie",
+      mode: "Mode de jeu",
+      visibility: "Visibilité",
     },
     placeholder: {
       name: "Votre nom",
@@ -29,6 +32,12 @@ export const room = {
       validName: "16 caractères max",
       requiredHint: "Veuillez entrer un indice",
       validHint: "50 caractères max",
+    },
+    value: {
+      textHints: "Indice textuel",
+      sketchHints: "Indice dessiné",
+      private: "Privée",
+      public: "Publique",
     },
   },
   pop: {

@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import { useStore } from "../../zustand";
+import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { motion } from "framer-motion";

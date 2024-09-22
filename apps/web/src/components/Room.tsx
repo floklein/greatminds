@@ -17,7 +17,7 @@ import {
   Tooltip,
 } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
-import { Players } from "./Room/Players";
+import { Details } from "./Room/Details";
 import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
 import clsx from "clsx";
@@ -39,7 +39,7 @@ const useStyles = createStyles(({ token }) => ({
   sider: {
     marginInlineStart: "1rem",
   },
-  players: {
+  details: {
     borderRadius: token.borderRadiusLG,
     backgroundColor: `${token.colorBgElevated} !important`,
   },
@@ -155,15 +155,15 @@ export function Room() {
         </Layout.Content>
       </Layout>
       {isMobile ? (
-        <Layout.Footer className={clsx(styles.footer, styles.players)}>
-          <Players />
+        <Layout.Footer className={clsx(styles.footer, styles.details)}>
+          <Details />
         </Layout.Footer>
       ) : (
         <Layout.Sider
           width={300}
-          className={clsx(styles.sider, styles.players)}
+          className={clsx(styles.sider, styles.details)}
         >
-          <Players />
+          <Details />
         </Layout.Sider>
       )}
     </Layout>
