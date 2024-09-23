@@ -19,7 +19,7 @@ import {
 import { Center } from "./UI/Center";
 import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
-import { useIsAdmin, useReconnectionToken } from "../hooks";
+import { useReconnectionToken } from "../hooks";
 import { useTranslation } from "react-i18next";
 import { m, LazyMotion, domAnimation } from "framer-motion";
 
@@ -65,13 +65,11 @@ export function Home() {
   const setRoom = useStore((state) => state.setRoom);
 
   const [reconnectionToken, setReconnectionToken] = useReconnectionToken();
-  const [isAdmin] = useIsAdmin();
 
   const { data: rooms, isLoading: loadingRooms } = useQuery({
     queryFn: () => client.getAvailableRooms<GreatMindsRoomState>(),
     queryKey: ["rooms"],
     refetchInterval: 5000,
-    enabled: isAdmin,
   });
 
   const { mutate: createRoom, isPending: creatingRoom } = useMutation({
@@ -229,44 +227,36 @@ export function Home() {
             </Form.Item>
           </Form>
         </Card>
-        {isAdmin && (
-          <>
-            <Divider>{t("divider.or")}</Divider>
-            <Card
-              title={t("card.title.joinGame")}
-              size="small"
-              bordered={false}
-            >
-              <List
-                locale={{ emptyText: t("card.text.noGames") }}
-                loading={loadingRooms}
-                dataSource={rooms}
-                pagination={{ pageSize: 5 }}
-                renderItem={(item) => (
-                  <List.Item
-                    actions={[
-                      <Button
-                        type="primary"
-                        onClick={() => joinRoom(item.roomId)}
-                        loading={joiningRoom}
-                      >
-                        {t("button.joinGame")}
-                      </Button>,
-                    ]}
+        <Divider>{t("divider.or")}</Divider>
+        <Card title={t("card.title.joinGame")} size="small" bordered={false}>
+          <List
+            locale={{ emptyText: t("card.text.noGames") }}
+            loading={loadingRooms}
+            dataSource={rooms}
+            pagination={{ pageSize: 5 }}
+            renderItem={(item) => (
+              <List.Item
+                actions={[
+                  <Button
+                    type="primary"
+                    onClick={() => joinRoom(item.roomId)}
+                    loading={joiningRoom}
                   >
-                    <List.Item.Meta
-                      title={item.roomId}
-                      description={t("card.description.playersInGame", {
-                        count: item.clients,
-                        max: item.maxClients,
-                      })}
-                    />
-                  </List.Item>
-                )}
-              />
-            </Card>
-          </>
-        )}
+                    {t("button.joinGame")}
+                  </Button>,
+                ]}
+              >
+                <List.Item.Meta
+                  title={item.roomId}
+                  description={t("card.description.playersInGame", {
+                    count: item.clients,
+                    max: item.maxClients,
+                  })}
+                />
+              </List.Item>
+            )}
+          />
+        </Card>
       </Space>
     </Center>
   );
