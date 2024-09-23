@@ -56,8 +56,13 @@ export class Round extends Schema {
   constructor(hinter: Player, players: MapSchema<Player>) {
     super();
     this.hinter = hinter;
-    this.guessers = new MapSchema<Player>(players);
-    this.guessers.delete(hinter.sessionId);
+    const guessers: Record<string, Player> = {};
+    players.forEach((player) => {
+      if (player.sessionId !== hinter.sessionId) {
+        guessers[player.sessionId] = player;
+      }
+    });
+    this.guessers = new MapSchema<Player>(guessers);
   }
 }
 
