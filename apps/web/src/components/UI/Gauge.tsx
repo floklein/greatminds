@@ -1,5 +1,5 @@
 import { createStyles } from "antd-style";
-import { motion, useMotionValue } from "framer-motion";
+import { m, LazyMotion, domAnimation, useMotionValue } from "framer-motion";
 import { useState, MouseEvent, useEffect } from "react";
 
 const useStyles = createStyles(({ token }) => ({
@@ -83,23 +83,25 @@ export function Gauge({ value = -100, onChange }: GaugeProps) {
   }, [value]);
 
   return (
-    <motion.div
-      className={styles.gauge}
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 1.005 }}
-    >
-      <motion.div
-        className={styles.dial}
-        onPointerDown={handleClick}
-        onMouseMove={handleMouseMove}
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={styles.gauge}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 1.005 }}
       >
-        <motion.div style={{ x: sparkX, y: sparkY }} className={styles.spark} />
-      </motion.div>
-      <motion.div
-        style={{ y: "50%" }}
-        animate={{ rotate: `calc(180deg + ${angle}rad)` }}
-        className={styles.needle}
-      />
-    </motion.div>
+        <m.div
+          className={styles.dial}
+          onPointerDown={handleClick}
+          onMouseMove={handleMouseMove}
+        >
+          <m.div style={{ x: sparkX, y: sparkY }} className={styles.spark} />
+        </m.div>
+        <m.div
+          style={{ y: "50%" }}
+          animate={{ rotate: `calc(180deg + ${angle}rad)` }}
+          className={styles.needle}
+        />
+      </m.div>
+    </LazyMotion>
   );
 }

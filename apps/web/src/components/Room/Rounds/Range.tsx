@@ -14,7 +14,7 @@ import {
 } from "@greatminds/api";
 import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 const badScoreDistance = BAD_SCORE_DISTANCE / 2;
 const okayScoreDistance = OKAY_SCORE_DISTANCE / 2;
@@ -153,37 +153,39 @@ export function Range() {
   return (
     <div className={styles.div}>
       <Flex justify="space-between" gap="small" wrap>
-        <motion.div
-          initial={{ x: 50 }}
-          animate={{ x: 0 }}
-          transition={{
-            type: "spring",
-          }}
-        >
-          <Tag
-            bordered={false}
-            icon={<ArrowLeftOutlined />}
-            className={styles.tag}
+        <LazyMotion features={domAnimation}>
+          <m.div
+            initial={{ x: 50 }}
+            animate={{ x: 0 }}
+            transition={{
+              type: "spring",
+            }}
           >
-            {range !== undefined && t(`range:${range}`, { context: "from" })}
-          </Tag>
-        </motion.div>
-        <motion.div
-          initial={{ x: -50 }}
-          animate={{ x: 0 }}
-          transition={{
-            type: "spring",
-          }}
-          style={{ marginInlineStart: "auto" }}
-        >
-          <Tag
-            bordered={false}
-            icon={<ArrowRightOutlined />}
-            className={clsx(styles.tag, styles.rightTag)}
+            <Tag
+              bordered={false}
+              icon={<ArrowLeftOutlined />}
+              className={styles.tag}
+            >
+              {range !== undefined && t(`range:${range}`, { context: "from" })}
+            </Tag>
+          </m.div>
+          <m.div
+            initial={{ x: -50 }}
+            animate={{ x: 0 }}
+            transition={{
+              type: "spring",
+            }}
+            style={{ marginInlineStart: "auto" }}
           >
-            {range !== undefined && t(`range:${range}`, { context: "to" })}
-          </Tag>
-        </motion.div>
+            <Tag
+              bordered={false}
+              icon={<ArrowRightOutlined />}
+              className={clsx(styles.tag, styles.rightTag)}
+            >
+              {range !== undefined && t(`range:${range}`, { context: "to" })}
+            </Tag>
+          </m.div>
+        </LazyMotion>
       </Flex>
       <div className={styles.sliders}>
         {otherPlayersGuesses.map((guess) => (

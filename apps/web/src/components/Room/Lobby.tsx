@@ -5,7 +5,7 @@ import { Message, Messages } from "@greatminds/api";
 import { useStore } from "../../zustand";
 import { Center } from "../UI/Center";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 type FieldType = {
   name?: string;
@@ -54,47 +54,49 @@ export function Lobby() {
 
   return (
     <Center>
-      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
-        <Form<FieldType>
-          initialValues={{ name: storeName }}
-          layout="inline"
-          onFinish={handleFormSubmit}
-          className={styles.form}
-        >
-          <Form.Item<FieldType>
-            name="name"
-            rules={[
-              { required: true, message: t("form.error.requiredName") },
-              {
-                type: "string",
-                pattern: /^.{1,16}$/,
-                message: t("form.error.validName"),
-              },
-            ]}
+      <LazyMotion features={domAnimation}>
+        <m.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+          <Form<FieldType>
+            initialValues={{ name: storeName }}
+            layout="inline"
+            onFinish={handleFormSubmit}
+            className={styles.form}
           >
-            <Input
-              size="large"
-              placeholder={t("form.placeholder.name")}
-              autoFocus
-              disabled={ready}
-              autoComplete="off"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className={styles.button}
-              color={ready ? "success" : undefined}
-              size="large"
-              icon={ready ? <CheckOutlined /> : undefined}
-              iconPosition="end"
+            <Form.Item<FieldType>
+              name="name"
+              rules={[
+                { required: true, message: t("form.error.requiredName") },
+                {
+                  type: "string",
+                  pattern: /^.{1,16}$/,
+                  message: t("form.error.validName"),
+                },
+              ]}
             >
-              {ready ? t("button.ready") : t("button.notReady")}
-            </Button>
-          </Form.Item>
-        </Form>
-      </motion.div>
+              <Input
+                size="large"
+                placeholder={t("form.placeholder.name")}
+                autoFocus
+                disabled={ready}
+                autoComplete="off"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.button}
+                color={ready ? "success" : undefined}
+                size="large"
+                icon={ready ? <CheckOutlined /> : undefined}
+                iconPosition="end"
+              >
+                {ready ? t("button.ready") : t("button.notReady")}
+              </Button>
+            </Form.Item>
+          </Form>
+        </m.div>
+      </LazyMotion>
     </Center>
   );
 }
