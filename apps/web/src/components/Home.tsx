@@ -21,7 +21,7 @@ import { createStyles } from "antd-style";
 import { PlusOutlined, UndoOutlined } from "@ant-design/icons";
 import { useIsAdmin, useReconnectionToken } from "../hooks";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 type FieldType = {
   roomId?: string;
@@ -178,18 +178,20 @@ export function Home() {
           }
         />
         <Flex vertical gap="middle" align="center" justify="center">
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.05 }}>
-            <Button
-              type="primary"
-              size="large"
-              onClick={() => createRoom()}
-              icon={<PlusOutlined />}
-              loading={creatingRoom}
-              className={styles.createButton}
-            >
-              {t("button.createGame")}
-            </Button>
-          </motion.div>
+          <LazyMotion features={domAnimation}>
+            <m.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.05 }}>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => createRoom()}
+                icon={<PlusOutlined />}
+                loading={creatingRoom}
+                className={styles.createButton}
+              >
+                {t("button.createGame")}
+              </Button>
+            </m.div>
+          </LazyMotion>
           {reconnectionToken && (
             <Button
               type="text"

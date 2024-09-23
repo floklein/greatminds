@@ -18,7 +18,7 @@ import {
 import { useStore } from "../../../zustand";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 import { createStyles } from "antd-style";
 
 const useStyles = createStyles({
@@ -95,52 +95,56 @@ export function PlayerItem({ player, index }: PlayerItemProps) {
       onMouseLeave={handleMouseLeave}
       actions={[
         <Flex align="center" className={styles.flex}>
-          <motion.div
-            animate={showKick && { opacity: isHover ? 0 : 1 }}
-            transition={{ duration: 0.1 }}
-          >
-            {phase === "rounds" ? (
-              player.score
-            ) : (
-              <Badge
-                status={player.ready ? "success" : "error"}
-                text={player.ready ? t("badge.ready") : t("badge.notReady")}
-              />
-            )}
-          </motion.div>
-          {showKick && (
-            <motion.div
-              animate={{ opacity: isHover ? 1 : 0 }}
+          <LazyMotion features={domAnimation}>
+            <m.div
+              animate={showKick && { opacity: isHover ? 0 : 1 }}
               transition={{ duration: 0.1 }}
             >
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      type: "item",
-                      key: "0",
-                      label: (
-                        <Popconfirm
-                          title={t("pop.title.kick")}
-                          description={t("pop.description.kick", {
-                            player: playerName,
-                          })}
-                          icon={null}
-                          onConfirm={kickPlayer}
-                        >
-                          {t("menu.label.kick", { player: playerName })}
-                        </Popconfirm>
-                      ),
-                      danger: true,
-                      icon: <UserDeleteOutlined />,
-                    },
-                  ],
-                }}
-                trigger={["click"]}
+              {phase === "rounds" ? (
+                player.score
+              ) : (
+                <Badge
+                  status={player.ready ? "success" : "error"}
+                  text={player.ready ? t("badge.ready") : t("badge.notReady")}
+                />
+              )}
+            </m.div>
+          </LazyMotion>
+          {showKick && (
+            <LazyMotion features={domAnimation}>
+              <m.div
+                animate={{ opacity: isHover ? 1 : 0 }}
+                transition={{ duration: 0.1 }}
               >
-                <Button icon={<MoreOutlined />} type="text" />
-              </Dropdown>
-            </motion.div>
+                <Dropdown
+                  menu={{
+                    items: [
+                      {
+                        type: "item",
+                        key: "0",
+                        label: (
+                          <Popconfirm
+                            title={t("pop.title.kick")}
+                            description={t("pop.description.kick", {
+                              player: playerName,
+                            })}
+                            icon={null}
+                            onConfirm={kickPlayer}
+                          >
+                            {t("menu.label.kick", { player: playerName })}
+                          </Popconfirm>
+                        ),
+                        danger: true,
+                        icon: <UserDeleteOutlined />,
+                      },
+                    ],
+                  }}
+                  trigger={["click"]}
+                >
+                  <Button icon={<MoreOutlined />} type="text" />
+                </Dropdown>
+              </m.div>
+            </LazyMotion>
           )}
         </Flex>,
       ]}

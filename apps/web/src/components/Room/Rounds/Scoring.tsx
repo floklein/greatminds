@@ -8,7 +8,7 @@ import { useStore } from "../../../zustand";
 import { Card, List, Tag, TagProps } from "antd";
 import { createStyles } from "antd-style";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 
 function ScoreTag({ score }: { score: number }) {
   function getColor(): TagProps["color"] {
@@ -65,28 +65,30 @@ export function Scoring() {
     .sort((a, b) => b.score - a.score);
 
   return (
-    <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
-      <Card
-        size="small"
-        className={styles.card}
-        title={t("list.title.roundScoreboard")}
-      >
-        <List
-          dataSource={sortedGuessesByDistance}
-          renderItem={(guess) => (
-            <List.Item actions={[<ScoreTag score={guess.score} />]}>
-              <List.Item.Meta
-                title={guess.player.name}
-                description={
-                  guess.sessionId === hinterId
-                    ? t("list.description.hinter")
-                    : t("list.description.guesser")
-                }
-              />
-            </List.Item>
-          )}
-        />
-      </Card>
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+        <Card
+          size="small"
+          className={styles.card}
+          title={t("list.title.roundScoreboard")}
+        >
+          <List
+            dataSource={sortedGuessesByDistance}
+            renderItem={(guess) => (
+              <List.Item actions={[<ScoreTag score={guess.score} />]}>
+                <List.Item.Meta
+                  title={guess.player.name}
+                  description={
+                    guess.sessionId === hinterId
+                      ? t("list.description.hinter")
+                      : t("list.description.guesser")
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        </Card>
+      </m.div>
+    </LazyMotion>
   );
 }

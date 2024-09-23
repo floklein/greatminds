@@ -1,4 +1,4 @@
-import { Client as CClient } from "@colyseus/core";
+import { Client as ColyseusClient } from "@colyseus/core";
 
 export enum GameMode {
   TextHints = "textHints",
@@ -30,7 +30,7 @@ export interface Message {
 }
 
 export type UserData = { isKicked?: boolean };
-export type Client = CClient<UserData>;
+export type Client = ColyseusClient<UserData>;
 
 export enum Errors {
   HinterLeft = "hinterLeft",

@@ -1,4 +1,4 @@
-import type { ToJSON } from "@colyseus/schema";
+import { ToJSON } from "@colyseus/schema";
 import { GreatMindsRoomState } from "@greatminds/api";
 import { Room } from "colyseus.js";
 import { create } from "zustand";

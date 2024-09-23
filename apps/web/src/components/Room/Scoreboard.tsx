@@ -3,7 +3,7 @@ import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { Place } from "./Scoreboard/Place";
 import { Center } from "../UI/Center";
-import { motion } from "framer-motion";
+import { m, LazyMotion, domAnimation } from "framer-motion";
 import waveArrow from "/assets/images/waveArrow.svg";
 import { Messages } from "@greatminds/api";
 import { useTranslation } from "react-i18next";
@@ -81,41 +81,45 @@ export function Scoreboard() {
           dataSource={sortedPlayers}
           renderItem={(player, index) => (
             <List.Item actions={[player.score]}>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: sortedPlayers.length - index }}
-              >
-                <List.Item.Meta
-                  avatar={<Place place={player.place} />}
-                  title={player.name}
-                  className={styles.playerName}
-                />
-              </motion.div>
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: sortedPlayers.length - index }}
+                >
+                  <List.Item.Meta
+                    avatar={<Place place={player.place} />}
+                    title={player.name}
+                    className={styles.playerName}
+                  />
+                </m.div>
+              </LazyMotion>
             </List.Item>
           )}
         />
       </Card>
       {isAdmin && (
         <Center>
-          <motion.img
-            style={{
-              transformOrigin: "center",
-              display: "block",
-              marginInline: "auto",
-              transform: "rotate(180deg)",
-            }}
-            initial={{ height: 0 }}
-            animate={{ height: 100 }}
-            transition={{
-              type: "spring",
-              stiffness: 150,
-              damping: 10,
-              mass: 2,
-            }}
-            src={waveArrow}
-            alt="arrow"
-          />
+          <LazyMotion features={domAnimation}>
+            <m.img
+              style={{
+                transformOrigin: "center",
+                display: "block",
+                marginInline: "auto",
+                transform: "rotate(180deg)",
+              }}
+              initial={{ height: 0 }}
+              animate={{ height: 100 }}
+              transition={{
+                type: "spring",
+                stiffness: 150,
+                damping: 10,
+                mass: 2,
+              }}
+              src={waveArrow}
+              alt="arrow"
+            />
+          </LazyMotion>
           <Button
             type="primary"
             size="large"
