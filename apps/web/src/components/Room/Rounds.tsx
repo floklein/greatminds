@@ -1,10 +1,12 @@
 import { Space, Steps } from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
-import { Hint } from "./Rounds/Hint";
+import { TextHint } from "./Rounds/TextHint";
 import { Scoring } from "./Rounds/Scoring";
 import { Step } from "./Rounds/Step";
 import { Range } from "./Rounds/Range";
+import { GameMode } from "@greatminds/api";
+import { SketchHint } from "./Rounds/SketchHint";
 
 const useStyles = createStyles({
   space: {
@@ -26,6 +28,7 @@ export function Rounds() {
     (state) =>
       state.room!.sessionId === state.roomState!.round?.hinter?.sessionId,
   );
+  const mode = useStore((state) => state.roomState!.mode);
 
   return (
     <Space direction="vertical" size="large" className={styles.space}>
@@ -40,7 +43,12 @@ export function Rounds() {
       {(step === "hinting" || step === "guessing" || step === "scoring") && (
         <Range />
       )}
-      {step === "hinting" && isHinter && <Hint />}
+      {step === "hinting" && isHinter && mode === GameMode.TextHints && (
+        <TextHint />
+      )}
+      {step === "hinting" && isHinter && mode === GameMode.SketchHints && (
+        <SketchHint />
+      )}
       {step === "scoring" && <Scoring />}
     </Space>
   );

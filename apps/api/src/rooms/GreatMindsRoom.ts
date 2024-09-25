@@ -43,13 +43,13 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         if (
           this.state.players.size >= 2 &&
           Array.from(this.state.players.values()).every(
-            (player) => player.ready,
+            (player) => player.ready
           )
         ) {
           logger.info("all players ready");
           this.setPhase("rounds");
         }
-      },
+      }
     );
     this.onMessage<Message[Messages.SetPlayerName]>(
       Messages.SetPlayerName,
@@ -61,7 +61,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
           return;
         }
         player.name = message;
-      },
+      }
     );
     this.onMessage<Message[Messages.SubmitHint]>(
       Messages.SubmitHint,
@@ -90,7 +90,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         }
         this.state.round.hint = message;
         this.setRoundStep("guessing");
-      },
+      }
     );
     this.onMessage<Message[Messages.SetGuess]>(
       Messages.SetGuess,
@@ -114,7 +114,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
           return;
         }
         this.state.round.guesses.set(client.sessionId, message);
-      },
+      }
     );
     this.onMessage<Message[Messages.PlayAgain]>(
       Messages.PlayAgain,
@@ -125,7 +125,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         }
         logger.info("play again");
         this.setPhase("lobby");
-      },
+      }
     );
     this.onMessage<Message[Messages.KickPlayer]>(
       Messages.KickPlayer,
@@ -151,7 +151,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         kickedClient.userData ??= {};
         kickedClient.userData.isKicked = true;
         kickedClient.leave();
-      },
+      }
     );
     this.onMessage<Message[Messages.SetPrivate]>(
       Messages.SetPrivate,
@@ -160,8 +160,9 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
           logger.error("Not admin");
           return;
         }
+        logger.info("private =", message);
         await this.setPrivate(message);
-      },
+      }
     );
     this.onMessage<Message[Messages.SetMode]>(
       Messages.SetMode,
@@ -170,8 +171,9 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
           logger.error("Not admin");
           return;
         }
+        logger.info("mode =", message);
         this.state.mode = message;
-      },
+      }
     );
   }
 
@@ -191,7 +193,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
         logger.info(client.sessionId, "left...");
         await this.allowReconnection(
           client,
-          ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS,
+          ROOM_ALLOW_RECONNECTION_TIMEOUT_SECONDS
         );
         logger.info(client.sessionId, "...but reconnected!");
         return;
@@ -236,7 +238,7 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       const roundsLength = getRoundsLength(this.state.players.size);
       for (let i = 0; i < roundsLength; i++) {
         this.state.rounds.push(
-          new Round(playersArray[i % playersArray.length], this.state.players),
+          new Round(playersArray[i % playersArray.length], this.state.players)
         );
       }
       this.setRound(0);
@@ -301,11 +303,11 @@ export class GreatMindsRoom extends Room<GreatMindsRoomState> {
       if (this.state.round.hinter) {
         const hinterScore = getHinterScore(
           this.state.round.scores,
-          this.state.round.guessers.size,
+          this.state.round.guessers.size
         );
         this.state.round.scores.set(
           this.state.round.hinter.sessionId,
-          hinterScore,
+          hinterScore
         );
         this.state.round.hinter.score += hinterScore;
       }

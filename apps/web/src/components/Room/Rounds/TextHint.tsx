@@ -9,7 +9,7 @@ type FieldType = {
   hint?: string;
 };
 
-export function Hint() {
+export function TextHint() {
   const { t } = useTranslation("room");
 
   const room = useStore((state) => state.room!);

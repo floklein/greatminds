@@ -4,7 +4,7 @@ import {
   LockOutlined,
   SignatureOutlined,
 } from "@ant-design/icons";
-import { Badge, Flex, Form, Segmented } from "antd";
+import { Flex, Form, Segmented } from "antd";
 import { createStyles } from "antd-style";
 import { useTranslation } from "react-i18next";
 import { useStore } from "../../../zustand";
@@ -12,8 +12,8 @@ import { GameMode, Message, Messages } from "@greatminds/api";
 import { useEffect } from "react";
 
 interface FieldType {
-  mode: GameMode;
-  private: boolean;
+  mode?: GameMode;
+  private?: boolean;
 }
 
 const useStyles = createStyles(
@@ -46,11 +46,15 @@ export function Settings() {
   const { styles } = useStyles({ isAdmin });
 
   function onValuesChange(values: FieldType) {
-    room.send<Message[Messages.SetMode]>(Messages.SetMode, values.mode);
-    room.send<Message[Messages.SetPrivate]>(
-      Messages.SetPrivate,
-      values.private,
-    );
+    if (values.mode !== undefined) {
+      room.send<Message[Messages.SetMode]>(Messages.SetMode, values.mode);
+    }
+    if (values.private !== undefined) {
+      room.send<Message[Messages.SetPrivate]>(
+        Messages.SetPrivate,
+        values.private,
+      );
+    }
   }
 
   useEffect(() => {
@@ -68,37 +72,34 @@ export function Settings() {
       onValuesChange={onValuesChange}
     >
       <Form.Item label={t("form.label.mode")} name="mode">
-        <Badge.Ribbon text={t("badge.comingSoon")}>
-          <Segmented
-            block
-            disabled={disabled}
-            options={[
-              {
-                label: (
-                  <Flex vertical align="center">
-                    <FontSizeOutlined
-                      style={{ paddingBlockStart: 8, fontSize: 32 }}
-                    />
-                    {t("form.value.textHints")}
-                  </Flex>
-                ),
-                value: GameMode.TextHints,
-              },
-              {
-                label: (
-                  <Flex vertical align="center">
-                    <SignatureOutlined
-                      style={{ paddingBlockStart: 8, fontSize: 32 }}
-                    />
-                    {t("form.value.sketchHints")}
-                  </Flex>
-                ),
-                value: GameMode.SketchHints,
-                disabled: true,
-              },
-            ]}
-          />
-        </Badge.Ribbon>
+        <Segmented
+          block
+          disabled={disabled}
+          options={[
+            {
+              label: (
+                <Flex vertical align="center">
+                  <FontSizeOutlined
+                    style={{ paddingBlockStart: 8, fontSize: 32 }}
+                  />
+                  {t("form.value.textHints")}
+                </Flex>
+              ),
+              value: GameMode.TextHints,
+            },
+            {
+              label: (
+                <Flex vertical align="center">
+                  <SignatureOutlined
+                    style={{ paddingBlockStart: 8, fontSize: 32 }}
+                  />
+                  {t("form.value.sketchHints")}
+                </Flex>
+              ),
+              value: GameMode.SketchHints,
+            },
+          ]}
+        />
       </Form.Item>
       <Form.Item label={t("form.label.private")} name="private">
         <Segmented
