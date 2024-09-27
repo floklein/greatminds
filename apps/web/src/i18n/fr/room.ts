@@ -19,7 +19,7 @@ export const room = {
   },
   form: {
     label: {
-      gameId: "ID de la partie",
+      gameId: "ID",
       mode: "Mode de jeu",
       private: "Visibilité",
     },

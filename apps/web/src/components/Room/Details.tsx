@@ -1,10 +1,23 @@
-import { Flex, List, Space, Typography } from "antd";
+import {
+  Button,
+  Flex,
+  Input,
+  List,
+  Popconfirm,
+  Space,
+  Tooltip,
+  Typography,
+} from "antd";
 import { createStyles } from "antd-style";
 import { useStore } from "../../zustand";
 import { useTranslation } from "react-i18next";
 import { ROOM_MAX_CLIENTS } from "@greatminds/api";
 import { PlayerItem } from "./Details/PlayerItem";
 import { Settings } from "./Details/Settings";
+import { CopyOutlined } from "@ant-design/icons";
+import { useMutation } from "@tanstack/react-query";
+import { useReconnectionToken } from "../../hooks";
+import { useState } from "react";
 
 const useStyles = createStyles(({ token }) => ({
   details: {
@@ -30,11 +43,36 @@ export function Details() {
   const { t } = useTranslation("room");
   const { styles } = useStyles();
 
+  const room = useStore((state) => state.room!);
+  const setRoom = useStore((state) => state.setRoom);
+  const phase = useStore((state) => state.roomState?.phase);
+  const setRoomState = useStore((state) => state.setRoomState);
   const players = useStore((state) => state.roomState!.players);
+
+  const [, setReconnectionToken] = useReconnectionToken();
+
+  const [copied, setCopied] = useState(false);
 
   const sortedPlayers = Object.values(players).sort(
     (a, b) => b.score - a.score,
   );
+
+  const { mutate: leaveRoom } = useMutation({
+    mutationFn: () => room!.leave(),
+    onSuccess: () => {
+      setReconnectionToken(null);
+      setRoom(null);
+      setRoomState(null);
+    },
+  });
+
+  function copyRoomId() {
+    navigator.clipboard.writeText(room.roomId);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  }
 
   return (
     <Space direction="vertical" size="large" className={styles.details}>
@@ -42,6 +80,38 @@ export function Details() {
         <Typography.Title level={5} className={styles.settingsTitle}>
           {t("title.settings")}
         </Typography.Title>
+        <Flex
+          gap="small"
+          align="center"
+          justify="center"
+          className={styles.headerFlex}
+        >
+          <Space.Compact>
+            <Input.Password
+              addonBefore={t("form.label.gameId")}
+              value={room.roomId}
+              autoComplete="off"
+              readOnly
+            />
+            {phase === "lobby" && (
+              <Tooltip title={copied ? t("tooltip.copied") : t("tooltip.copy")}>
+                <Button icon={<CopyOutlined />} onClick={copyRoomId} />
+              </Tooltip>
+            )}
+          </Space.Compact>
+          <Popconfirm
+            title={t("pop.title.leave")}
+            description={t("pop.description.leave")}
+            onConfirm={() => leaveRoom()}
+            okText={t("pop.ok.leave")}
+            cancelText={t("pop.cancel.leave")}
+            icon={null}
+          >
+            <Button type="text" danger>
+              {t("button.leaveGame")}
+            </Button>
+          </Popconfirm>
+        </Flex>
         <Settings />
       </div>
       <div>

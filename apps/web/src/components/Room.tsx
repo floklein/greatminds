@@ -1,34 +1,19 @@
-import { useMutation } from "@tanstack/react-query";
 import { useStore } from "../zustand";
 import { Lobby } from "./Room/Lobby";
 import { Rounds } from "./Room/Rounds";
 import { Scoreboard } from "./Room/Scoreboard";
-import { useEffect, useState } from "react";
-import { useLocalStorage, useMediaQuery } from "usehooks-ts";
-import {
-  Button,
-  Flex,
-  Input,
-  Layout,
-  message,
-  Popconfirm,
-  Space,
-  Spin,
-  Tooltip,
-} from "antd";
-import { CopyOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+import { useMediaQuery } from "usehooks-ts";
+import { Layout, message, Spin } from "antd";
 import { Details } from "./Room/Details";
 import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { Message, Messages } from "@greatminds/api";
+import { useReconnectionToken } from "../hooks";
 
 const useStyles = createStyles(({ token }) => ({
-  header: {
-    paddingInline: 0,
-    marginBlockEnd: "2rem",
-  },
   headerFlex: {
     height: "100%",
   },
@@ -43,9 +28,6 @@ const useStyles = createStyles(({ token }) => ({
     borderRadius: token.borderRadiusLG,
     backgroundColor: `${token.colorBgElevated} !important`,
   },
-  password: {
-    width: "210px",
-  },
 }));
 
 export function Room() {
@@ -59,23 +41,9 @@ export function Room() {
   const hasRoomState = useStore((state) => state.roomState !== null);
   const setRoomState = useStore((state) => state.setRoomState);
 
-  const [, setReconnectionToken] = useLocalStorage<string | null>(
-    "reconnectionToken",
-    null,
-  );
-
-  const [copied, setCopied] = useState(false);
+  const [, setReconnectionToken] = useReconnectionToken();
 
   const isMobile = useMediaQuery("(max-width: 800px)");
-
-  const { mutate: leaveRoom } = useMutation({
-    mutationFn: () => room!.leave(),
-    onSuccess: () => {
-      setReconnectionToken(null);
-      setRoom(null);
-      setRoomState(null);
-    },
-  });
 
   useEffect(() => {
     room.onStateChange((state) => setRoomState(state.toJSON()));
@@ -92,14 +60,6 @@ export function Room() {
     };
   }, [messageApi, room, setReconnectionToken, setRoom, setRoomState, t]);
 
-  function copyRoomId() {
-    navigator.clipboard.writeText(room.roomId);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  }
-
   if (!hasRoomState) {
     return (
       <Center>
@@ -111,43 +71,6 @@ export function Room() {
     <Layout>
       {contextHolder}
       <Layout>
-        <Layout.Header className={styles.header}>
-          <Flex
-            gap="small"
-            align="center"
-            justify="center"
-            className={styles.headerFlex}
-          >
-            <Space.Compact>
-              <Input.Password
-                addonBefore={t("form.label.gameId")}
-                value={room.roomId}
-                autoComplete="off"
-                readOnly
-                className={styles.password}
-              />
-              {phase === "lobby" && (
-                <Tooltip
-                  title={copied ? t("tooltip.copied") : t("tooltip.copy")}
-                >
-                  <Button icon={<CopyOutlined />} onClick={copyRoomId} />
-                </Tooltip>
-              )}
-            </Space.Compact>
-            <Popconfirm
-              title={t("pop.title.leave")}
-              description={t("pop.description.leave")}
-              onConfirm={() => leaveRoom()}
-              okText={t("pop.ok.leave")}
-              cancelText={t("pop.cancel.leave")}
-              icon={null}
-            >
-              <Button type="text" danger>
-                {t("button.leaveGame")}
-              </Button>
-            </Popconfirm>
-          </Flex>
-        </Layout.Header>
         <Layout.Content>
           {phase === "lobby" && <Lobby />}
           {phase === "rounds" && <Rounds />}

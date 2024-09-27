@@ -24,9 +24,6 @@ const perfectScoreDistance = PERFECT_SCORE_DISTANCE / 2;
 const useStyles = createStyles(({ token }, { target }: { target?: number }) => {
   const gradientCenter = (target ?? 0) / 2 + 50;
   return {
-    div: {
-      paddingBlock: "2rem",
-    },
     tag: {
       margin: 0,
       fontSize: token.fontSize,
@@ -56,7 +53,7 @@ const useStyles = createStyles(({ token }, { target }: { target?: number }) => {
         "--ant-slider-handle-size-hover": "22px",
       },
       "&.ant-slider .ant-slider-dot": {
-        backgroundColor: colorAlpha(token.colorWhite, 0.25),
+        backgroundColor: colorAlpha("#ffffff", 0.25),
         border: "none",
       },
     },
@@ -151,7 +148,7 @@ export function Range() {
   }
 
   return (
-    <div className={styles.div}>
+    <div>
       <Flex justify="space-between" gap="small" wrap>
         <LazyMotion features={domAnimation}>
           <m.div

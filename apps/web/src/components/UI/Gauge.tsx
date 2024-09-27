@@ -19,7 +19,7 @@ const useStyles = createStyles(({ token }) => ({
     position: "absolute",
     width: "20px",
     height: "20px",
-    backgroundColor: token.colorWhite,
+    backgroundColor: "#ffffff",
     borderRadius: "50%",
     pointerEvents: "none",
     filter: "blur(20px)",
