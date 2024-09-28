@@ -61,6 +61,7 @@ export const room = {
     notReady: "Ready?",
     submitHint: "Submit",
     playAgain: "Play again?",
+    clearCanvas: "Clear",
   },
   tooltip: {
     copied: "Copied!",
@@ -68,6 +69,7 @@ export const room = {
     you: "You",
     guess: "{{player}}",
     target: "Target",
+    eraser: "Eraser",
   },
   badge: {
     ready: "Ready",

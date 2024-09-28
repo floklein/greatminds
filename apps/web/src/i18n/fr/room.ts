@@ -62,6 +62,7 @@ export const room = {
     notReady: "Prêt ?",
     submitHint: "Envoyer",
     playAgain: "Rejouer ?",
+    clearCanvas: "Effacer",
   },
   tooltip: {
     copied: "Copié !",
@@ -69,6 +70,7 @@ export const room = {
     you: "Vous",
     guess: "{{player}}",
     target: "Cible",
+    eraser: "Gomme",
   },
   badge: {
     ready: "Prêt",
