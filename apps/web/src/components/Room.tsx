@@ -1,50 +1,32 @@
-import { useMutation } from "@tanstack/react-query";
 import { useStore } from "../zustand";
 import { Lobby } from "./Room/Lobby";
 import { Rounds } from "./Room/Rounds";
 import { Scoreboard } from "./Room/Scoreboard";
 import { useEffect, useState } from "react";
 import { useLocalStorage, useMediaQuery } from "usehooks-ts";
-import {
-  Button,
-  Flex,
-  Input,
-  Layout,
-  message,
-  Popconfirm,
-  Space,
-  Spin,
-  Tooltip,
-} from "antd";
-import { CopyOutlined } from "@ant-design/icons";
+import { Badge, Button, Drawer, Layout, message, Spin } from "antd";
 import { Details } from "./Room/Details";
 import { createStyles } from "antd-style";
 import { Center } from "./UI/Center";
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { Message, Messages } from "@greatminds/api";
+import { MenuOutlined } from "@ant-design/icons";
 
 const useStyles = createStyles(({ token }) => ({
   header: {
+    height: "unset",
+    lineHeight: "unset",
     paddingInline: 0,
+    marginBlockStart: "-2rem",
     marginBlockEnd: "2rem",
-  },
-  headerFlex: {
-    height: "100%",
-  },
-  footer: {
-    padding: 0,
-    marginBlockStart: "2rem",
+    textAlign: "right",
   },
   sider: {
     marginInlineStart: "1rem",
-  },
-  details: {
+    paddingInline: token.paddingMD,
+    paddingBlock: token.paddingLG,
     borderRadius: token.borderRadiusLG,
     backgroundColor: `${token.colorBgElevated} !important`,
-  },
-  password: {
-    width: "210px",
   },
 }));
 
@@ -58,24 +40,18 @@ export function Room() {
   const phase = useStore((state) => state.roomState?.phase);
   const hasRoomState = useStore((state) => state.roomState !== null);
   const setRoomState = useStore((state) => state.setRoomState);
+  const playersLength = useStore(
+    (state) => Object.keys(state.roomState?.players ?? {}).length,
+  );
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [, setReconnectionToken] = useLocalStorage<string | null>(
     "reconnectionToken",
     null,
   );
 
-  const [copied, setCopied] = useState(false);
-
   const isMobile = useMediaQuery("(max-width: 800px)");
-
-  const { mutate: leaveRoom } = useMutation({
-    mutationFn: () => room!.leave(),
-    onSuccess: () => {
-      setReconnectionToken(null);
-      setRoom(null);
-      setRoomState(null);
-    },
-  });
 
   useEffect(() => {
     room.onStateChange((state) => setRoomState(state.toJSON()));
@@ -92,12 +68,12 @@ export function Room() {
     };
   }, [messageApi, room, setReconnectionToken, setRoom, setRoomState, t]);
 
-  function copyRoomId() {
-    navigator.clipboard.writeText(room.roomId);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+  function closeDrawer() {
+    setIsDrawerOpen(false);
+  }
+
+  function openDrawer() {
+    setIsDrawerOpen(true);
   }
 
   if (!hasRoomState) {
@@ -111,43 +87,20 @@ export function Room() {
     <Layout>
       {contextHolder}
       <Layout>
-        <Layout.Header className={styles.header}>
-          <Flex
-            gap="small"
-            align="center"
-            justify="center"
-            className={styles.headerFlex}
-          >
-            <Space.Compact>
-              <Input.Password
-                addonBefore={t("form.label.gameId")}
-                value={room.roomId}
-                autoComplete="off"
-                readOnly
-                className={styles.password}
+        {isMobile && (
+          <Layout.Header className={styles.header}>
+            <Badge count={playersLength} color="volcano">
+              <Button
+                variant="filled"
+                color="primary"
+                size="large"
+                icon={<MenuOutlined />}
+                onClick={openDrawer}
               />
-              {phase === "lobby" && (
-                <Tooltip
-                  title={copied ? t("tooltip.copied") : t("tooltip.copy")}
-                >
-                  <Button icon={<CopyOutlined />} onClick={copyRoomId} />
-                </Tooltip>
-              )}
-            </Space.Compact>
-            <Popconfirm
-              title={t("pop.title.leave")}
-              description={t("pop.description.leave")}
-              onConfirm={() => leaveRoom()}
-              okText={t("pop.ok.leave")}
-              cancelText={t("pop.cancel.leave")}
-              icon={null}
-            >
-              <Button type="text" danger>
-                {t("button.leaveGame")}
-              </Button>
-            </Popconfirm>
-          </Flex>
-        </Layout.Header>
+            </Badge>
+          </Layout.Header>
+        )}
+
         <Layout.Content>
           {phase === "lobby" && <Lobby />}
           {phase === "rounds" && <Rounds />}
@@ -155,14 +108,11 @@ export function Room() {
         </Layout.Content>
       </Layout>
       {isMobile ? (
-        <Layout.Footer className={clsx(styles.footer, styles.details)}>
+        <Drawer open={isDrawerOpen} onClose={closeDrawer}>
           <Details />
-        </Layout.Footer>
+        </Drawer>
       ) : (
-        <Layout.Sider
-          width={300}
-          className={clsx(styles.sider, styles.details)}
-        >
+        <Layout.Sider width={300} className={styles.sider}>
           <Details />
         </Layout.Sider>
       )}

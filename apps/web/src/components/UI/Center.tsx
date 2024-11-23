@@ -1,10 +1,12 @@
-import { Flex } from "antd";
 import { createStyles } from "antd-style";
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
 const useStyles = createStyles({
   flex: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
     height: "100%",
     flexGrow: 1,
@@ -22,8 +24,8 @@ export function Center({ children, itemClassName }: PropsWithChildren<Props>) {
   const { styles } = useStyles();
 
   return (
-    <Flex align="center" justify="center" className={styles.flex}>
+    <div className={styles.flex}>
       <div className={clsx(styles.item, itemClassName)}>{children}</div>
-    </Flex>
+    </div>
   );
 }

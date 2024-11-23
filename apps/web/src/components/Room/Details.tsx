@@ -9,11 +9,7 @@ import { Settings } from "./Details/Settings";
 const useStyles = createStyles(({ token }) => ({
   details: {
     width: "100%",
-    paddingInline: token.padding,
-    paddingBlock: token.paddingLG,
-  },
-  header: {
-    paddingInline: 0,
+    rowGap: "48px",
   },
   headerFlex: {
     height: "100%",
@@ -38,12 +34,7 @@ export function Details() {
 
   return (
     <Space direction="vertical" size="large" className={styles.details}>
-      <div>
-        <Typography.Title level={5} className={styles.settingsTitle}>
-          {t("title.settings")}
-        </Typography.Title>
-        <Settings />
-      </div>
+      <Settings />
       <div>
         <Flex
           align="center"

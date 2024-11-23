@@ -3,7 +3,6 @@ import { useStore } from "../zustand";
 import { client } from "../colyseus";
 import { GreatMindsRoomState } from "@greatminds/api";
 import {
-  Alert,
   Button,
   Card,
   Divider,
@@ -36,8 +35,13 @@ const useStyles = createStyles(({ token }) => ({
     maxWidth: "30rem",
   },
   tutorial: {
-    backgroundColor: token.colorBgElevated,
-    border: "none",
+    "& > div": {
+      backgroundColor: token.colorBgElevated,
+      border: "none",
+      borderRadius: token.borderRadiusLG,
+      padding: "20px 24px",
+      lineHeight: token.lineHeightSM,
+    },
     marginBlockEnd: token.paddingLG,
   },
   greatMinds: {
@@ -109,72 +113,65 @@ export function Home() {
   return (
     <Center itemClassName={styles.flexItem}>
       <Space direction="vertical" size="large" className={styles.space}>
-        <Alert
-          className={styles.tutorial}
-          message={
-            <>
-              <Typography.Text className={styles.greatMinds}>
-                {t("tutorial.title1")}
-              </Typography.Text>
-              {t("tutorial.title2")}
-            </>
-          }
-          description={
-            <>
-              <Typography.Paragraph>
-                {t("tutorial.paragraph1a")}
-                <Tooltip
-                  title={t("tutorial.tooltip1")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag bordered>{t("tutorial.tag1")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph1b")}
-                <Tooltip
-                  title={t("tutorial.tooltip2")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>{t("tutorial.tag2")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph1c")}
-              </Typography.Paragraph>
-              <Typography.Paragraph>
-                {t("tutorial.paragraph2a")}
-                <Tooltip
-                  title={t("tutorial.tooltip3")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>{t("tutorial.tag3")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph2b")}
-                <Tooltip
-                  title={t("tutorial.tooltip4")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>{t("tutorial.tag4")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph2c")}
-                <Tooltip
-                  title={t("tutorial.tooltip5")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>{t("tutorial.tag5")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph2d")}
-              </Typography.Paragraph>
-              <Typography.Paragraph style={{ marginBlockEnd: 0 }}>
-                {t("tutorial.paragraph3a")}
-                <Tooltip
-                  title={t("tutorial.tooltip6")}
-                  rootClassName={styles.tooltip}
-                >
-                  <Tag>{t("tutorial.tag6")}</Tag>
-                </Tooltip>
-                {t("tutorial.paragraph3b")}
-              </Typography.Paragraph>
-            </>
-          }
-        />
+        <div className={styles.tutorial}>
+          <Typography.Paragraph>
+            <Typography.Text className={styles.greatMinds}>
+              {t("tutorial.title1")}
+            </Typography.Text>
+            {t("tutorial.title2")}
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            {t("tutorial.paragraph1a")}
+            <Tooltip
+              title={t("tutorial.tooltip1")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag bordered>{t("tutorial.tag1")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph1b")}
+            <Tooltip
+              title={t("tutorial.tooltip2")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag>{t("tutorial.tag2")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph1c")}
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            {t("tutorial.paragraph2a")}
+            <Tooltip
+              title={t("tutorial.tooltip3")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag>{t("tutorial.tag3")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph2b")}
+            <Tooltip
+              title={t("tutorial.tooltip4")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag>{t("tutorial.tag4")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph2c")}
+            <Tooltip
+              title={t("tutorial.tooltip5")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag>{t("tutorial.tag5")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph2d")}
+          </Typography.Paragraph>
+          <Typography.Paragraph style={{ marginBlockEnd: 0 }}>
+            {t("tutorial.paragraph3a")}
+            <Tooltip
+              title={t("tutorial.tooltip6")}
+              rootClassName={styles.tooltip}
+            >
+              <Tag>{t("tutorial.tag6")}</Tag>
+            </Tooltip>
+            {t("tutorial.paragraph3b")}
+          </Typography.Paragraph>
+        </div>
         <Flex vertical gap="middle" align="center" justify="center">
           <LazyMotion features={domAnimation}>
             <m.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.05 }}>
