@@ -24,14 +24,7 @@ export async function initializeI18n() {
     .init({
       fallbackLng: "fr",
       detection: {
-        order: [
-          "querystring",
-          "cookie",
-          "sessionStorage",
-          "localStorage",
-          "navigator",
-          "htmlTag",
-        ],
+        order: ["querystring", "cookie", "sessionStorage", "localStorage", "navigator", "htmlTag"],
       },
       supportedLngs: ["fr", "en"],
       resources,

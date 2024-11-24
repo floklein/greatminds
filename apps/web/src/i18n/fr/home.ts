@@ -47,11 +47,9 @@ export const home = {
     tag5: "indice",
     tooltip5: "star wars 7",
     paragraph2d: ".",
-    paragraph3a:
-      "Plus les Guessers sont proches de la cible, plus ils marquent de ",
+    paragraph3a: "Plus les Guessers sont proches de la cible, plus ils marquent de ",
     tag6: "points",
     tooltip6: "5 pour un perfect",
-    paragraph3b:
-      ". Plus les Guessers marquent de points, plus le Master marque de points.",
+    paragraph3b: ". Plus les Guessers marquent de points, plus le Master marque de points.",
   },
 };

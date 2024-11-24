@@ -50,7 +50,6 @@ export const home = {
     paragraph3a: "The closer the Guessers are to the target, the more ",
     tag6: "points",
     tooltip6: "5 for a perfect guess",
-    paragraph3b:
-      " they get. The more points the Guessers get, the more points the Master gets.",
+    paragraph3b: " they get. The more points the Guessers get, the more points the Master gets.",
   },
 };

@@ -5,8 +5,7 @@ export const room = {
     revealing1: "Le Master de ce tour est ",
     revealing1_hinter: "Vous êtes le Master de ce tour, ",
     hinting1: " cherche un indice...",
-    hinting1_hinter:
-      ", tapez un indice qui aidera les Guessers à deviner la cible.",
+    hinting1_hinter: ", tapez un indice qui aidera les Guessers à deviner la cible.",
     guessing1: "{{hinter}} a écrit ",
     guessing2: " en indice. Guessers, vous avez 30 secondes pour deviner.",
     guessing2_hinter: ". Les Guessers ont 30 secondes pour deviner...",
